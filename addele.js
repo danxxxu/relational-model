@@ -1,0 +1,115 @@
+function addElement(element) {
+  let eleHtml = `
+    <div class="element">
+    <div class="block"><span id="index">#1</span>
+    <button name="delete_element" onclick="deleteElement(this)">delete</button></div>
+    <div class="block"><input id="type" /></div>
+    <div class="block"><input id="ele_num" /></div>
+    <div class="allactions">
+      <div class="action">
+        <div class="block">
+          <input id="actionV" />
+          <!-- <button name="delete_action_1">delete</button> -->
+          <button name="add_action" onclick="addAction(this)">
+            add action
+          </button>
+        </div>
+        <div class="block">&nbsp</div>
+        <!-- action1_Communication1 -->
+        <div class="communications">
+          <div class="block">
+          <select id="to" name="to_elements">
+          <option value="">--Select an element--</option>
+          <option value="#1">#1</option>
+        </select>
+            <!-- <button name="delete_to_1">delete</button> -->
+            <button name="add_com" onclick="addCommunication(this)">
+              add communication
+            </button>
+          </div>
+          <div class="block">
+            <input
+              type="checkbox"
+              id="direct_means"
+              name="means"
+              value="direct"
+              checked
+            /><label for="direct_means">Direct</label>
+          </div>
+          <div class="block">
+            <input
+              type="checkbox"
+              id="via_means"
+              name="means"
+              value="via"
+            /><label for="via_means">Via </label
+            >        <select id="via" name="via_elements">
+            <option value="">--Select an element--</option>
+            <option value="#1">#1</option>
+          </select>
+          </div>
+          <div class="block">
+            <input
+              type="checkbox"
+              id="public_access"
+              name="access"
+              value="public"
+              checked
+            /><label for="public_access">Public</label>
+          </div>
+          <div class="block">
+            <input
+              type="checkbox"
+              id="private_access"
+              name="access"
+              value="private"
+            /><label for="private_access">Private</label>
+          </div>
+          <div class="block">
+            <input id="config_from" /><span>to</span
+            ><input id="config_to" />
+          </div>
+          <div class="block"><input id="com_num" /></div>
+          <div class="block"><input id="effect" /></div>
+        </div>
+      </div>
+    </div>
+  </div> `
+  element.parentNode.insertAdjacentHTML("beforebegin", eleHtml);
+  updateIndex();
+  updateDropdown();
+}
+
+function deleteElement(element) {
+  element.parentNode.parentNode.remove();
+  updateIndex();
+  updateDropdown();
+}
+
+function updateIndex() {
+  const allElements = document.querySelectorAll(".element");
+  for (let i = 0; i < allElements.length; i++) {
+    allElements[i].querySelector("#index").innerText = `#` + (i + 1);
+  }
+}
+
+function updateDropdown() {
+  const allElements = document.querySelectorAll(".element");
+
+  allElements.forEach(element => {
+    const allCommunications = element.querySelectorAll(".communications");
+    allCommunications.forEach(element => {
+      const toEle = element.querySelector("#to");
+      toEle.innerHTML=`<option value="">--Select an element--</option>`;
+      const viaEle = element.querySelector("#via");
+      viaEle.innerHTML=`<option value="">--Select an element--</option>`;
+
+      for (let i = 0; i < allElements.length; i++) {
+        const index = (i + 1).toString();
+        toEle.innerHTML += `<option value="#` + index + `">#` + index + `</option>`;
+        viaEle.innerHTML += `<option value="#` + index + `">#` + index + `</option>`;
+      }
+    });
+  });
+
+}
