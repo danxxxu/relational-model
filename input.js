@@ -40,7 +40,8 @@ function visualise() {
         // add main nodes
         node.id = index;
         node.size = mainR;
-        node.text = index + ` ` + allInputs[index].type + ` ` + `(` + allInputs[index].eleNum + `)`;
+        // node.text = index + ` ` + allInputs[index].type + ` ` + `(` + allInputs[index].eleNum + `)`;
+        node.text = index + ` ` + allInputs[index].type
         nodes.push(node);
 
         allInputs[index].actions = [];

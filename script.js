@@ -29,10 +29,12 @@ export function drawVis(nodes, links) {
         .append('path')
         .attr('d', d3.line()(arrowPoints))
         .attr('stroke', 'black')
+        .attr('stroke-width', '2') // create line arrow
+        .attr('fill', 'none')
 
     //start force simulation 
     const simulation = d3.forceSimulation(nodes)
-        .force("charge", d3.forceManyBody().strength(-4000))
+        .force("charge", d3.forceManyBody().strength(-6000))
         .force("link", d3.forceLink(links).distance(link => link.distance))
         .force("center", d3.forceCenter(centerX, centerY))
         .stop();
