@@ -42,7 +42,7 @@ export function drawVis(nodes, links) {
     simulation.tick(Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())));
 
     // connect circles 
-    const path = svg.append('svg:g')
+    svg.append('svg:g')
         .selectAll('path')
         .data(links)
         .join('path')
@@ -52,7 +52,7 @@ export function drawVis(nodes, links) {
         .attr('d', link => drawLink(link));
 
     // draw circles 
-    const circles = svg.selectAll('circle')
+    svg.selectAll('circle')
         .data(nodes)
         .join('circle')
         .attr('class', 'node')
@@ -61,7 +61,7 @@ export function drawVis(nodes, links) {
         .attr('cy', node => node.y);
 
     // annotate circles 
-    const text = svg.selectAll('text')
+    svg.selectAll('text')
         .data(nodes)
         .join('text')
         .text(node => node.text)
@@ -69,6 +69,15 @@ export function drawVis(nodes, links) {
         .attr('alignment-baseline', 'middle')
         .attr('x', (node) => node.x)
         .attr('y', (node) => node.y);
+    // add number of elements annotation
+    svg.append('svg:text')
+        .data(nodes)
+        .join('text')
+        .text(node => node.num)
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle')
+        .attr('x', (node) => node.x)
+        .attr('y', (node) => (node.y + 18));
 }
 
 function drawLink(link) {

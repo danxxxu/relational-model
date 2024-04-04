@@ -21,9 +21,8 @@ document.querySelector("#visualise").addEventListener("click", visualise);
 
 // visualise
 function visualise() {
-    let mainElements = [];
-    nodes = [];
-    links = [];
+    nodes = []; // {id, index, num, size, text}
+    links = []; // {source, target, index, distance, dash}
 
     // getting all the inputs
     const allElements = document.querySelectorAll(".element");
@@ -32,7 +31,6 @@ function visualise() {
         link = {};
 
         const index = element.querySelector("#index").innerText;
-        mainElements.push(index);
         allInputs[index] = {};
         allInputs[index].type = element.querySelector("#type").value;
         allInputs[index].eleNum = element.querySelector("#ele_num").value;
@@ -40,8 +38,8 @@ function visualise() {
         // add main nodes
         node.id = index;
         node.size = mainR;
-        // node.text = index + ` ` + allInputs[index].type + ` ` + `(` + allInputs[index].eleNum + `)`;
-        node.text = index + ` ` + allInputs[index].type
+        node.text = index + ` ` + allInputs[index].type;
+        node.num = `(` + allInputs[index].eleNum + `)`;
         nodes.push(node);
 
         allInputs[index].actions = [];
@@ -75,6 +73,7 @@ function visualise() {
                         node.id = index + `_to_` + toElement;
                         node.size = dirR;
                         node.text = ``;
+                        node.num = ``;
                         nodes.push(node);
 
                         link = {};
@@ -100,6 +99,7 @@ function visualise() {
                         node.id = index + `_via_` + toElement;
                         node.size = viaR;
                         node.text = viaElement;
+                        node.num = ``;
                         nodes.push(node);
 
                         link = {};
@@ -120,6 +120,7 @@ function visualise() {
                         node.id = index + `_via_` + toElement;
                         node.size = viaR1;
                         node.text = viaElement;
+                        node.num = ``;
                         nodes.push(node);
 
                         link = {};
@@ -160,7 +161,7 @@ function visualise() {
             }
         });
     }
-    drawVis(nodes, links);
     console.log(nodes);
     console.log(links);
+    drawVis(nodes, links);
 }
