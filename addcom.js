@@ -3,17 +3,17 @@ function addCommunication(element) {
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
-    options += `<option value="#` + index + `">#` + index + `</option>`;
+    options += `<option value="` + index + `">#` + index + `</option>`;
   }
   let comHtml = `<div class="communications">
     <div class="block">
     <select id="to" name="to_elements">
     <option value="">--Select an element--</option>` + options + `
   </select>
-      <button name="delete_com" onclick="deleteCom(this)">delete</button>
-      <button name="add_com" onclick="addCommunication(this)">
+      <button id="add_com" onclick="addCommunication(this)">
         add
       </button>
+      <button id="delete_com" onclick="deleteCom(this)">delete</button>
     </div>
     <div class="block">
       <input

@@ -61,19 +61,23 @@ export function drawVis(nodes, links) {
         .attr('cy', node => node.y);
 
     // annotate circles 
-    svg.selectAll('text')
+    svg.append('text').attr('class', 'element-name')
+    svg.selectAll('.element-name')
         .data(nodes)
         .join('text')
         .text(node => node.text)
+        .attr('class', 'element-name')
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'middle')
         .attr('x', (node) => node.x)
         .attr('y', (node) => node.y);
     // add number of elements annotation
-    svg.append('svg:text')
+    svg.append('text').attr('class', 'element-num')
+    svg.selectAll('.element-num')
         .data(nodes)
         .join('text')
         .text(node => node.num)
+        .attr('class', 'element-num')
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'middle')
         .attr('x', (node) => node.x)

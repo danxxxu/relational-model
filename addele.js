@@ -20,7 +20,7 @@ function addElement(element) {
           <div class="block">
           <select id="to" name="to_elements">
           <option value="">--Select an element--</option>
-          <option value="#1">#1</option>
+          <option value="1">#1</option>
         </select>
             <!-- <button name="delete_to_1">delete</button> -->
             <button name="add_com" onclick="addCommunication(this)">
@@ -45,7 +45,7 @@ function addElement(element) {
             /><label for="via_means">Via </label
             >        <select id="via" name="via_elements">
             <option value="">--Select an element--</option>
-            <option value="#1">#1</option>
+            <option value="1">#1</option>
           </select>
           </div>
           <div class="block">
@@ -106,8 +106,8 @@ function updateDropdown() {
 
       for (let i = 0; i < allElements.length; i++) {
         const index = (i + 1).toString();
-        toEle.innerHTML += `<option value="#` + index + `">#` + index + `</option>`;
-        viaEle.innerHTML += `<option value="#` + index + `">#` + index + `</option>`;
+        toEle.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+        viaEle.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
       }
     });
   });

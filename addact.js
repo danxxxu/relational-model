@@ -3,7 +3,7 @@ function addAction(element) {
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
-    options += `<option value="#` + index + `">#` + index + `</option>`;
+    options += `<option value="` + index + `">#` + index + `</option>`;
   }
   let actHtml = `<div class="action">
     <div class="block">

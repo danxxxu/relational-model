@@ -56,7 +56,7 @@ function visualise() {
             // allInputs[index].comCount.push(allCom.length);
             for (let i = 0; i < allCom.length; i++) {
                 allInputs[index][actionVal][i + 1] = {};
-                const toElement = allInputs[index][actionVal][i + 1].to = allCom[i].querySelector("#to").value;
+                const toElement = allInputs[index][actionVal][i + 1].to = '#' + allCom[i].querySelector("#to").value;
                 allInputs[index][actionVal][i + 1].means = allCom[i].querySelector(`input[name=means]:checked`).value;
 
                 // add direct links 
@@ -92,7 +92,7 @@ function visualise() {
                     }
                 } else {
                     // add via links 
-                    const viaElement = allCom[i].querySelector("#via").value;
+                    const viaElement = '#' + allCom[i].querySelector("#via").value;
 
                     if (toElement != index) {
                         node = {};
@@ -139,7 +139,7 @@ function visualise() {
                     }
                 }
 
-                allInputs[index][actionVal][i + 1].via = allCom[i].querySelector("#via").value;
+                allInputs[index][actionVal][i + 1].via = '#' + allCom[i].querySelector("#via").value;
                 allInputs[index][actionVal][i + 1].access = allCom[i].querySelector(`input[name=access]:checked`).value;
                 allInputs[index][actionVal][i + 1].configF = allCom[i].querySelector(`#config_from`).value;
                 allInputs[index][actionVal][i + 1].configT = allCom[i].querySelector(`#config_to`).value;

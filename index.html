@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Relational Model</title>
     <script type="module" src="input.js"></script>
+    <script type="module" src="permutate.js"></script>
+    <script type="module" src="randomise.js"></script>
     <script src="addcom.js" defer></script>
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
@@ -59,6 +61,7 @@
       float: right;
       font-size: 20px;
       padding: 10px;
+      width: 125px;
     }
     .element,
     .annotation,
@@ -196,7 +199,6 @@
           <div class="action">
             <div class="block">
               <input id="actionV" />
-              <!-- <button name="delete_action_1">delete</button> -->
               <button name="add_action" onclick="addAction(this)">
                 add action
               </button>
@@ -207,10 +209,9 @@
               <div class="block">
                 <select id="to" name="to_elements">
                   <option value="">--Select an element--</option>
-                  <option value="#1">#1</option>
+                  <option value="1">#1</option>
                 </select>
-                <!-- <button name="delete_to_1">delete</button> -->
-                <button name="add_com" onclick="addCommunication(this)">
+                <button id="add_com" onclick="addCommunication(this)">
                   add communication
                 </button>
               </div>
@@ -232,7 +233,7 @@
                 /><label for="via_means">Via </label>
                 <select id="via" name="via_elements">
                   <option value="">--Select an element--</option>
-                  <option value="#1">#1</option>
+                  <option value="1">#1</option>
                 </select>
               </div>
               <div class="block">
@@ -273,6 +274,9 @@
       </div>
       <div class="control_block">
         <button class="control_button" id="randomise">Randomise</button>
+      </div>
+      <div class="control_block">
+        <button class="control_button" id="permutate">Permutate</button>
       </div>
     </div>
     <svg id="container" width="960" height="500"></svg>
