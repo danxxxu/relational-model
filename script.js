@@ -47,6 +47,9 @@ export function drawVis(nodes, links) {
         .data(links)
         .join('path')
         .attr('class', 'link')
+        .attr('fill', 'none')
+        .attr('stroke', 'black')
+        .attr('stroke-width', '2')
         .attr('stroke-dasharray', link => link.dash)
         .attr('marker-end', 'url(#arrow)')
         .attr('d', link => drawLink(link));
@@ -56,6 +59,9 @@ export function drawVis(nodes, links) {
         .data(nodes)
         .join('circle')
         .attr('class', 'node')
+        .attr('fill', 'white')
+        .attr('stroke', 'black')
+        .attr('stroke-width', '2')
         .attr('r', node => node.size)
         .attr('cx', node => node.x)
         .attr('cy', node => node.y);

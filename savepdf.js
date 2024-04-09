@@ -6,13 +6,16 @@ function savePDF() {
 
     const svgEle = document.getElementById('container');
 
-    const pdf = new jspdf.jsPDF();
+    const width = svgEle.width.baseVal.value;
+    const height = svgEle.height.baseVal.value;
+
+    const pdf = new jspdf.jsPDF('l', 'pt', [width, height]);
+
+    console.log(svgEle);
 
     pdf.svg(svgEle, {
-        x: 0,
-        y: 0,
-        width: 960,
-        height: 500
+        width: width,
+        height: height
     }).then(() => {
         pdf.save('visualisation.pdf');
     })
