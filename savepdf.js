@@ -1,4 +1,4 @@
-import '../node_modules/svg2pdf.js/dist/svg2pdf.umd.min.js';
+// import './node_modules/svg2pdf.js/dist/svg2pdf.umd.min.js';
 
 document.querySelector('#savePDF').addEventListener('click', savePDF);
 
