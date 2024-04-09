@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Relational Model</title>
+    <script type="module" src="node_modules/jspdf/dist/jspdf.umd.min.js"></script>
+    <script type="module" src="node_modules/svg2pdf.js/dist/svg2pdf.umd.min.js"></script>    
+
     <script type="module" src="input.js"></script>
     <script type="module" src="permutate.js"></script>
     <script type="module" src="randomise.js"></script>
     <script src="addcom.js" defer></script>
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
+    <script type="module" src="savepdf.js"></script>
     <script type="module" src="script.js" defer></script>
   </head>
   <style>
@@ -155,6 +159,9 @@
     #container {
       border: 2px solid;
     }
+    #save {
+      margin-top: 5px;
+    }
   </style>
   <body>
     <div id="input">
@@ -280,5 +287,6 @@
       </div>
     </div>
     <svg id="container" width="960" height="500"></svg>
+    <div id="save"><button class="control_button" id="savePDF">Download</button></div>
   </body>
 </html>
