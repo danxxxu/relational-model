@@ -1,6 +1,8 @@
-let comCount;
+let comCount = 0;
 
 function addCommunication(element) {
+  comCount ++;
+
   const allElements = document.querySelectorAll(".element");
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
@@ -11,8 +13,6 @@ function addCommunication(element) {
   const eleIndex = element.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('#index').innerText;
 
   const actionIndex = element.parentNode.parentNode.parentNode.querySelector("#actionIn").innerText;
-
-  comCount = element.parentNode.parentNode.parentNode.querySelectorAll(".communications").length;
 
   let comHtml = `<div class="communications">
     <div class="block">
@@ -75,6 +75,7 @@ function addCommunication(element) {
 }
 
 function deleteCom(element) {
+  // comCount ++;
   const allCom = element.parentNode.parentNode.parentNode;
   element.parentNode.parentNode.remove();
   updateComIndex(allCom);
@@ -83,6 +84,6 @@ function deleteCom(element) {
 function updateComIndex(element) {
   const coms = element.querySelectorAll(".communications");
   for (let i = 0; i < coms.length; i++) {
-    coms[i].querySelector("#comIn").innerText = i + 1;
+    coms[i].querySelector("#comIn").innerText = i+1;
   }
 }

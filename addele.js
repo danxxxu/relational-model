@@ -1,8 +1,8 @@
-let eleCount;
+let eleCount = 0;
 
 function addElement(element) {
   const allElements = document.querySelectorAll(".element");
-  eleCount = allElements.length;
+  eleCount ++;
   let eleHtml = `
     <div class="element">
     <div class="block"><span id="index">#1</span>
@@ -87,6 +87,7 @@ function addElement(element) {
 }
 
 function deleteElement(element) {
+  // eleCount ++;
   element.parentNode.parentNode.remove();
   updateIndex();
   updateDropdown();

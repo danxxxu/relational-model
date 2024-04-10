@@ -1,9 +1,9 @@
-let actCount;
+let actCount = 0;
 
 function addAction(element) {
   const allElements = document.querySelectorAll(".element");
 
-// count dropdown list of elements
+  // count dropdown list of elements
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
@@ -12,7 +12,7 @@ function addAction(element) {
 
   const eleIndex = element.parentNode.parentNode.parentNode.parentNode.querySelector('#index').innerText;
 
-  actCount = element.parentNode.parentNode.parentNode.querySelectorAll(".action").length;
+  actCount++;
 
   let actHtml = `<div class="action">
     <div class="block">
@@ -85,14 +85,15 @@ function addAction(element) {
 }
 
 function deleteAction(element) {
+  // actCount++;
   const allAct = element.parentNode.parentNode.parentNode;
   element.parentNode.parentNode.remove();
   updateActionIndex(allAct);
 }
 
 function updateActionIndex(element) {
- const actions = element.querySelectorAll(".action");
- for (let i = 0; i < actions.length; i ++) {
-  actions[i].querySelector("#actionIn").innerText = i + 1;
- }
+  const actions = element.querySelectorAll(".action");
+  for (let i = 0; i < actions.length; i++) {
+    actions[i].querySelector("#actionIn").innerText = i + 1;
+  }
 }
