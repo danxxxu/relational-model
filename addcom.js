@@ -1,3 +1,5 @@
+let comCount;
+
 function addCommunication(element) {
   const allElements = document.querySelectorAll(".element");
   let options = ``;
@@ -5,6 +7,13 @@ function addCommunication(element) {
     const index = i.toString();
     options += `<option value="` + index + `">#` + index + `</option>`;
   }
+
+  const eleIndex = element.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('#index').innerText;
+
+  const actionIndex = element.parentNode.parentNode.parentNode.querySelector("#actionIn").innerText;
+
+  comCount = element.parentNode.parentNode.parentNode.querySelectorAll(".communications").length;
+
   let comHtml = `<div class="communications">
     <div class="block">
     <select id="to" name="to_elements">
@@ -13,22 +22,23 @@ function addCommunication(element) {
       <button id="add_com" onclick="addCommunication(this)">
         add
       </button>
+      <span hidden id="comIn">` + comCount + `</span>
       <button id="delete_com" onclick="deleteCom(this)">delete</button>
     </div>
     <div class="block">
       <input
-        type="checkbox"
+        type="radio"
         id="direct_means"
-        name="means"
+        name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"
         value="direct"
         checked
       /><label for="direct_means">Direct</label>
     </div>
     <div class="block">
       <input
-        type="checkbox"
+        type="radio"
         id="via_means"
-        name="means"
+        name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"
         value="via"
       /><label for="via_means">Via </label
       ><select id="via" name="via_elements">       
@@ -37,18 +47,18 @@ function addCommunication(element) {
     </div>
     <div class="block">
       <input
-        type="checkbox"
+        type="radio"
         id="public_access"
-        name="access"
+        name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"
         value="public"
         checked
       /><label for="public_access">Public</label>
     </div>
     <div class="block">
       <input
-        type="checkbox"
+        type="radio"
         id="private_access"
-        name="access"
+        name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"
         value="private"
       /><label for="private_access">Private</label>
     </div>
@@ -61,8 +71,18 @@ function addCommunication(element) {
 </div>`;
   element.parentNode.parentNode.insertAdjacentHTML("afterend", comHtml);
 
+  updateComIndex(element.parentNode.parentNode.parentNode);
 }
 
 function deleteCom(element) {
+  const allCom = element.parentNode.parentNode.parentNode;
   element.parentNode.parentNode.remove();
+  updateComIndex(allCom);
+}
+
+function updateComIndex(element) {
+  const coms = element.querySelectorAll(".communications");
+  for (let i = 0; i < coms.length; i++) {
+    coms[i].querySelector("#comIn").innerText = i + 1;
+  }
 }

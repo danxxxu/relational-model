@@ -101,6 +101,9 @@
       /* border: 1px solid pink; */
       padding: 0;
     }
+    #actionV {
+      width: 120px;
+    }
     .action {
       display: inline-flex;
       flex-direction: column;
@@ -161,7 +164,8 @@
       border: 2px solid;
     }
     #save {
-      margin-top: 5px;
+      width: 964px;
+      margin-top: 8px;
     }
   </style>
   <body>
@@ -206,6 +210,7 @@
         <div class="allactions">
           <div class="action">
             <div class="block">
+              <label for="actionV" id="actionIn">1</label>
               <input id="actionV" />
               <button name="add_action" onclick="addAction(this)">
                 add action
@@ -222,10 +227,11 @@
                 <button id="add_com" onclick="addCommunication(this)">
                   add communication
                 </button>
+                <span hidden id="comIn">0</span>
               </div>
               <div class="block">
                 <input
-                  type="checkbox"
+                  type="radio"
                   id="direct_means"
                   name="means"
                   value="direct"
@@ -234,7 +240,7 @@
               </div>
               <div class="block">
                 <input
-                  type="checkbox"
+                  type="radio"
                   id="via_means"
                   name="means"
                   value="via"
@@ -246,7 +252,7 @@
               </div>
               <div class="block">
                 <input
-                  type="checkbox"
+                  type="radio"
                   id="public_access"
                   name="access"
                   value="public"
@@ -255,7 +261,7 @@
               </div>
               <div class="block">
                 <input
-                  type="checkbox"
+                  type="radio"
                   id="private_access"
                   name="access"
                   value="private"

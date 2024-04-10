@@ -1,4 +1,8 @@
+let eleCount;
+
 function addElement(element) {
+  const allElements = document.querySelectorAll(".element");
+  eleCount = allElements.length;
   let eleHtml = `
     <div class="element">
     <div class="block"><span id="index">#1</span>
@@ -8,6 +12,7 @@ function addElement(element) {
     <div class="allactions">
       <div class="action">
         <div class="block">
+          <label for="actionV" id="actionIn">1</label>
           <input id="actionV" />
           <!-- <button name="delete_action_1">delete</button> -->
           <button name="add_action" onclick="addAction(this)">
@@ -26,21 +31,22 @@ function addElement(element) {
             <button name="add_com" onclick="addCommunication(this)">
               add communication
             </button>
+            <span hidden id="comIn">0</span>
           </div>
           <div class="block">
             <input
-              type="checkbox"
+              type="radio"
               id="direct_means"
-              name="means"
+              name="` + eleCount + `_means"
               value="direct"
               checked
             /><label for="direct_means">Direct</label>
           </div>
           <div class="block">
             <input
-              type="checkbox"
+              type="radio"
               id="via_means"
-              name="means"
+              name="` + eleCount + `_means"
               value="via"
             /><label for="via_means">Via </label
             >        <select id="via" name="via_elements">
@@ -50,18 +56,18 @@ function addElement(element) {
           </div>
           <div class="block">
             <input
-              type="checkbox"
+              type="radio"
               id="public_access"
-              name="access"
+              name="` + eleCount + `_access"
               value="public"
               checked
             /><label for="public_access">Public</label>
           </div>
           <div class="block">
             <input
-              type="checkbox"
+              type="radio"
               id="private_access"
-              name="access"
+              name="` + eleCount + `_access"
               value="private"
             /><label for="private_access">Private</label>
           </div>
@@ -100,9 +106,9 @@ function updateDropdown() {
     const allCommunications = element.querySelectorAll(".communications");
     allCommunications.forEach(element => {
       const toEle = element.querySelector("#to");
-      toEle.innerHTML=`<option value="">--Select an element--</option>`;
+      toEle.innerHTML = `<option value="">--Select an element--</option>`;
       const viaEle = element.querySelector("#via");
-      viaEle.innerHTML=`<option value="">--Select an element--</option>`;
+      viaEle.innerHTML = `<option value="">--Select an element--</option>`;
 
       for (let i = 0; i < allElements.length; i++) {
         const index = (i + 1).toString();

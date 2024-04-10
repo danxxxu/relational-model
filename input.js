@@ -57,10 +57,10 @@ function visualise() {
             for (let i = 0; i < allCom.length; i++) {
                 allInputs[index][actionVal][i + 1] = {};
                 const toElement = allInputs[index][actionVal][i + 1].to = '#' + allCom[i].querySelector("#to").value;
-                allInputs[index][actionVal][i + 1].means = allCom[i].querySelector(`input[name=means]:checked`).value;
+                allInputs[index][actionVal][i + 1].direct = allCom[i].querySelector(`#direct_means`).checked;
 
                 // add direct links 
-                if (allInputs[index][actionVal][i + 1].means == `direct`) {
+                if (allInputs[index][actionVal][i + 1].direct) {
                     if (toElement != index) {
                         link = {};
                         link.source = index;
@@ -140,7 +140,7 @@ function visualise() {
                 }
 
                 allInputs[index][actionVal][i + 1].via = '#' + allCom[i].querySelector("#via").value;
-                allInputs[index][actionVal][i + 1].access = allCom[i].querySelector(`input[name=access]:checked`).value;
+                allInputs[index][actionVal][i + 1].public = allCom[i].querySelector('#public_access').checked;
                 allInputs[index][actionVal][i + 1].configF = allCom[i].querySelector(`#config_from`).value;
                 allInputs[index][actionVal][i + 1].configT = allCom[i].querySelector(`#config_to`).value;
                 allInputs[index][actionVal][i + 1].comNum = allCom[i].querySelector(`#com_num`).value;

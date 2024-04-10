@@ -11,8 +11,6 @@ function savePDF() {
 
     const pdf = new jspdf.jsPDF('l', 'pt', [width, height]);
 
-    console.log(svgEle);
-
     pdf.svg(svgEle, {
         width: width,
         height: height

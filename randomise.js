@@ -2,6 +2,7 @@ document.querySelector("#randomise").addEventListener("click", randomise);
 
 let allInputs = {};
 let options = ``;
+
 function randomise() {
     options = ``;
     const allElements = document.querySelectorAll(".element");
@@ -12,12 +13,15 @@ function randomise() {
     }
     // randomly assigning different number of communications to each element 
     allElements.forEach(element => {
-        let comN = Math.ceil(Math.random() * (elementN + elementN * elementN)); // randomly select number of communications for the element, the max: elementN + elementN * elementN 
+      const eleIndex = element.querySelector("#index").innerText;
+      const actionIndex = element.querySelector("#actionIn").innerText;
+        let comN = Math.ceil(Math.random() * (elementN + elementN * elementN)); 
+        // randomly select number of communications for the element, the max: elementN + elementN * elementN 
         let communications = element.querySelectorAll('.communications');
         let existComN = communications.length;
         if (existComN < comN) {
             for (let i = existComN; i < comN; i++) {
-                addCom(options, communications[existComN - 1]);
+                addCom(options, eleIndex, actionIndex, i, communications[existComN - 1]);
             }
         } else if (existComN > comN) {
             for (let i = existComN; i > comN; i--) {
@@ -49,60 +53,61 @@ function randomise() {
 
 }
 
-function addCom(options, element) {
-    let comHtml = `<div class="communications">
-    <div class="block">
-    <select id="to" name="to_elements">
+function addCom(options, eleIndex, actionIndex, comIndex, element) {
+  let comHtml = `<div class="communications">
+  <div class="block">
+  <select id="to" name="to_elements">
+  <option value="">--Select an element--</option>` + options + `
+</select>
+    <button id="add_com" onclick="addCommunication(this)">
+      add
+    </button>
+    <span hidden id="comIn">0</span>
+    <button id="delete_com" onclick="deleteCom(this)">delete</button>
+  </div>
+  <div class="block">
+    <input
+      type="radio"
+      id="direct_means"
+      name="`+ eleIndex + `_act` + actionIndex + `_com` + comIndex + `_means"
+      value="direct"
+      checked
+    /><label for="direct_means">Direct</label>
+  </div>
+  <div class="block">
+    <input
+      type="radio"
+      id="via_means"
+      name="`+ eleIndex + `_act` + actionIndex + `_com` + comIndex + `_means"
+      value="via"
+    /><label for="via_means">Via </label
+    ><select id="via" name="via_elements">       
     <option value="">--Select an element--</option>` + options + `
   </select>
-      <button id="add_com" onclick="addCommunication(this)">
-        add
-      </button>
-      <button id="delete_com" onclick="deleteCom(this)">delete</button>
-    </div>
-    <div class="block">
-      <input
-        type="checkbox"
-        id="direct_means"
-        name="means"
-        value="direct"
-        checked
-      /><label for="direct_means">Direct</label>
-    </div>
-    <div class="block">
-      <input
-        type="checkbox"
-        id="via_means"
-        name="means"
-        value="via"
-      /><label for="via_means">Via </label
-      ><select id="via" name="via_elements">       
-      <option value="">--Select an element--</option>` + options + `
-    </select>
-    </div>
-    <div class="block">
-      <input
-        type="checkbox"
-        id="public_access"
-        name="access"
-        value="public"
-        checked
-      /><label for="public_access">Public</label>
-    </div>
-    <div class="block">
-      <input
-        type="checkbox"
-        id="private_access"
-        name="access"
-        value="private"
-      /><label for="private_access">Private</label>
-    </div>
-    <div class="block">
-      <input id="config_from" /><span>to</span
-      ><input id="config_to" />
-    </div>
-    <div class="block"><input id="com_num" /></div>
-    <div class="block"><input id="effect" /></div>
+  </div>
+  <div class="block">
+    <input
+      type="radio"
+      id="public_access"
+      name="`+ eleIndex + `_act` + actionIndex + `_com` + comIndex + `_access"
+      value="public"
+      checked
+    /><label for="public_access">Public</label>
+  </div>
+  <div class="block">
+    <input
+      type="radio"
+      id="private_access"
+      name="`+ eleIndex + `_act` + actionIndex + `_com` + comIndex + `_access"
+      value="private"
+    /><label for="private_access">Private</label>
+  </div>
+  <div class="block">
+    <input id="config_from" /><span>to</span
+    ><input id="config_to" />
+  </div>
+  <div class="block"><input id="com_num" /></div>
+  <div class="block"><input id="effect" /></div>
 </div>`;
     element.insertAdjacentHTML("afterend", comHtml);
 }

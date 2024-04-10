@@ -1,12 +1,22 @@
+let actCount;
+
 function addAction(element) {
   const allElements = document.querySelectorAll(".element");
+
+// count dropdown list of elements
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
     options += `<option value="` + index + `">#` + index + `</option>`;
   }
+
+  const eleIndex = element.parentNode.parentNode.parentNode.parentNode.querySelector('#index').innerText;
+
+  actCount = element.parentNode.parentNode.parentNode.querySelectorAll(".action").length;
+
   let actHtml = `<div class="action">
     <div class="block">
+    <label for="actionV" id="actionIn">1</label>
       <input id="actionV" />
       <button name="delete_action" onclick="deleteAction(this)">delete</button>
       <button name="add_action" onclick="addAction(this)">
@@ -20,25 +30,25 @@ function addAction(element) {
       <select id="to" name="to_elements">
       <option value="">--Select an element--</option> `+ options + `
     </select>
-        <!-- <button name="delete_to_1">delete</button> -->
         <button name="add_com" onclick="addCommunication(this)">
           add communication
         </button>
+        <span hidden id="comIn">0</span>
       </div>
       <div class="block">
         <input
-          type="checkbox"
+          type="radio"
           id="direct_means"
-          name="means"
+          name="` + eleIndex + `_act` + actCount + `_means"
           value="direct"
           checked
         /><label for="direct_means">Direct</label>
       </div>
       <div class="block">
         <input
-          type="checkbox"
+          type="radio"
           id="via_means"
-          name="means"
+          name="` + eleIndex + `_act` + actCount + `_means"          
           value="via"
         /><label for="via_means">Via </label
         ><select id="via" name="via_elements">
@@ -47,18 +57,18 @@ function addAction(element) {
       </div>
       <div class="block">
         <input
-          type="checkbox"
+          type="radio"
           id="public_access"
-          name="access"
+          name="` + eleIndex + `_act` + actCount + `_access"
           value="public"
           checked
         /><label for="public_access">Public</label>
       </div>
       <div class="block">
         <input
-          type="checkbox"
+          type="radio"
           id="private_access"
-          name="access"
+          name="` + eleIndex + `_act` + actCount + `_access"
           value="private"
         /><label for="private_access">Private</label>
       </div>
@@ -71,8 +81,18 @@ function addAction(element) {
     </div>
   </div>  `
   element.parentNode.parentNode.insertAdjacentHTML("afterend", actHtml);
+  updateActionIndex(element.parentNode.parentNode.parentNode);
 }
 
 function deleteAction(element) {
+  const allAct = element.parentNode.parentNode.parentNode;
   element.parentNode.parentNode.remove();
+  updateActionIndex(allAct);
+}
+
+function updateActionIndex(element) {
+ const actions = element.querySelectorAll(".action");
+ for (let i = 0; i < actions.length; i ++) {
+  actions[i].querySelector("#actionIn").innerText = i + 1;
+ }
 }
