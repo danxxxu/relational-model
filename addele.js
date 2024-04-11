@@ -23,12 +23,12 @@ function addElement(element) {
         <!-- action1_Communication1 -->
         <div class="communications">
           <div class="block">
-          <select id="to" name="to_elements">
+          <select id="to" name="to_elements" style="float: left;">
           <option value="">--Select an element--</option>
           <option value="1">#1</option>
         </select>
             <!-- <button name="delete_to_1">delete</button> -->
-            <button name="add_com" onclick="addCommunication(this)">
+            <button style="float: left;" name="add_com" onclick="addCommunication(this)">
               add communication
             </button>
             <span hidden id="comIn">0</span>

@@ -6,6 +6,12 @@ const width = +svg.attr('width');
 const height = +svg.attr('height');
 const centerX = width / 2, centerY = height / 2;
 
+//adjust graph distribution 
+let force = -6500;
+let center = 2;
+let xforce = 0.2;
+let adjustmentFactor = 0.2;
+
 //define arrow marker variables 
 const markerBoxWidth = 10;
 const markerBoxHeight = 10;
@@ -15,6 +21,14 @@ const arrowPoints = [[0, 0], [markerBoxWidth, markerBoxHeight / 2], [0, markerBo
 
 export function drawVis(nodes, links) {
     svg.selectAll("*").remove();
+
+    //adjust the parameters based on the number of links and nodes, now it exceeds the canvas when more than 4 main nodes
+    if (links.length < 6) {
+        force = -10500;
+        center = 1;
+    } else {
+        force = -5500;
+    }
 
     // define arrow 
     svg.append('defs')
@@ -31,12 +45,15 @@ export function drawVis(nodes, links) {
         .attr('stroke', 'black')
         .attr('stroke-width', '2') // create line arrow
         .attr('fill', 'none')
+        .attr('stroke-dasharray', 'none')
 
     //start force simulation 
     const simulation = d3.forceSimulation(nodes)
-        .force("charge", d3.forceManyBody().strength(-6000))
+        .force("charge", d3.forceManyBody().strength(force))
         .force("link", d3.forceLink(links).distance(link => link.distance))
-        .force("center", d3.forceCenter(centerX, centerY))
+        .force("center", d3.forceCenter(centerX, centerY).strength(center))
+        .force("x", d3.forceX().strength(xforce))
+        .force("y", d3.forceY().strength((adjustmentFactor * width) / height))
         .stop();
 
     simulation.tick(Math.ceil(Math.log(simulation.alphaMin()) / Math.log(1 - simulation.alphaDecay())));
@@ -50,8 +67,8 @@ export function drawVis(nodes, links) {
         .attr('fill', 'none')
         .attr('stroke', 'black')
         .attr('stroke-width', '2')
-        .attr('stroke-dasharray', link => link.dash)
         .attr('marker-end', 'url(#arrow)')
+        .attr('stroke-dasharray', link => link.dash)
         .attr('d', link => drawLink(link));
 
     // draw circles 
@@ -59,7 +76,7 @@ export function drawVis(nodes, links) {
         .data(nodes)
         .join('circle')
         .attr('class', 'node')
-        .attr('fill', 'white')
+        .attr('fill', 'none')
         .attr('stroke', 'black')
         .attr('stroke-width', '2')
         .attr('r', node => node.size)
@@ -107,7 +124,7 @@ function drawLink(link) {
         rY = rX,
         xRotation = 0,
         largeArc = 0,
-        sweep = 1;
+        sweep = 1; // flip the arc 0/1
 
     if (link.target.size == 0 || link.source.size == 0) {
         rX = (dist - mainR) / 2;

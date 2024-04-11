@@ -93,10 +93,11 @@ function visualise() {
                 } else {
                     // add via links 
                     const viaElement = '#' + allCom[i].querySelector("#via").value;
+                    // console.log(viaElement);
 
                     if (toElement != index) {
                         node = {};
-                        node.id = index + `_via_` + toElement;
+                        node.id = index + `_via_` + viaElement + `_to_` + toElement;
                         node.size = viaR;
                         node.text = viaElement;
                         node.num = ``;
@@ -117,7 +118,7 @@ function visualise() {
                         links.push(link)
                     } else {
                         node = {};
-                        node.id = index + `_via_` + toElement;
+                        node.id = index + `_via_` + viaElement + `_to_` + toElement;
                         node.size = viaR1;
                         node.text = viaElement;
                         node.num = ``;
@@ -161,7 +162,7 @@ function visualise() {
             }
         });
     }
-    console.log(nodes);
-    console.log(links);
+    // console.log(nodes);
+    // console.log(links);
     drawVis(nodes, links);
 }

@@ -6,7 +6,7 @@
     <title>Relational Model</title>
     <!-- <script src="node_modules/jspdf/dist/jspdf.umd.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="assets/svg2pdf.js/dist/svg2pdf.umd.min.js"></script>    
+    <script src="assets/svg2pdf.js/dist/svg2pdf.umd.min.js"></script>
 
     <script type="module" src="input.js"></script>
     <script type="module" src="permutate.js"></script>
@@ -139,7 +139,7 @@
     }
     .anno_com {
       background-color: white;
-      margin-top: 3px;
+      margin-top: 0px;
     }
     #config_from,
     #config_to {
@@ -220,11 +220,15 @@
             <!-- action1_Communication1 -->
             <div class="communications">
               <div class="block">
-                <select id="to" name="to_elements">
+                <select id="to" name="to_elements" style="float: left">
                   <option value="">--Select an element--</option>
                   <option value="1">#1</option>
                 </select>
-                <button id="add_com" onclick="addCommunication(this)">
+                <button
+                  style="float: left"
+                  id="add_com"
+                  onclick="addCommunication(this)"
+                >
                   add communication
                 </button>
                 <span hidden id="comIn">0</span>
@@ -294,6 +298,8 @@
       </div>
     </div>
     <svg id="container" width="960" height="679"></svg>
-    <div id="save"><button class="control_button" id="savePDF">Download</button></div>
+    <div id="save">
+      <button class="control_button" id="savePDF">Download</button>
+    </div>
   </body>
 </html>
