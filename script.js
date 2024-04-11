@@ -23,7 +23,7 @@ export function drawVis(nodes, links) {
     svg.selectAll("*").remove();
 
     //adjust the parameters based on the number of links and nodes, now it exceeds the canvas when more than 4 main nodes
-    if (links.length < 6) {
+    if (links.length <= 6) {
         force = -10500;
         center = 1;
     } else {
