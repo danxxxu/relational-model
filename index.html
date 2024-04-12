@@ -104,16 +104,22 @@
     #actionV {
       width: 120px;
     }
+    .add_action,
     .action {
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
       /* margin-top: 5px;
       margin-bottom: 5px; */
-      margin-right: 3px;
+      margin-right: 8px;
+      padding: 7px;
       width: auto;
       height: auto;
       /* border: 1px solid red; */
+      background-color: rgb(220, 220, 220);
+    }
+    .add_action {
+      width: 80px;
     }
     .anno_action {
       display: inline-flex;
@@ -125,6 +131,7 @@
       height: auto;
       /* border: 1px solid red; */
     }
+    .add_communication,
     .anno_com,
     .communications {
       display: inline-flex;
@@ -132,10 +139,12 @@
       justify-content: flex-start;
       margin-top: 5px;
       margin-bottom: 5px;
+      padding: 5px;
       width: auto;
       height: auto;
       /* border: 1px solid yellowgreen; */
-      background-color: rgb(220, 220, 220);
+      /* background-color: rgb(220, 220, 220); */
+      background-color: white;
     }
     .anno_com {
       background-color: white;
@@ -212,9 +221,6 @@
             <div class="block">
               <label for="actionV" id="actionIn">1</label>
               <input id="actionV" />
-              <button name="add_action" onclick="addAction(this)">
-                add action
-              </button>
             </div>
             <div class="block">&nbsp</div>
             <!-- action1_Communication1 -->
@@ -224,13 +230,6 @@
                   <option value="">--Select an element--</option>
                   <option value="1">#1</option>
                 </select>
-                <button
-                  style="float: left"
-                  id="add_com"
-                  onclick="addCommunication(this)"
-                >
-                  add communication
-                </button>
                 <span hidden id="comIn">0</span>
               </div>
               <div class="block">
@@ -278,6 +277,19 @@
               <div class="block"><input id="com_num" /></div>
               <div class="block"><input id="effect" /></div>
             </div>
+            <div class="add_communication">
+              <button
+                id="add_com"
+                onclick="addCommunication(this)"
+              >
+                add communication
+              </button>
+            </div>
+          </div>
+          <div class="add_action">
+            <button name="add_action" onclick="addAction(this)">
+              add action
+            </button>
           </div>
         </div>
       </div>

@@ -14,10 +14,6 @@ function addElement(element) {
         <div class="block">
           <label for="actionV" id="actionIn">1</label>
           <input id="actionV" />
-          <!-- <button name="delete_action_1">delete</button> -->
-          <button name="add_action" onclick="addAction(this)">
-            add action
-          </button>
         </div>
         <div class="block">&nbsp</div>
         <!-- action1_Communication1 -->
@@ -27,10 +23,6 @@ function addElement(element) {
           <option value="">--Select an element--</option>
           <option value="1">#1</option>
         </select>
-            <!-- <button name="delete_to_1">delete</button> -->
-            <button style="float: left;" name="add_com" onclick="addCommunication(this)">
-              add communication
-            </button>
             <span hidden id="comIn">0</span>
           </div>
           <div class="block">
@@ -78,7 +70,20 @@ function addElement(element) {
           <div class="block"><input id="com_num" /></div>
           <div class="block"><input id="effect" /></div>
         </div>
+        <div class="add_communication">
+        <button
+          id="add_com"
+          onclick="addCommunication(this)"
+        >
+          add communication
+        </button>
       </div>
+      </div>
+      <div class="add_action">
+      <button name="add_action" onclick="addAction(this)">
+        add action
+      </button>
+    </div>
     </div>
   </div> `
   element.parentNode.insertAdjacentHTML("beforebegin", eleHtml);

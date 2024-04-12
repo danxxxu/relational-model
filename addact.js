@@ -18,10 +18,7 @@ function addAction(element) {
     <div class="block">
     <label for="actionV" id="actionIn">1</label>
       <input id="actionV" />
-      <button name="delete_action" onclick="deleteAction(this)">delete</button>
-      <button name="add_action" onclick="addAction(this)">
-        add
-      </button>
+      <button name="delete_action" onclick="deleteAction(this)">delete action</button>
     </div>
     <div class="block">&nbsp</div>
     <!-- action1_Communication1 -->
@@ -30,9 +27,6 @@ function addAction(element) {
       <select id="to" name="to_elements" style="float: left;">
       <option value="">--Select an element--</option> `+ options + `
     </select>
-        <button style="float: left;" name="add_com" onclick="addCommunication(this)">
-          add communication
-        </button>
         <span hidden id="comIn">0</span>
       </div>
       <div class="block">
@@ -79,8 +73,17 @@ function addAction(element) {
       <div class="block"><input id="com_num" /></div>
       <div class="block"><input id="effect" /></div>
     </div>
+    <div class="add_communication">
+    <button
+      id="add_com"
+      onclick="addCommunication(this)"
+    >
+      add communication
+    </button>
+  </div>
   </div>  `
-  element.parentNode.parentNode.insertAdjacentHTML("afterend", actHtml);
+  const previousAction = element.parentNode.parentNode.lastElementChild.previousElementSibling;
+  previousAction.insertAdjacentHTML("afterend", actHtml);
   updateActionIndex(element.parentNode.parentNode.parentNode);
 }
 

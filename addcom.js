@@ -1,7 +1,7 @@
 let comCount = 0;
 
 function addCommunication(element) {
-  comCount ++;
+  comCount++;
 
   const allElements = document.querySelectorAll(".element");
   let options = ``;
@@ -19,11 +19,7 @@ function addCommunication(element) {
     <select id="to" name="to_elements">
     <option value="">--Select an element--</option>` + options + `
   </select>
-      <button id="add_com" onclick="addCommunication(this)">
-        add
-      </button>
       <span hidden id="comIn">` + comCount + `</span>
-      <button id="delete_com" onclick="deleteCom(this)">delete</button>
     </div>
     <div class="block">
       <input
@@ -68,9 +64,12 @@ function addCommunication(element) {
     </div>
     <div class="block"><input id="com_num" /></div>
     <div class="block"><input id="effect" /></div>
+    <div class="block">
+    <button id="delete_com" onclick="deleteCom(this)">delete communication</button>
+  </div>
 </div>`;
-  element.parentNode.parentNode.insertAdjacentHTML("afterend", comHtml);
-
+  const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
+  previousCom.insertAdjacentHTML("afterend", comHtml);
   updateComIndex(element.parentNode.parentNode.parentNode);
 }
 
@@ -84,6 +83,6 @@ function deleteCom(element) {
 function updateComIndex(element) {
   const coms = element.querySelectorAll(".communications");
   for (let i = 0; i < coms.length; i++) {
-    coms[i].querySelector("#comIn").innerText = i+1;
+    coms[i].querySelector("#comIn").innerText = i + 1;
   }
 }
