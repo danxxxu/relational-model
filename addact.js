@@ -15,17 +15,16 @@ function addAction(element) {
   actCount++;
 
   let actHtml = `<div class="action">
-    <div class="block">
+    <div class="act_block">
     <label for="actionV" id="actionIn">1</label>
       <input id="actionV" />
       <button name="delete_action" onclick="deleteAction(this)">delete action</button>
     </div>
-    <div class="block">&nbsp</div>
-    <!-- action1_Communication1 -->
+    <div class="act_block">COMMUNICATION:</div>    
     <div class="communications">
       <div class="block">
       <select id="to" name="to_elements" style="float: left;">
-      <option value="">--Select an element--</option> `+ options + `
+      <option value="">--To which element--</option> `+ options + `
     </select>
         <span hidden id="comIn">0</span>
       </div>

@@ -102,64 +102,64 @@
       padding: 0;
     }
     #actionV {
-      width: 120px;
+      width: 150px;
     }
     .add_action,
     .action {
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
+      align-items: flex-end;
       /* margin-top: 5px;
       margin-bottom: 5px; */
       margin-right: 8px;
       padding: 7px;
-      width: auto;
+      width: 295px;
       height: auto;
-      /* border: 1px solid red; */
+      /* border: 1px solid; */
       background-color: rgb(220, 220, 220);
     }
     .add_action {
       width: 80px;
     }
+    .anno_com,
     .anno_action {
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
-      /* margin-top: 8px;
-      margin-bottom: 5px; */
+      margin-top: 6px;
+      /* margin-bottom: 5px; */
       width: auto;
       height: auto;
       /* border: 1px solid red; */
     }
     .add_communication,
-    .anno_com,
     .communications {
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      margin: 5px;
       padding: 5px;
-      width: auto;
+      width: 255px;;
       height: auto;
       /* border: 1px solid yellowgreen; */
       /* background-color: rgb(220, 220, 220); */
       background-color: white;
-    }
-    .anno_com {
-      background-color: white;
-      margin-top: 0px;
     }
     #config_from,
     #config_to {
       width: 53px;
     }
     .anno_block,
+    .act_block,
     .block {
-      width: 300px;
+      width: 240px;
       height: auto;
       /* border: 1px solid; */
       margin: 3px;
+    }
+    .act_block {
+      width: 290px;
     }
     .anno_block {
       width: 200px;
@@ -187,18 +187,10 @@
         <div class="anno_block">Type:</div>
         <div class="anno_block">Count:</div>
         <div class="anno_action">
-          <div class="anno_block">Action:</div>
-          <div
-            class="anno_block"
-            style="
-              font-size: 22px;
-              font-weight: bold;
-              margin-top: 5px;
-              margin-bottom: 0;
-            "
-          >
-            COMMUNICATION
+          <div class="anno_block" style="font-size: 22px; font-weight: bold">
+            ACTION:
           </div>
+          <div class="anno_block">&nbsp</div>
           <div class="anno_com">
             <div class="anno_block">To:</div>
             <div class="anno_block">Means:</div>
@@ -218,16 +210,16 @@
         <div class="block"><input id="ele_num" /></div>
         <div class="allactions">
           <div class="action">
-            <div class="block">
+            <div class="act_block">
               <label for="actionV" id="actionIn">1</label>
               <input id="actionV" />
             </div>
-            <div class="block">&nbsp</div>
+            <div class="act_block">COMMUNICATION:</div>
             <!-- action1_Communication1 -->
             <div class="communications">
               <div class="block">
                 <select id="to" name="to_elements" style="float: left">
-                  <option value="">--Select an element--</option>
+                  <option value="">--To which element--</option>
                   <option value="1">#1</option>
                 </select>
                 <span hidden id="comIn">0</span>
@@ -278,10 +270,7 @@
               <div class="block"><input id="effect" /></div>
             </div>
             <div class="add_communication">
-              <button
-                id="add_com"
-                onclick="addCommunication(this)"
-              >
+              <button id="add_com" onclick="addCommunication(this)">
                 add communication
               </button>
             </div>

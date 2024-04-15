@@ -11,16 +11,15 @@ function addElement(element) {
     <div class="block"><input id="ele_num" /></div>
     <div class="allactions">
       <div class="action">
-        <div class="block">
+        <div class="act_block">
           <label for="actionV" id="actionIn">1</label>
           <input id="actionV" />
         </div>
-        <div class="block">&nbsp</div>
-        <!-- action1_Communication1 -->
+        <div class="act_block">COMMUNICATION:</div>    
         <div class="communications">
           <div class="block">
           <select id="to" name="to_elements" style="float: left;">
-          <option value="">--Select an element--</option>
+          <option value="">--To which element--</option>
           <option value="1">#1</option>
         </select>
             <span hidden id="comIn">0</span>
@@ -112,7 +111,7 @@ function updateDropdown() {
     const allCommunications = element.querySelectorAll(".communications");
     allCommunications.forEach(element => {
       const toEle = element.querySelector("#to");
-      toEle.innerHTML = `<option value="">--Select an element--</option>`;
+      toEle.innerHTML = `<option value="">--To which element--</option>`;
       const viaEle = element.querySelector("#via");
       viaEle.innerHTML = `<option value="">--Select an element--</option>`;
 
