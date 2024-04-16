@@ -8,6 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="assets/svg2pdf.js/dist/svg2pdf.umd.min.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
     <script type="module" src="input.js"></script>
     <script type="module" src="permutate.js"></script>
     <script type="module" src="randomise.js"></script>
@@ -140,7 +143,7 @@
       justify-content: flex-start;
       margin: 5px;
       padding: 5px;
-      width: 255px;;
+      width: 255px;
       height: auto;
       /* border: 1px solid yellowgreen; */
       /* background-color: rgb(220, 220, 220); */
@@ -296,6 +299,9 @@
       </div>
       <div class="control_block">
         <button class="control_button" id="permutate">Permutate</button>
+      </div>
+      <div class="control_block">
+        <button class="control_button" id="submit">Submit</button>
       </div>
     </div>
     <svg id="container" width="960" height="679"></svg>

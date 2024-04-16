@@ -1,3 +1,18 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyBovR4YJ6RTEBWgAVnZ0Yb_ryFjk7zuzwA",
+    authDomain: "relational-model-data.firebaseapp.com",
+    projectId: "relational-model-data",
+    storageBucket: "relational-model-data.appspot.com",
+    messagingSenderId: "845462482682",
+    appId: "1:845462482682:web:3fd7c8be3bf7ac09e1e343",
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+// Initialize Cloud Firestore and get a reference to the service
+const db = firebase.firestore();
+// access collection 'interactions'
+const interactions = db.collection('interactions');
+
 let allInputs = {};
 
 const mainR = 55;
@@ -18,9 +33,37 @@ export { mainR, viaR1, viaR };
 import { drawVis } from "./script.js"
 
 document.querySelector("#visualise").addEventListener("click", visualise);
+document.querySelector("#submit").addEventListener("click", submitDB);
 
 // visualise
 function visualise() {
+    collectAllInputs();
+    // console.log(nodes);
+    // console.log(links);
+    drawVis(nodes, links);
+}
+
+// submit all inputs to database
+function submitDB() {
+    let interactionID = prompt('Please name the interaction (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description"');
+
+    // check whether id already exist 
+    if (interactionID) {
+        collectAllInputs();
+
+        try {
+            interactions.doc(interactionID).set(allInputs).then(console.log("submitted"));
+        }
+        catch (err) {
+            alert("Please fill in all the input areas and submit again!");
+        }
+    } else {
+        alert("Please name the interaction and submit again!");
+    }
+}
+
+function collectAllInputs() {
+    allInputs = {};
     nodes = []; // {id, index, num, size, text}
     links = []; // {source, target, index, distance, dash}
 
@@ -32,6 +75,7 @@ function visualise() {
 
         const index = element.querySelector("#index").innerText;
         allInputs[index] = {};
+        allInputs[index].id = index;
         allInputs[index].type = element.querySelector("#type").value;
         allInputs[index].eleNum = element.querySelector("#ele_num").value;
 
@@ -42,14 +86,14 @@ function visualise() {
         node.num = `(` + allInputs[index].eleNum + `)`;
         nodes.push(node);
 
-        allInputs[index].actions = [];
+        // allInputs[index].actions = [];
         // allInputs[index].comCount = [];
 
         // get all actions from the selected element 
         const allActions = element.querySelectorAll(".action");
         allActions.forEach(action => {
             const actionVal = action.querySelector("#actionV").value;
-            allInputs[index].actions.push(actionVal);
+            // allInputs[index].actions.push(actionVal);
             allInputs[index][actionVal] = {};
 
             const allCom = action.querySelectorAll(".communications");
@@ -139,8 +183,9 @@ function visualise() {
                         links.push(link)
                     }
                 }
-
-                allInputs[index][actionVal][i + 1].via = '#' + allCom[i].querySelector("#via").value;
+                if (!allInputs[index][actionVal][i + 1].direct) {
+                    allInputs[index][actionVal][i + 1].via = '#' + allCom[i].querySelector("#via").value;
+                }
                 allInputs[index][actionVal][i + 1].public = allCom[i].querySelector('#public_access').checked;
                 allInputs[index][actionVal][i + 1].configF = allCom[i].querySelector(`#config_from`).value;
                 allInputs[index][actionVal][i + 1].configT = allCom[i].querySelector(`#config_to`).value;
@@ -162,7 +207,4 @@ function visualise() {
             }
         });
     }
-    // console.log(nodes);
-    // console.log(links);
-    drawVis(nodes, links);
 }
