@@ -1,5 +1,4 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyBovR4YJ6RTEBWgAVnZ0Yb_ryFjk7zuzwA",
     authDomain: "relational-model-data.firebaseapp.com",
     projectId: "relational-model-data",
     storageBucket: "relational-model-data.appspot.com",
@@ -12,6 +11,8 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 // access collection 'interactions'
 const interactions = db.collection('interactions');
+let interactionID = db.collection('data').doc('interactionID');
+let existingID = [];
 
 let allInputs = {};
 
@@ -45,18 +46,35 @@ function visualise() {
 
 // submit all inputs to database
 function submitDB() {
-    let interactionID = prompt('Please name the interaction (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description"');
+    let inputID = prompt('Please name the interaction (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description"');
+    let exist = false;
 
-    // check whether id already exist 
-    if (interactionID) {
-        collectAllInputs();
-
-        try {
-            interactions.doc(interactionID).set(allInputs).then(console.log("submitted"));
-        }
-        catch (err) {
-            alert("Please fill in all the input areas and submit again!");
-        }
+    if (inputID) {
+        // check whether id already exist, get existing list and compare  
+        interactionID.get().then((doc) => {
+            existingID = doc.data().ids;
+            for (let i = 0; i < existingID.length; i++) {
+                if (existingID[i] == inputID) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (exist) {
+                alert("The name already exists, please rename the interaction and submit again!");
+            } else {
+                //if the name does not exist, save the entry to the database and add id to the list
+                collectAllInputs();
+                try {
+                    interactions.doc(inputID).set(allInputs).then(console.log("submitted"));
+                    interactionID.update({
+                        ids: firebase.firestore.FieldValue.arrayUnion(inputID)
+                    });
+                }
+                catch (err) {
+                    alert("Please fill in all the input areas and submit again!");
+                }
+            }
+        });
     } else {
         alert("Please name the interaction and submit again!");
     }
