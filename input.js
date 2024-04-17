@@ -225,7 +225,6 @@ function collectAllInputs() {
                 allInputs[index][actionIndex][i + 1].configT = allCom[i].querySelector(`#config_to`).value;
                 allInputs[index][actionIndex][i + 1].comNum = allCom[i].querySelector(`#com_num`).value;
                 allInputs[index][actionIndex][i + 1].effect = allCom[i].querySelector(`#effect`).value;
-
             }
 
         });

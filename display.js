@@ -1,12 +1,22 @@
 let eleIndex, actIndex;
 
 document.querySelector("#display_interaction").addEventListener("click", getInteraction);
+document.querySelector("#open_new").addEventListener("click", openNewTab);
+
+function openNewTab() {
+    window.open("/index.html", "_blank");
+}
 
 function getInteraction() {
     const selectID = document.querySelector("#select_interaction").value;
-    db.collection('interactions').doc(selectID).get().then((doc) => {
-        displayInteraction(doc.data());
-    });
+
+    if (selectID == 0) {
+        location.reload();
+    } else {
+        db.collection('interactions').doc(selectID).get().then((doc) => {
+            displayInteraction(doc.data());
+        });
+    }
 };
 
 function displayInteraction(doc) {
