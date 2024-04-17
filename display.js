@@ -4,7 +4,7 @@ document.querySelector("#display_interaction").addEventListener("click", getInte
 document.querySelector("#open_new").addEventListener("click", openNewTab);
 
 function openNewTab() {
-    window.open("/index.html", "_blank");
+    window.open(window.location.href, "_blank");
 }
 
 function getInteraction() {
