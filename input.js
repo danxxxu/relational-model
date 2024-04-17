@@ -1,16 +1,5 @@
-const firebaseConfig = {
-    authDomain: "relational-model-data.firebaseapp.com",
-    projectId: "relational-model-data",
-    storageBucket: "relational-model-data.appspot.com",
-    messagingSenderId: "845462482682",
-    appId: "1:845462482682:web:3fd7c8be3bf7ac09e1e343",
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-// Initialize Cloud Firestore and get a reference to the service
-const db = firebase.firestore();
 // access collection 'interactions'
-const interactions = db.collection('interactions');
+let interactions = db.collection('interactions');
 let interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
 
@@ -35,6 +24,23 @@ import { drawVis } from "./script.js"
 
 document.querySelector("#visualise").addEventListener("click", visualise);
 document.querySelector("#submit").addEventListener("click", submitDB);
+
+window.onload = displayID;
+
+function displayID() {
+    interactionID.get().then((doc) => {
+        const existingID = doc.data().ids;
+        let selectInteraction = document.querySelector("#select_interaction");
+        existingID.forEach(id => {
+            selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
+        });
+    });
+};
+
+function updateID(id) {
+    let selectInteraction = document.querySelector("#select_interaction");
+    selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
+}
 
 // visualise
 function visualise() {
@@ -69,6 +75,7 @@ function submitDB() {
                     interactionID.update({
                         ids: firebase.firestore.FieldValue.arrayUnion(inputID)
                     });
+                    updateID(inputID);
                 }
                 catch (err) {
                     alert("Please fill in all the input areas and submit again!");
@@ -109,20 +116,24 @@ function collectAllInputs() {
 
         // get all actions from the selected element 
         const allActions = element.querySelectorAll(".action");
+        let actionCount = 0;
         allActions.forEach(action => {
+            actionCount++;
             const actionVal = action.querySelector("#actionV").value;
             // allInputs[index].actions.push(actionVal);
-            allInputs[index][actionVal] = {};
+            const actionIndex = "action_" + actionCount;
+            allInputs[index][actionIndex] = {};
+            allInputs[index][actionIndex].action = actionVal;
 
             const allCom = action.querySelectorAll(".communications");
             // allInputs[index].comCount.push(allCom.length);
             for (let i = 0; i < allCom.length; i++) {
-                allInputs[index][actionVal][i + 1] = {};
-                const toElement = allInputs[index][actionVal][i + 1].to = '#' + allCom[i].querySelector("#to").value;
-                allInputs[index][actionVal][i + 1].direct = allCom[i].querySelector(`#direct_means`).checked;
+                allInputs[index][actionIndex][i + 1] = {};
+                const toElement = allInputs[index][actionIndex][i + 1].to = '#' + allCom[i].querySelector("#to").value;
+                allInputs[index][actionIndex][i + 1].direct = allCom[i].querySelector(`#direct_means`).checked;
 
                 // add direct links 
-                if (allInputs[index][actionVal][i + 1].direct) {
+                if (allInputs[index][actionIndex][i + 1].direct) {
                     if (toElement != index) {
                         link = {};
                         link.source = index;
@@ -201,14 +212,14 @@ function collectAllInputs() {
                         links.push(link)
                     }
                 }
-                if (!allInputs[index][actionVal][i + 1].direct) {
-                    allInputs[index][actionVal][i + 1].via = '#' + allCom[i].querySelector("#via").value;
+                if (!allInputs[index][actionIndex][i + 1].direct) {
+                    allInputs[index][actionIndex][i + 1].via = '#' + allCom[i].querySelector("#via").value;
                 }
-                allInputs[index][actionVal][i + 1].public = allCom[i].querySelector('#public_access').checked;
-                allInputs[index][actionVal][i + 1].configF = allCom[i].querySelector(`#config_from`).value;
-                allInputs[index][actionVal][i + 1].configT = allCom[i].querySelector(`#config_to`).value;
-                allInputs[index][actionVal][i + 1].comNum = allCom[i].querySelector(`#com_num`).value;
-                allInputs[index][actionVal][i + 1].effect = allCom[i].querySelector(`#effect`).value;
+                allInputs[index][actionIndex][i + 1].public = allCom[i].querySelector('#public_access').checked;
+                allInputs[index][actionIndex][i + 1].configF = allCom[i].querySelector(`#config_from`).value;
+                allInputs[index][actionIndex][i + 1].configT = allCom[i].querySelector(`#config_to`).value;
+                allInputs[index][actionIndex][i + 1].comNum = allCom[i].querySelector(`#com_num`).value;
+                allInputs[index][actionIndex][i + 1].effect = allCom[i].querySelector(`#effect`).value;
 
             }
 

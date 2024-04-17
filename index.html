@@ -12,6 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
     <script type="module" src="input.js"></script>
+    <script type="module" src="display.js"></script>
     <script type="module" src="permutate.js"></script>
     <script type="module" src="randomise.js"></script>
     <script src="addcom.js" defer></script>
@@ -42,6 +43,9 @@
     div {
       margin: 0;
       padding: 0;
+    }
+    #select {
+      margin-bottom: 15px;
     }
     #input {
       font-family: "Courier New", Courier, monospace;
@@ -146,7 +150,6 @@
       width: 255px;
       height: auto;
       /* border: 1px solid yellowgreen; */
-      /* background-color: rgb(220, 220, 220); */
       background-color: white;
     }
     #config_from,
@@ -181,6 +184,12 @@
     }
   </style>
   <body>
+    <div id="select">
+      <select id="select_interaction" name="interaction_ids">
+        <option value="">--Select an interaction from the database--</option>
+      </select>
+      <button id="display_interaction">display interaction</button>
+    </div>
     <div id="input">
       <!-- annotation -->
       <div class="annotation">
@@ -308,5 +317,18 @@
     <div id="save">
       <button class="control_button" id="savePDF">Download</button>
     </div>
+    <script>
+      const firebaseConfig = {
+        authDomain: "relational-model-data.firebaseapp.com",
+        projectId: "relational-model-data",
+        storageBucket: "relational-model-data.appspot.com",
+        messagingSenderId: "845462482682",
+        appId: "1:845462482682:web:3fd7c8be3bf7ac09e1e343",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      // Initialize Cloud Firestore and get a reference to the service
+      const db = firebase.firestore();
+    </script>
   </body>
 </html>
