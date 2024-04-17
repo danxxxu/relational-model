@@ -1,7 +1,6 @@
 let eleCount = 0;
 
 function addElement(element) {
-  const allElements = document.querySelectorAll(".element");
   eleCount ++;
   let eleHtml = `
     <div class="element">
@@ -79,7 +78,7 @@ function addElement(element) {
       </div>
       </div>
       <div class="add_action">
-      <button name="add_action" onclick="addAction(this)">
+      <button id="add_action" onclick="addAction(this)">
         add action
       </button>
     </div>
@@ -91,7 +90,6 @@ function addElement(element) {
 }
 
 function deleteElement(element) {
-  // eleCount ++;
   element.parentNode.parentNode.remove();
   updateIndex();
   updateDropdown();

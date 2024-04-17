@@ -94,20 +94,22 @@ function collectAllInputs() {
 
     // getting all the inputs
     const allElements = document.querySelectorAll(".element");
+    allInputs.eleCount = allElements.length;
     allElements.forEach(element => {
         node = {};
         link = {};
 
-        const index = element.querySelector("#index").innerText;
+        const nodeIndex = element.querySelector("#index").innerText;
+        const index = nodeIndex.replace("#", "element");
         allInputs[index] = {};
         allInputs[index].id = index;
         allInputs[index].type = element.querySelector("#type").value;
         allInputs[index].eleNum = element.querySelector("#ele_num").value;
 
         // add main nodes
-        node.id = index;
+        node.id = nodeIndex;
         node.size = mainR;
-        node.text = index + ` ` + allInputs[index].type;
+        node.text = nodeIndex + ` ` + allInputs[index].type;
         node.num = `(` + allInputs[index].eleNum + `)`;
         nodes.push(node);
 
@@ -116,41 +118,44 @@ function collectAllInputs() {
 
         // get all actions from the selected element 
         const allActions = element.querySelectorAll(".action");
-        let actionCount = 0;
+        allInputs[index].actionCount = allActions.length;
+        let actionC = 0;
         allActions.forEach(action => {
-            actionCount++;
+            actionC++;
             const actionVal = action.querySelector("#actionV").value;
             // allInputs[index].actions.push(actionVal);
-            const actionIndex = "action_" + actionCount;
+            const actionIndex = "action" + actionC;
             allInputs[index][actionIndex] = {};
             allInputs[index][actionIndex].action = actionVal;
 
             const allCom = action.querySelectorAll(".communications");
+            allInputs[index][actionIndex].comCount = allCom.length;
             // allInputs[index].comCount.push(allCom.length);
             for (let i = 0; i < allCom.length; i++) {
                 allInputs[index][actionIndex][i + 1] = {};
-                const toElement = allInputs[index][actionIndex][i + 1].to = '#' + allCom[i].querySelector("#to").value;
+                const toElement = "#" + allCom[i].querySelector("#to").value;
+                allInputs[index][actionIndex][i + 1].to = allCom[i].querySelector("#to").value;
                 allInputs[index][actionIndex][i + 1].direct = allCom[i].querySelector(`#direct_means`).checked;
 
                 // add direct links 
                 if (allInputs[index][actionIndex][i + 1].direct) {
-                    if (toElement != index) {
+                    if (toElement != nodeIndex) {
                         link = {};
-                        link.source = index;
+                        link.source = nodeIndex;
                         link.target = toElement;
                         link.distance = mainDist;
                         link.dash = `none`;
                         links.push(link);
                     } else {
                         node = {};
-                        node.id = index + `_to_` + toElement;
+                        node.id = nodeIndex + `_to_` + toElement;
                         node.size = dirR;
                         node.text = ``;
                         node.num = ``;
                         nodes.push(node);
 
                         link = {};
-                        link.source = index;
+                        link.source = nodeIndex;
                         link.target = node.id;
                         link.distance = dirDist;
                         link.dash = `none`;
@@ -165,19 +170,19 @@ function collectAllInputs() {
                     }
                 } else {
                     // add via links 
-                    const viaElement = '#' + allCom[i].querySelector("#via").value;
+                    const viaElement = "#" + allCom[i].querySelector("#via").value;
                     // console.log(viaElement);
 
-                    if (toElement != index) {
+                    if (toElement != nodeIndex) {
                         node = {};
-                        node.id = index + `_via_` + viaElement + `_to_` + toElement;
+                        node.id = nodeIndex + `_via_` + viaElement + `_to_` + toElement;
                         node.size = viaR;
                         node.text = viaElement;
                         node.num = ``;
                         nodes.push(node);
 
                         link = {};
-                        link.source = index;
+                        link.source = nodeIndex;
                         link.target = node.id;
                         link.distance = viaDist;
                         link.dash = `5,5`;
@@ -191,14 +196,14 @@ function collectAllInputs() {
                         links.push(link)
                     } else {
                         node = {};
-                        node.id = index + `_via_` + viaElement + `_to_` + toElement;
+                        node.id = nodeIndex + `_via_` + viaElement + `_to_` + toElement;
                         node.size = viaR1;
                         node.text = viaElement;
                         node.num = ``;
                         nodes.push(node);
 
                         link = {};
-                        link.source = index;
+                        link.source = nodeIndex;
                         link.target = node.id;
                         link.distance = viaDist;
                         link.dash = `5,5`;
@@ -213,7 +218,7 @@ function collectAllInputs() {
                     }
                 }
                 if (!allInputs[index][actionIndex][i + 1].direct) {
-                    allInputs[index][actionIndex][i + 1].via = '#' + allCom[i].querySelector("#via").value;
+                    allInputs[index][actionIndex][i + 1].via = allCom[i].querySelector("#via").value;
                 }
                 allInputs[index][actionIndex][i + 1].public = allCom[i].querySelector('#public_access').checked;
                 allInputs[index][actionIndex][i + 1].configF = allCom[i].querySelector(`#config_from`).value;

@@ -68,7 +68,7 @@ function randomise() {
       }
       allInputs.push(input);
       index++;
-    })
+    });
     removeDuplicates(element, allInputs);
   });
 }
