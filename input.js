@@ -4,14 +4,14 @@ let interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
 let elementType = db.collection('data').doc('elementType');
 let existType = [];
-let elementCount = db.collection('data').doc('elementCount');
-let existEcount = [];
-let configT = db.collection('data').doc('configT');
-let existConfigT = [];
-let configF = db.collection('data').doc('configF');
-let existConfigF = [];
-let comCount = db.collection('data').doc('comCount');
-let existCcount = [];
+// let elementCount = db.collection('data').doc('elementCount');
+// let existEcount = [];
+// let configT = db.collection('data').doc('configT');
+// let existConfigT = [];
+// let configF = db.collection('data').doc('configF');
+// let existConfigF = [];
+// let comCount = db.collection('data').doc('comCount');
+// let existCcount = [];
 
 let allInputs = {};
 
@@ -54,12 +54,12 @@ function updateID(id) {
     selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
 }
 
-async function loadData(){
+async function loadData() {
     const Etype = await elementType.get();
     existType = Etype.data().types;
 
-    const Ecount = await elementCount.get();
-    existEcount = Ecount.data().count;
+    // const Ecount = await elementCount.get();
+    // existEcount = Ecount.data().count;
     displaySelect();
 }
 
@@ -71,10 +71,10 @@ function displaySelect() {
             eTypes.innerHTML += `<option value="` + type + `"></option>`
         });
 
-        const eCount = element.querySelector("#eCount");
-        existEcount.forEach(count => {
-            eCount.innerHTML += `<option value="` + count + `"></option>`
-        });
+        // const eCount = element.querySelector("#eCount");
+        // existEcount.forEach(count => {
+        //     eCount.innerHTML += `<option value="` + count + `"></option>`
+        // });
     });
 }
 
@@ -131,7 +131,6 @@ function collectAllInputs() {
     allInputs = {};
     nodes = []; // {id, index, num, size, text}
     links = []; // {source, target, index, distance, dash}
-    let exist = false;
 
     // getting all the inputs
     const allElements = document.querySelectorAll(".element");
@@ -139,7 +138,7 @@ function collectAllInputs() {
     allElements.forEach(element => {
         node = {};
         link = {};
-
+        let exist = false;
         const nodeIndex = element.querySelector("#index").innerText;
         const index = nodeIndex.replace("#", "element");
         allInputs[index] = {};
@@ -158,8 +157,21 @@ function collectAllInputs() {
             });
             existType.push(allInputs[index].type);
         }
-        exist = false;
+
+        // exist = false;
         allInputs[index].eleNum = element.querySelector("#ele_num").value;
+        // for (let i = 0; i < existEcount.length; i++) {
+        //     if (allInputs[index].eleNum == existEcount[i]) {
+        //         exist = true;
+        //         break;
+        //     }
+        // }
+        // if (!exist) {
+        //     elementCount.update({
+        //         types: firebase.firestore.FieldValue.arrayUnion(allInputs[index].eleNum)
+        //     });
+        //     existEcount.push(allInputs[index].eleNum);
+        // }
 
         // add main nodes
         node.id = nodeIndex;

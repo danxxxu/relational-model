@@ -7,7 +7,18 @@ function addElement(element) {
     <div class="block"><span id="index">#1</span>
     <button name="delete_element" onclick="deleteElement(this)">delete</button></div>
     <div class="block"><input list="existTypes" id="type" /><datalist id="existTypes"></datalist></div>
-    <div class="block"><input list="eCount" id="ele_num" /><datalist id="eCount"></datalist></div>
+    <div class="block"><input list="eCount" id="ele_num" /><datalist id="eCount"><datalist id="eCount">
+    <option value="1"></option>
+    <option value="2"></option>
+    <option value="3"></option>
+    <option value="4"></option>
+    <option value="5"></option>
+    <option value="1+"></option>
+    <option value="2+"></option>
+    <option value="3+"></option>
+    <option value="4+"></option>
+    <option value="5+"></option>
+  </datalist></datalist></div>
     <div class="allactions">
       <div class="action">
         <div class="act_block">
@@ -73,10 +84,10 @@ function addElement(element) {
             /><label for="private_access">Private</label>
           </div>
           <div class="block">
-            <input id="config_from" /><span>to</span
-            ><input id="config_to" />
+            <input list="eCount" id="config_from" /><span>to</span
+            ><input list="eCount" id="config_to" />
           </div>
-          <div class="block"><input id="com_num" /></div>
+          <div class="block"><input list="eCount" id="com_num" /></div>
           <div class="block"><input id="effect" /></div>
         </div>
         </div>

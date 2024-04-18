@@ -68,7 +68,7 @@ function displayInteraction(doc) {
                 }
             } else if (existCom > comCount) {
                 for (let k = existCom; k > comCount; k--) {
-                    allCom[k - 1].remove();
+                    allCom[k - 1].parentNode.remove();
                 }
             }
             allCom = allActions[j].querySelectorAll(".communications");

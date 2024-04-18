@@ -71,10 +71,10 @@ function addCommunication(element) {
       /><label for="private_access">Private</label>
     </div>
     <div class="block">
-      <input id="config_from" /><span>to</span
-      ><input id="config_to" />
+      <input list="eCount" id="config_from" /><span>to</span
+      ><input list="eCount" id="config_to" />
     </div>
-    <div class="block"><input id="com_num" /></div>
+    <div class="block"><input list="eCount" id="com_num" /></div>
     <div class="block"><input id="effect" /></div>
     <div class="block">
     <button id="delete_com" onclick="deleteCom(this)">delete communication</button>
