@@ -6,8 +6,8 @@ function addElement(element) {
     <div class="element">
     <div class="block"><span id="index">#1</span>
     <button name="delete_element" onclick="deleteElement(this)">delete</button></div>
-    <div class="block"><input id="type" /></div>
-    <div class="block"><input id="ele_num" /></div>
+    <div class="block"><input list="existTypes" id="type" /><datalist id="existTypes"></datalist></div>
+    <div class="block"><input list="eCount" id="ele_num" /><datalist id="eCount"></datalist></div>
     <div class="allactions">
       <div class="action">
         <div class="act_block">

@@ -2,6 +2,16 @@
 let interactions = db.collection('interactions');
 let interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
+let elementType = db.collection('data').doc('elementType');
+let existType = [];
+let elementCount = db.collection('data').doc('elementCount');
+let existEcount = [];
+let configT = db.collection('data').doc('configT');
+let existConfigT = [];
+let configF = db.collection('data').doc('configF');
+let existConfigF = [];
+let comCount = db.collection('data').doc('comCount');
+let existCcount = [];
 
 let allInputs = {};
 
@@ -25,7 +35,8 @@ import { drawVis } from "./script.js"
 document.querySelector("#visualise").addEventListener("click", visualise);
 document.querySelector("#submit").addEventListener("click", submitDB);
 
-window.onload = displayID;
+window.addEventListener('load', displayID, false);
+document.querySelector("#add_element").addEventListener('click', displaySelect());
 
 function displayID() {
     interactionID.get().then((doc) => {
@@ -35,11 +46,36 @@ function displayID() {
             selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
         });
     });
+    loadData();
 };
 
 function updateID(id) {
     let selectInteraction = document.querySelector("#select_interaction");
     selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
+}
+
+async function loadData(){
+    const Etype = await elementType.get();
+    existType = Etype.data().types;
+
+    const Ecount = await elementCount.get();
+    existEcount = Ecount.data().count;
+    displaySelect();
+}
+
+function displaySelect() {
+    const allEles = document.querySelectorAll(".element");
+    allEles.forEach(element => {
+        const eTypes = element.querySelector("#existTypes");
+        existType.forEach(type => {
+            eTypes.innerHTML += `<option value="` + type + `"></option>`
+        });
+
+        const eCount = element.querySelector("#eCount");
+        existEcount.forEach(count => {
+            eCount.innerHTML += `<option value="` + count + `"></option>`
+        });
+    });
 }
 
 // visualise
@@ -95,6 +131,7 @@ function collectAllInputs() {
     allInputs = {};
     nodes = []; // {id, index, num, size, text}
     links = []; // {source, target, index, distance, dash}
+    let exist = false;
 
     // getting all the inputs
     const allElements = document.querySelectorAll(".element");
@@ -107,7 +144,21 @@ function collectAllInputs() {
         const index = nodeIndex.replace("#", "element");
         allInputs[index] = {};
         allInputs[index].id = index;
+
         allInputs[index].type = element.querySelector("#type").value;
+        for (let i = 0; i < existType.length; i++) {
+            if (allInputs[index].type == existType[i]) {
+                exist = true;
+                break;
+            }
+        }
+        if (!exist) {
+            elementType.update({
+                types: firebase.firestore.FieldValue.arrayUnion(allInputs[index].type)
+            });
+            existType.push(allInputs[index].type);
+        }
+        exist = false;
         allInputs[index].eleNum = element.querySelector("#ele_num").value;
 
         // add main nodes
