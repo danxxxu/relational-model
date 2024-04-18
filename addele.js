@@ -1,7 +1,7 @@
 let eleCount = 0;
 
 function addElement(element) {
-  eleCount ++;
+  eleCount++;
   let eleHtml = `
     <div class="element">
     <div class="block"><span id="index">#1</span>
@@ -14,7 +14,18 @@ function addElement(element) {
           <label for="actionV" id="actionIn">1</label>
           <input id="actionV" />
         </div>
-        <div class="act_block">COMMUNICATION:</div>    
+        <div class="act_block" style="width: 98%;">COMMUNICATION:</div>  
+        <div class="com">
+              <div class="an_com">
+                <div class="ancom_block">To:</div>
+                <div class="ancom_block">Means:</div>
+                <div class="ancom_block">&nbsp</div>
+                <div class="ancom_block">Access:</div>
+                <div class="ancom_block">&nbsp</div>
+                <div class="ancom_block">Config:</div>
+                <div class="ancom_block">Count:</div>
+                <div class="ancom_block">Effect:</div>
+              </div>  
         <div class="communications">
           <div class="block">
           <select id="to" name="to_elements" style="float: left;">
@@ -67,6 +78,7 @@ function addElement(element) {
           </div>
           <div class="block"><input id="com_num" /></div>
           <div class="block"><input id="effect" /></div>
+        </div>
         </div>
         <div class="add_communication">
         <button

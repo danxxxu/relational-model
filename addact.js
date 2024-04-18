@@ -20,7 +20,18 @@ function addAction(element) {
       <input id="actionV" />
       <button name="delete_action" onclick="deleteAction(this)">delete action</button>
     </div>
-    <div class="act_block">COMMUNICATION:</div>    
+    <div class="act_block" style="width: 98%;">COMMUNICATION:</div> 
+    <div class="com">
+    <div class="an_com">
+      <div class="ancom_block">To:</div>
+      <div class="ancom_block">Means:</div>
+      <div class="ancom_block">&nbsp</div>
+      <div class="ancom_block">Access:</div>
+      <div class="ancom_block">&nbsp</div>
+      <div class="ancom_block">Config:</div>
+      <div class="ancom_block">Count:</div>
+      <div class="ancom_block">Effect:</div>
+    </div>   
     <div class="communications">
       <div class="block">
       <select id="to" name="to_elements" style="float: left;">
@@ -71,6 +82,7 @@ function addAction(element) {
       </div>
       <div class="block"><input id="com_num" /></div>
       <div class="block"><input id="effect" /></div>
+    </div>
     </div>
     <div class="add_communication">
     <button

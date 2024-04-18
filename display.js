@@ -1,9 +1,10 @@
 let eleIndex, actIndex;
 
-document.querySelector("#display_interaction").addEventListener("click", getInteraction);
+document.querySelector("#select_interaction").addEventListener("change", getInteraction);
 document.querySelector("#open_new").addEventListener("click", openNewTab);
 
 function openNewTab() {
+    // get the current url with window.location.href
     window.open(window.location.href, "_blank");
 }
 

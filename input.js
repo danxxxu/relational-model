@@ -52,8 +52,9 @@ function visualise() {
 
 // submit all inputs to database
 function submitDB() {
-    let inputID = prompt('Please name the interaction (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description"');
+    const inputID = prompt('Please name the interaction (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description".');
     let exist = false;
+    let check = false;
 
     if (inputID) {
         // check whether id already exist, get existing list and compare  
@@ -66,16 +67,19 @@ function submitDB() {
                 }
             }
             if (exist) {
-                alert("The name already exists, please rename the interaction and submit again!");
-            } else {
-                //if the name does not exist, save the entry to the database and add id to the list
+                check = confirm("The name already exists, do you want to overwrite the existing interaction data?");
+            }
+            if (!exist || check) {
+                //if the name does not exist or to update the existing interaction, save the entry to the database
                 collectAllInputs();
                 try {
                     interactions.doc(inputID).set(allInputs).then(console.log("submitted"));
-                    interactionID.update({
-                        ids: firebase.firestore.FieldValue.arrayUnion(inputID)
-                    });
-                    updateID(inputID);
+                    if (!exist) {
+                        interactionID.update({
+                            ids: firebase.firestore.FieldValue.arrayUnion(inputID)
+                        });
+                        updateID(inputID);
+                    }
                 }
                 catch (err) {
                     alert("Please fill in all the input areas and submit again!");

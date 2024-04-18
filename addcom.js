@@ -14,7 +14,19 @@ function addCommunication(element) {
 
   const actionIndex = element.parentNode.parentNode.parentNode.querySelector("#actionIn").innerText;
 
-  let comHtml = `<div class="communications">
+  let comHtml = `
+  <div class="com">
+              <div class="an_com">
+                <div class="ancom_block">To:</div>
+                <div class="ancom_block">Means:</div>
+                <div class="ancom_block">&nbsp</div>
+                <div class="ancom_block">Access:</div>
+                <div class="ancom_block">&nbsp</div>
+                <div class="ancom_block">Config:</div>
+                <div class="ancom_block">Count:</div>
+                <div class="ancom_block">Effect:</div>
+              </div>
+  <div class="communications">
     <div class="block">
     <select id="to" name="to_elements">
     <option value="">--Select an element--</option>` + options + `
@@ -67,6 +79,7 @@ function addCommunication(element) {
     <div class="block">
     <button id="delete_com" onclick="deleteCom(this)">delete communication</button>
   </div>
+</div>    
 </div>`;
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
   previousCom.insertAdjacentHTML("afterend", comHtml);
@@ -76,7 +89,7 @@ function addCommunication(element) {
 function deleteCom(element) {
   // comCount ++;
   const allCom = element.parentNode.parentNode.parentNode;
-  element.parentNode.parentNode.remove();
+  element.parentNode.parentNode.parentNode.remove();
   updateComIndex(allCom);
 }
 
