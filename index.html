@@ -133,7 +133,7 @@
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
-      margin-top: 6px;
+      margin-top: 5px;
       /* margin-bottom: 5px; */
       width: auto;
       height: auto;
@@ -208,7 +208,11 @@
   </style>
   <body>
     <div id="select">
-      <select id="select_interaction" name="interaction_ids">
+      <select
+        id="select_interaction"
+        name="interaction_ids"
+        style="width: 350px; text-align: center;"
+      >
         <option value="0">--Select an interaction from the database--</option>
       </select>
       <!-- <button id="display_interaction">display interaction</button> -->
@@ -353,7 +357,7 @@
         <button class="control_button" id="permutate">Permutate</button>
       </div>
       <div class="control_block">
-        <button class="control_button" id="submit">Submit</button>
+        <button class="control_button" id="submit" style="background-color:rgb(202, 245, 202)">Save</button>
       </div>
     </div>
     <svg id="container" width="960" height="679"></svg>
