@@ -23,11 +23,30 @@ function addElement(element) {
     <div class="allactions">
       <div class="action">
       <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
+      <div class="act_block">
+              <span>If </span
+              ><select
+                class="if_ele"
+                style="width: 80px"
+                onchange="condition(this)"
+              >
+                <option value="">Element</option>
+                <option value="0">Self-initiated</option>
+                <option value="1">#1</option>
+              </select>
+              <div id="perform" style="display: inline">
+                <span> performs </span>
+                <select class="if_act" style="width: 110px">
+                  <option value="">Action</option>
+                </select>
+              </div>
+            </div>
         <div class="act_block">
+        <span>then:</span>
           <label for="actionV" id="actionIn">1</label>
           <input id="actionV" placeholder="Action"/>
         </div>
-        <div class="act_block" style="width: 98%;">COMMUNICATION:</div>  
+        <div class="act_block">COMMUNICATION:</div>  
         <div class="com">
               <div class="an_com">
                 <div class="ancom_block">To:</div>
@@ -113,12 +132,22 @@ function addElement(element) {
   element.parentNode.insertAdjacentHTML("beforebegin", eleHtml);
   updateIndex();
   updateDropdown();
+
+  const eleList = document.querySelector("#all_elements");
+  eleList.style.display = "none";
+  eleList.innerHTML = "";
+  eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 }
 
 function deleteElement(element) {
   element.parentNode.remove();
   updateIndex();
   updateDropdown();
+
+  const eleList = document.querySelector("#all_elements");
+  eleList.style.display = "none";
+  eleList.innerHTML = "";
+  eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 }
 
 function updateIndex() {
@@ -130,6 +159,16 @@ function updateIndex() {
 
 function updateDropdown() {
   const allElements = document.querySelectorAll(".element");
+
+  const allIfEle = document.querySelectorAll(".if_ele");
+  allIfEle.forEach(element => {
+    element.innerHTML = ` <option value="">Element</option>
+    <option value="0">Self-initiated</option>`;
+    for (let i = 0; i < allElements.length; i++) {
+      const index = (i + 1).toString();
+      element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+    }
+  });
 
   allElements.forEach(element => {
     const allCommunications = element.querySelectorAll(".communications");
@@ -146,4 +185,27 @@ function updateDropdown() {
       }
     });
   });
+}
+
+function condition(element) {
+  const index = element.value;
+  const parent = element.parentNode;
+  const allElements = document.querySelectorAll(".element");
+  if (index === "0") {
+    parent.querySelector("#perform").style.display = "none";
+    element.style.width = "120px";
+  } else if (index != "") {
+    parent.querySelector("#perform").style.display = "inline";
+    element.style.width = "80px";
+
+    const actionList = parent.querySelector(".if_act");
+    actionList.innerHTML = `<option value="">Action</option>`;
+
+    const disActions = allElements[index - 1].querySelectorAll(".action");
+    disActions.forEach(action => {
+      const actIndex = action.querySelector("#actionIn").innerText;
+      const act = action.querySelector("#actionV").value;
+      actionList.innerHTML += `<option value="` + actIndex + `">` + actIndex + ` ` + act + `</option>`;
+    });
+  }
 }

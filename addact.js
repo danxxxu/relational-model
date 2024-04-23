@@ -16,11 +16,30 @@ function addAction(element) {
 
   let actHtml = `<div class="action">
    <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
-    <div class="act_block">
+   <div class="act_block">
+   <span>If </span
+   ><select
+     class="if_ele"
+     style="width: 80px"
+     onchange="condition(this)"
+   >
+     <option value="">Element</option>
+     <option value="0">Self-initiated</option>
+     <option value="1">#1</option>
+   </select>
+   <div id="perform" style="display: inline">
+     <span> performs </span>
+     <select class="if_act" style="width: 110px">
+       <option value="">Action</option>
+     </select>
+   </div>
+ </div>
+ <div class="act_block">
+   <span>then:</span>
     <label for="actionV" id="actionIn">1</label>
       <input id="actionV" placeholder="Action"/>
     </div>
-    <div class="act_block" style="width: 98%;">COMMUNICATION:</div> 
+    <div class="act_block">COMMUNICATION:</div> 
     <div class="com">
     <div class="an_com">
       <div class="ancom_block">To:</div>
@@ -96,6 +115,7 @@ function addAction(element) {
   </div>  `
   const previousAction = element.parentNode.parentNode.lastElementChild.previousElementSibling;
   previousAction.insertAdjacentHTML("afterend", actHtml);
+  updateActionList(element.parentNode.parentNode.parentNode);
   updateActionIndex(element.parentNode.parentNode.parentNode);
 }
 
@@ -111,4 +131,20 @@ function updateActionIndex(element) {
   for (let i = 0; i < actions.length; i++) {
     actions[i].querySelector("#actionIn").innerText = i + 1;
   }
+}
+
+function updateActionList(element) {
+  const allElements = document.querySelectorAll(".element");
+
+  const AllList = element.querySelectorAll(".if_ele");
+
+  AllList.forEach(list => {
+    list.innerHTML = ` <option value="">Element</option>
+    <option value="0">Self-initiated</option>`;
+
+    for (let i = 0; i < allElements.length; i++) {
+      const index = (i + 1).toString();
+      list.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+    }
+  });
 }
