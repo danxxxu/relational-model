@@ -36,6 +36,7 @@ document.querySelector("#visualise").addEventListener("click", visualise);
 document.querySelector("#submit").addEventListener("click", submitDB);
 
 window.addEventListener('load', displayID, false);
+// window.location.reload(true);
 document.querySelector("#add_element").addEventListener('click', displaySelect());
 
 function displayID() {
@@ -88,9 +89,12 @@ function visualise() {
 
 // submit all inputs to database
 function submitDB() {
-    const inputID = prompt('Please name the interaction (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description".');
+    // const inputID = prompt('Please name the worksheet (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description".');
+    const getID = document.querySelector("#name_interaction").value;
     let exist = false;
     let check = false;
+
+    const inputID = getID.replace(".", "_").replace("/", "_");
 
     if (inputID) {
         // check whether id already exist, get existing list and compare  
@@ -103,7 +107,7 @@ function submitDB() {
                 }
             }
             if (exist) {
-                check = confirm("The name already exists, do you want to overwrite the existing interaction data?");
+                check = confirm("The name already exists, do you want to overwrite the existing data?");
             }
             if (!exist || check) {
                 //if the name does not exist or to update the existing interaction, save the entry to the database
@@ -123,7 +127,7 @@ function submitDB() {
             }
         });
     } else {
-        alert("Please name the interaction and submit again!");
+        alert("Please name the worksheet and submit again!");
     }
 }
 

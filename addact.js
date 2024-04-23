@@ -18,7 +18,7 @@ function addAction(element) {
     <div class="act_block">
     <label for="actionV" id="actionIn">1</label>
       <input id="actionV" />
-      <button name="delete_action" onclick="deleteAction(this)">delete action</button>
+      <button name="delete_action" onclick="deleteAction(this)">Delete action</button>
     </div>
     <div class="act_block" style="width: 98%;">COMMUNICATION:</div> 
     <div class="com">
@@ -89,7 +89,7 @@ function addAction(element) {
       id="add_com"
       onclick="addCommunication(this)"
     >
-      add communication
+      Add communication
     </button>
   </div>
   </div>  `

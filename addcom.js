@@ -77,7 +77,7 @@ function addCommunication(element) {
     <div class="block"><input list="eCount" id="com_num" /></div>
     <div class="block"><input id="effect" /></div>
     <div class="block">
-    <button id="delete_com" onclick="deleteCom(this)">delete communication</button>
+    <button id="delete_com" onclick="deleteCom(this)">Delete communication</button>
   </div>
 </div>    
 </div>`;

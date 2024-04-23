@@ -14,6 +14,8 @@ function getInteraction() {
     if (selectID == 0) {
         location.reload();
     } else {
+        const name = document.querySelector("#name_interaction");
+        name.value = selectID;
         db.collection('interactions').doc(selectID).get().then((doc) => {
             displayInteraction(doc.data());
         });

@@ -4,10 +4,10 @@ function addElement(element) {
   eleCount++;
   let eleHtml = `
     <div class="element">
-    <div class="block"><span id="index">#1</span>
-    <button name="delete_element" onclick="deleteElement(this)">delete</button></div>
-    <div class="block"><input list="existTypes" id="type" /><datalist id="existTypes"></datalist></div>
-    <div class="block"><input list="eCount" id="ele_num" /><datalist id="eCount"><datalist id="eCount">
+    <div class="stick_block"><span id="index">#1</span>
+    <button name="delete_element" onclick="deleteElement(this)">Delete</button></div>
+    <div class="stick_block"><input list="existTypes" id="type" /><datalist id="existTypes"></datalist></div>
+    <div class="stick_block"><input list="eCount" id="ele_num" /><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
     <option value="2"></option>
     <option value="3"></option>
@@ -96,13 +96,13 @@ function addElement(element) {
           id="add_com"
           onclick="addCommunication(this)"
         >
-          add communication
+          Add communication
         </button>
       </div>
       </div>
       <div class="add_action">
       <button id="add_action" onclick="addAction(this)">
-        add action
+        Add action
       </button>
     </div>
     </div>
