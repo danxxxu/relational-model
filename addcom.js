@@ -27,6 +27,7 @@ function addCommunication(element) {
                 <div class="ancom_block">Effect:</div>
               </div>
   <div class="communications">
+  <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
     <div class="block">
     <select id="to" name="to_elements">
     <option value="">--Select an element--</option>` + options + `
@@ -76,9 +77,6 @@ function addCommunication(element) {
     </div>
     <div class="block"><input list="eCount" id="com_num" /></div>
     <div class="block"><input id="effect" /></div>
-    <div class="block">
-    <button id="delete_com" onclick="deleteCom(this)">Delete communication</button>
-  </div>
 </div>    
 </div>`;
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
@@ -89,7 +87,7 @@ function addCommunication(element) {
 function deleteCom(element) {
   // comCount ++;
   const allCom = element.parentNode.parentNode.parentNode;
-  element.parentNode.parentNode.parentNode.remove();
+  element.parentNode.parentNode.remove();
   updateComIndex(allCom);
 }
 

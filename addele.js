@@ -3,11 +3,12 @@ let eleCount = 0;
 function addElement(element) {
   eleCount++;
   let eleHtml = `
-    <div class="element">
-    <div class="stick_block"><span id="index">#1</span>
-    <button name="delete_element" onclick="deleteElement(this)">Delete</button></div>
-    <div class="stick_block"><input list="existTypes" id="type" /><datalist id="existTypes"></datalist></div>
-    <div class="stick_block"><input list="eCount" id="ele_num" /><datalist id="eCount"><datalist id="eCount">
+    <div class="element" onmouseenter="showElementInfo(event, this)" onmouseleave="hideElementInfo(this)">
+    <div class="element_info"></div>
+    <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
+    <div class="block"><span id="index">#1</span></div>
+    <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"/><datalist id="existTypes"></datalist></div>
+    <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
     <option value="2"></option>
     <option value="3"></option>
@@ -21,9 +22,10 @@ function addElement(element) {
   </datalist></datalist></div>
     <div class="allactions">
       <div class="action">
+      <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
         <div class="act_block">
           <label for="actionV" id="actionIn">1</label>
-          <input id="actionV" />
+          <input id="actionV" placeholder="Action"/>
         </div>
         <div class="act_block" style="width: 98%;">COMMUNICATION:</div>  
         <div class="com">
@@ -38,6 +40,7 @@ function addElement(element) {
                 <div class="ancom_block">Effect:</div>
               </div>  
         <div class="communications">
+        <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
           <div class="block">
           <select id="to" name="to_elements" style="float: left;">
           <option value="">--To which element--</option>
@@ -113,7 +116,7 @@ function addElement(element) {
 }
 
 function deleteElement(element) {
-  element.parentNode.parentNode.remove();
+  element.parentNode.remove();
   updateIndex();
   updateDropdown();
 }
@@ -143,5 +146,4 @@ function updateDropdown() {
       }
     });
   });
-
 }

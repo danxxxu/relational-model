@@ -15,10 +15,10 @@ function addAction(element) {
   actCount++;
 
   let actHtml = `<div class="action">
+   <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
     <div class="act_block">
     <label for="actionV" id="actionIn">1</label>
-      <input id="actionV" />
-      <button name="delete_action" onclick="deleteAction(this)">Delete action</button>
+      <input id="actionV" placeholder="Action"/>
     </div>
     <div class="act_block" style="width: 98%;">COMMUNICATION:</div> 
     <div class="com">
@@ -33,6 +33,7 @@ function addAction(element) {
       <div class="ancom_block">Effect:</div>
     </div>   
     <div class="communications">
+    <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
       <div class="block">
       <select id="to" name="to_elements" style="float: left;">
       <option value="">--To which element--</option> `+ options + `
@@ -100,8 +101,8 @@ function addAction(element) {
 
 function deleteAction(element) {
   // actCount++;
-  const allAct = element.parentNode.parentNode.parentNode;
-  element.parentNode.parentNode.remove();
+  const allAct = element.parentNode.parentNode;
+  element.parentNode.remove();
   updateActionIndex(allAct);
 }
 
