@@ -116,7 +116,9 @@ function addElement(element) {
           <div class="block">                  
           <textarea
           id="effect"
+          rows="1"
           placeholder="Enter the effect(s) of this communication, each separated by ';'"
+          oninput="OnInput(this)"
         ></textarea></div>
         </div>
         </div>
