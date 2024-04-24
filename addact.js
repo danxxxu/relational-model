@@ -66,6 +66,7 @@ function addAction(element) {
           name="` + eleIndex + `_act` + actCount + `_means"
           value="direct"
           checked
+          onclick="checkDirect(this)"
         /><label for="direct_means">Direct</label>
       </div>
       <div class="block">

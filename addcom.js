@@ -41,6 +41,7 @@ function addCommunication(element) {
         name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"
         value="direct"
         checked
+        onclick="checkDirect(this)"
       /><label for="direct_means">Direct</label>
     </div>
     <div class="block">

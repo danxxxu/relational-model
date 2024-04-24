@@ -20,6 +20,11 @@ function getInteraction() {
             displayInteraction(doc.data());
         });
     }
+
+    const eleList = document.querySelector("#all_elements");
+    eleList.style.display = "none";
+    eleList.innerHTML = "";
+    eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 };
 
 function displayInteraction(doc) {
@@ -92,6 +97,7 @@ function displayInteraction(doc) {
                 allCom[k].querySelector('#config_to').value = doc[eleIndex][actIndex][k + 1].configT;
                 allCom[k].querySelector('#com_num').value = doc[eleIndex][actIndex][k + 1].comNum;
                 allCom[k].querySelector('#effect').value = doc[eleIndex][actIndex][k + 1].effect;
+                allCom[k].querySelector('#effect').oninput();
             }
         }
     }

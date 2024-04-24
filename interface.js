@@ -36,8 +36,37 @@ function showAll(element) {
     }
 }
 
+function condition(element) {
+    const index = element.value;
+    const parent = element.parentNode;
+    const allElements = document.querySelectorAll(".element");
+    if (index === "0") {
+        parent.querySelector("#perform").style.display = "none";
+        element.style.width = "120px";
+    } else if (index != "") {
+        parent.querySelector("#perform").style.display = "inline";
+        element.style.width = "80px";
+
+        const actionList = parent.querySelector(".if_act");
+        actionList.innerHTML = `<option value="">Action</option>`;
+
+        const disActions = allElements[index - 1].querySelectorAll(".action");
+        disActions.forEach(action => {
+            const actIndex = action.querySelector("#actionIn").innerText;
+            const act = action.querySelector("#actionV").value;
+            actionList.innerHTML += `<option value="` + actIndex + `">` + actIndex + ` ` + act + `</option>`;
+        });
+    }
+}
+
 function OnInput(e) {
     e.setAttribute("style", "height:" + (e.scrollHeight) + "px;overflow-y:hidden;");
     e.style.height = 'auto';
     e.style.height = (e.scrollHeight) + "px";
+}
+
+function checkDirect(e) {
+    if (e.checked) {
+        e.parentNode.parentNode.querySelector("#via").value = "";
+    }
 }

@@ -94,7 +94,7 @@ function submitDB() {
     let exist = false;
     let check = false;
 
-    const inputID = getID.replace(".", "_").replace("/", "_");
+    const inputID = getID.replace("/", "_");
 
     if (inputID) {
         // check whether id already exist, get existing list and compare  
