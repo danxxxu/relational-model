@@ -76,7 +76,11 @@ function addCommunication(element) {
       ><input list="eCount" id="config_to" />
     </div>
     <div class="block"><input list="eCount" id="com_num" /></div>
-    <div class="block"><input id="effect" /></div>
+    <div class="block">                  
+    <textarea
+    id="effect"
+    placeholder="Enter the effect(s) of this communication, each separated by ';'"
+  ></textarea></div>
 </div>    
 </div>`;
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;

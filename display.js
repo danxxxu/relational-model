@@ -95,4 +95,17 @@ function displayInteraction(doc) {
             }
         }
     }
+    //add conditions 
+    allElements = document.querySelectorAll(".element");
+    for (let i = 0; i < allElements.length; i++) {
+        eleIndex = String("element" + (i + 1));
+        const allActions = allElements[i].querySelectorAll(".action");
+        for (let j = 0; j < allActions.length; j++) {
+            actIndex = "action" + (j + 1);
+            const ifEle = allActions[j].querySelector(".if_ele");
+            ifEle.value = doc[eleIndex][actIndex].ifEle;
+            ifEle.onchange();
+            allActions[j].querySelector(".if_act").value = doc[eleIndex][actIndex].ifAct;
+        }
+    }
 }

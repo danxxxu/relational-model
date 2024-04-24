@@ -113,7 +113,7 @@ function submitDB() {
                 //if the name does not exist or to update the existing interaction, save the entry to the database
                 collectAllInputs();
                 try {
-                    interactions.doc(inputID).set(allInputs).then(console.log("submitted"));
+                    interactions.doc(inputID).set(allInputs).then(alert("Data saved!"));
                     if (!exist) {
                         interactionID.update({
                             ids: firebase.firestore.FieldValue.arrayUnion(inputID)
@@ -193,10 +193,14 @@ function collectAllInputs() {
         let actionC = 0;
         allActions.forEach(action => {
             actionC++;
+            const ifEle = action.querySelector(".if_ele").value;
+            const ifAct = action.querySelector(".if_act").value;
             const actionVal = action.querySelector("#actionV").value;
             // allInputs[index].actions.push(actionVal);
             const actionIndex = "action" + actionC;
             allInputs[index][actionIndex] = {};
+            allInputs[index][actionIndex].ifEle = ifEle;
+            allInputs[index][actionIndex].ifAct = ifAct;
             allInputs[index][actionIndex].action = actionVal;
 
             const allCom = action.querySelectorAll(".communications");
