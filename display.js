@@ -108,10 +108,25 @@ function displayInteraction(doc) {
         const allActions = allElements[i].querySelectorAll(".action");
         for (let j = 0; j < allActions.length; j++) {
             actIndex = "action" + (j + 1);
-            const ifEle = allActions[j].querySelector(".if_ele");
-            ifEle.value = doc[eleIndex][actIndex].ifEle;
-            ifEle.onchange();
-            allActions[j].querySelector(".if_act").value = doc[eleIndex][actIndex].ifAct;
+            const condition = allActions[j].querySelector("#condition");
+            const condValue = doc[eleIndex][actIndex].condition;
+
+            if (condValue.length > 1) {
+                for (let j = 1; j < condValue.length; j++) {
+                    condition.querySelector(".add").onchange();
+                }
+            }
+
+            const allIf = condition.querySelectorAll(".if_ele");
+            const allIfAct = condition.querySelectorAll(".if_act");
+            const allAdd = condition.querySelectorAll(".add");
+
+            for (let j = 0; j < condValue.length; j++) {
+                allIf[j].value = condValue[j].ifEle;
+                allIf[j].onchange();
+                allIfAct[j].value = condValue[j].ifAct;
+                allAdd[j].value = condValue[j].add;
+            }
         }
     }
 }

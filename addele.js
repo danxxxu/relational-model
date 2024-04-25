@@ -27,10 +27,15 @@ function addElement(element) {
       <div class="action">
       <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
       <div class="act_block">
+      <label for="actionV" id="actionIn">1</label>
+      <input id="actionV" placeholder="Action"/>
+    </div>
+    <div id="condition" style="width: 100%">
+      <div class="act_block">
               <span>If </span
               ><select
                 class="if_ele"
-                style="width: 80px"
+                style="width: 50px"
                 onchange="condition(this)"
               >
                 <option value="">Element</option>
@@ -38,17 +43,18 @@ function addElement(element) {
                 <option value="1">#1</option>
               </select>
               <div id="perform" style="display: inline">
-                <span> performs </span>
-                <select class="if_act" style="width: 110px">
+                <span> do(es) </span>
+                <select class="if_act" style="width: 95px">
                   <option value="">Action</option>
                 </select>
               </div>
+              <select class="add" style="width: 50px" onchange="addCondition(this)">
+              <option value="">+</option>
+              <option value="0">OR</option>
+              <option value="1">AND</option>
+            </select>
             </div>
-        <div class="act_block">
-        <span>then:</span>
-          <label for="actionV" id="actionIn">1</label>
-          <input id="actionV" placeholder="Action"/>
-        </div>
+            </div>
         <div class="act_block">COMMUNICATION:</div>  
         <div class="com">
               <div class="an_com">

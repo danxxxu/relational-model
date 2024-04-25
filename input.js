@@ -4,14 +4,6 @@ let interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
 let elementType = db.collection('data').doc('elementType');
 let existType = [];
-// let elementCount = db.collection('data').doc('elementCount');
-// let existEcount = [];
-// let configT = db.collection('data').doc('configT');
-// let existConfigT = [];
-// let configF = db.collection('data').doc('configF');
-// let existConfigF = [];
-// let comCount = db.collection('data').doc('comCount');
-// let existCcount = [];
 
 let allInputs = {};
 
@@ -34,34 +26,33 @@ import { drawVis } from "./script.js"
 
 document.querySelector("#visualise").addEventListener("click", visualise);
 document.querySelector("#submit").addEventListener("click", submitDB);
+document.querySelector("#delete").addEventListener("click", deleteDB);
 
-window.addEventListener('load', displayID, false);
-// window.location.reload(true);
+window.addEventListener('load', loadData, false);
+
 document.querySelector("#add_element").addEventListener('click', displaySelect());
-
-function displayID() {
-    interactionID.get().then((doc) => {
-        const existingID = doc.data().ids;
-        let selectInteraction = document.querySelector("#select_interaction");
-        existingID.forEach(id => {
-            selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
-        });
-    });
-    loadData();
-};
-
-function updateID(id) {
-    let selectInteraction = document.querySelector("#select_interaction");
-    selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
-}
 
 async function loadData() {
     const Etype = await elementType.get();
     existType = Etype.data().types;
 
-    // const Ecount = await elementCount.get();
-    // existEcount = Ecount.data().count;
+    const allId = await interactionID.get();
+    existingID = allId.data().ids;
+
+    displayID()
     displaySelect();
+}
+
+function displayID() {
+    let selectInteraction = document.querySelector("#select_interaction");
+    existingID.forEach(id => {
+        selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
+    });
+};
+
+function updateID(id) {
+    let selectInteraction = document.querySelector("#select_interaction");
+    selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
 }
 
 function displaySelect() {
@@ -71,11 +62,6 @@ function displaySelect() {
         existType.forEach(type => {
             eTypes.innerHTML += `<option value="` + type + `"></option>`
         });
-
-        // const eCount = element.querySelector("#eCount");
-        // existEcount.forEach(count => {
-        //     eCount.innerHTML += `<option value="` + count + `"></option>`
-        // });
     });
 }
 
@@ -128,6 +114,25 @@ function submitDB() {
         });
     } else {
         alert("Please name the worksheet and submit again!");
+    }
+}
+
+function deleteDB() {
+    const getID = document.querySelector("#name_interaction").value;
+    let check = false;
+    const msg = 'Are you sure to delete"' + getID + '"from the database?'
+    check = confirm(msg);
+    if (check) {
+        interactions.doc(getID).delete().then(() => {
+            console.log("Deleted!");
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+
+        interactionID.update({
+            ids: firebase.firestore.FieldValue.arrayRemove(getID)
+        });
+        location.reload();
     }
 }
 
@@ -193,15 +198,27 @@ function collectAllInputs() {
         let actionC = 0;
         allActions.forEach(action => {
             actionC++;
-            const ifEle = action.querySelector(".if_ele").value;
-            const ifAct = action.querySelector(".if_act").value;
+
             const actionVal = action.querySelector("#actionV").value;
             // allInputs[index].actions.push(actionVal);
             const actionIndex = "action" + actionC;
             allInputs[index][actionIndex] = {};
-            allInputs[index][actionIndex].ifEle = ifEle;
-            allInputs[index][actionIndex].ifAct = ifAct;
             allInputs[index][actionIndex].action = actionVal;
+
+            const condition = action.querySelector("#condition");
+            allInputs[index][actionIndex].condition = [];
+
+            const allIf = condition.querySelectorAll(".if_ele");
+            const allIfAct = condition.querySelectorAll(".if_act");
+            const allAdd = condition.querySelectorAll(".add");
+
+            for (let i = 0; i < allIf.length; i++) {
+                let cond = {};
+                cond.ifEle = allIf[i].value;
+                cond.ifAct = allIfAct[i].value;
+                cond.add = allAdd[i].value;
+                allInputs[index][actionIndex].condition.push(cond);
+            }
 
             const allCom = action.querySelectorAll(".communications");
             allInputs[index][actionIndex].comCount = allCom.length;

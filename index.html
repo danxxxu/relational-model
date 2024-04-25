@@ -294,6 +294,13 @@
           style="width: 400px; text-align: center; font-size: 18px"
           placeholder="Please name the current worksheet"
         />
+        <button id="submit" style="width: 70px; font-size: 18px">Save</button>
+        <button
+          id="delete"
+          style="width: 70px; font-size: 18px; color: crimson"
+        >
+          Delete
+        </button>
         <button id="open_new" style="float: right; font-size: 18px">
           Open a new worksheet
         </button>
@@ -337,8 +344,8 @@
       <!-- first element -->
       <div
         class="element"
-        onmousedown="showElementInfo(event, this)"
-        onmouseup="hideElementInfo(this)"
+        onmouseenter="showElementInfo(event, this)"
+        onmouseleave="hideElementInfo(this)"
       >
         <button
           class="close"
@@ -383,27 +390,37 @@
               X
             </button>
             <div class="act_block">
-              <span>If </span
-              ><select
-                class="if_ele"
-                style="width: 80px"
-                onchange="condition(this)"
-              >
-                <option value="">Element</option>
-                <option value="0">Self-initiated</option>
-                <option value="1">#1</option>
-              </select>
-              <div id="perform" style="display: inline">
-                <span> performs </span>
-                <select class="if_act" style="width: 110px">
-                  <option value="">Action</option>
-                </select>
-              </div>
-            </div>
-            <div class="act_block">
-              <span>then:</span>
               <label for="actionV" id="actionIn">1</label>
               <input id="actionV" placeholder="Action" />
+            </div>
+            <div id="condition" style="width: 100%">
+              <div class="act_block">
+                <span>If</span>
+                <select
+                  class="if_ele"
+                  style="width: 50px"
+                  onchange="condition(this)"
+                >
+                  <option value="">Element</option>
+                  <option value="0">Self-initiated</option>
+                  <option value="1">#1</option>
+                </select>
+                <div id="perform" style="display: inline">
+                  <span>do(es)</span>
+                  <select class="if_act" style="width: 95px">
+                    <option value="">Action</option>
+                  </select>
+                </div>
+                <select
+                  class="add"
+                  style="width: 50px"
+                  onchange="addCondition(this)"
+                >
+                  <option value="">+</option>
+                  <option value="0">OR</option>
+                  <option value="1">AND</option>
+                </select>
+              </div>
             </div>
             <div class="act_block">COMMUNICATION:</div>
             <!-- action1_Communication1 -->
@@ -510,15 +527,6 @@
       </div>
       <div class="control_block">
         <button class="control_button" id="permutate">Permutate</button>
-      </div>
-      <div class="control_block">
-        <button
-          class="control_button"
-          id="submit"
-          style="background-color: rgb(202, 245, 202)"
-        >
-          Save
-        </button>
       </div>
     </div>
     <svg id="container" width="960" height="679"></svg>
