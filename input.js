@@ -210,13 +210,12 @@ function collectAllInputs() {
 
             const allIf = condition.querySelectorAll(".if_ele");
             const allIfAct = condition.querySelectorAll(".if_act");
-            const allAdd = condition.querySelectorAll(".add");
 
             for (let i = 0; i < allIf.length; i++) {
                 let cond = {};
                 cond.ifEle = allIf[i].value;
                 cond.ifAct = allIfAct[i].value;
-                cond.add = allAdd[i].value;
+                cond.add = allIf[i].parentNode.querySelector("#add").value;
                 allInputs[index][actionIndex].condition.push(cond);
             }
 

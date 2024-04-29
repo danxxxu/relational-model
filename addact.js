@@ -38,7 +38,7 @@ function addAction(element) {
        <option value="">Action</option>
      </select>
    </div>
-   <select class="add" style="width: 50px" onchange="addCondition(this)">
+   <select id="add" style="width: 50px" onchange="addCondition(this)">
    <option value="">+</option>
    <option value="0">OR</option>
    <option value="1">AND</option>

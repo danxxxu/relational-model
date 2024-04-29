@@ -81,7 +81,7 @@ function addCondition(element) {
                 </select>
               </div>
               <select
-                class="add"
+                id="add"
                 style="width: 50px"
                 onchange="addCondition(this)"
               >

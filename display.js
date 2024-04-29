@@ -108,24 +108,34 @@ function displayInteraction(doc) {
         const allActions = allElements[i].querySelectorAll(".action");
         for (let j = 0; j < allActions.length; j++) {
             actIndex = "action" + (j + 1);
-            const condition = allActions[j].querySelector("#condition");
+            //update condition field
             const condValue = doc[eleIndex][actIndex].condition;
 
-            if (condValue.length > 1) {
-                for (let j = 1; j < condValue.length; j++) {
-                    condition.querySelector(".add").onchange();
+            let condition = allActions[j].querySelector("#condition");
+            let allIf = condition.querySelectorAll(".if_ele");
+
+            if (allIf.length < condValue.length) {
+                for (let k = allIf.length; k < condValue.length; k++) {
+                    allIf[k - 1].parentNode.querySelector("#add").value = condValue[k - 1].add;
+                    allIf[k - 1].parentNode.querySelector("#add").onchange();
+                }
+            } else if (allIf.length > condValue.length) {
+                for (let k = allIf.length; k > condValue.length; k--) {
+                    allIf[k - 1].parentNode.remove();
                 }
             }
 
-            const allIf = condition.querySelectorAll(".if_ele");
-            const allIfAct = condition.querySelectorAll(".if_act");
-            const allAdd = condition.querySelectorAll(".add");
+            // condition = allActions[j].querySelector("#condition");
+            allIf = condition.querySelectorAll(".if_ele");
+            // console.log(allIf.length)
+            let allIfAct = condition.querySelectorAll(".if_act");
 
-            for (let j = 0; j < condValue.length; j++) {
-                allIf[j].value = condValue[j].ifEle;
-                allIf[j].onchange();
-                allIfAct[j].value = condValue[j].ifAct;
-                allAdd[j].value = condValue[j].add;
+            for (let k = 0; k < allIf.length; k++) {
+                allIf[k].value = condValue[k].ifEle;
+                allIf[k].onchange();
+                allIfAct[k].value = condValue[k].ifAct;
+                // console.log(allIf[k].parentNode.querySelector("#add"));
+                allIf[k].parentNode.querySelector("#add").value = condValue[k].add;
             }
         }
     }

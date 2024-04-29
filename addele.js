@@ -4,8 +4,8 @@ function addElement(element) {
   eleCount++;
   let eleHtml = `
     <div class="element"         
-    onmousedown="showElementInfo(event, this)"
-    onmouseup="hideElementInfo(this)">
+    onmouseenter="showElementInfo(event, this)"
+    onmouseleave="hideElementInfo(this)">
     <div class="element_info"></div>
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
     <div class="block"><span id="index">#1</span></div>
@@ -48,7 +48,7 @@ function addElement(element) {
                   <option value="">Action</option>
                 </select>
               </div>
-              <select class="add" style="width: 50px" onchange="addCondition(this)">
+              <select id="add" style="width: 50px" onchange="addCondition(this)">
               <option value="">+</option>
               <option value="0">OR</option>
               <option value="1">AND</option>
