@@ -11,10 +11,12 @@ function savePDF() {
 
     const pdf = new jspdf.jsPDF('l', 'pt', [width, height]);
 
+    const name = document.querySelector('#name_interaction').value;
+
     pdf.svg(svgEle, {
         width: width,
         height: height
     }).then(() => {
-        pdf.save('visualisation.pdf');
+        pdf.save(name + '.pdf');
     })
 }
