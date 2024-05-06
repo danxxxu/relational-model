@@ -1,5 +1,7 @@
 let eleIndex, actIndex;
 
+import { drawVis } from "./sketch.js"
+
 document.querySelector("#select_interaction").addEventListener("change", getInteraction);
 document.querySelector("#open_new").addEventListener("click", openNewTab);
 
@@ -10,11 +12,12 @@ function openNewTab() {
 
 function getInteraction() {
     const selectID = document.querySelector("#select_interaction").value;
+    const name = document.querySelector("#name_interaction");
 
     if (selectID == 0) {
         location.reload();
+        name.value = '';
     } else {
-        const name = document.querySelector("#name_interaction");
         name.value = selectID;
         db.collection('interactions').doc(selectID).get().then((doc) => {
             displayInteraction(doc.data());
@@ -116,8 +119,8 @@ function displayInteraction(doc) {
 
             if (allIf.length < condValue.length) {
                 for (let k = allIf.length; k < condValue.length; k++) {
-                    allIf[k - 1].parentNode.querySelector("#add").value = condValue[k - 1].add;
-                    allIf[k - 1].parentNode.querySelector("#add").onchange();
+                    allIf[0].parentNode.querySelector("#add").value = condValue[k - 1].add;
+                    allIf[0].parentNode.querySelector("#add").onchange();
                 }
             } else if (allIf.length > condValue.length) {
                 for (let k = allIf.length; k > condValue.length; k--) {
@@ -139,4 +142,6 @@ function displayInteraction(doc) {
             }
         }
     }
+
+    drawVis(doc);
 }

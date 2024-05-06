@@ -13,6 +13,12 @@ const elementY = 50;
 
 let eleX = [];
 let totalAction = 0;
+let allInputsCopy = {};
+let actionOrder = false;
+
+let indeAction = [];
+let relateAction = [];
+let allAction = [];
 
 //define arrow marker variables 
 const markerBoxWidth = 15;
@@ -20,23 +26,6 @@ const markerBoxHeight = 15;
 const refX = markerBoxWidth; // move the arrow to the end of the line 
 const refY = markerBoxHeight / 2;
 const arrowPoints = [[0, 0], [markerBoxWidth, markerBoxHeight / 2], [0, markerBoxHeight]];
-
-// define arrow 
-svg.append('defs')
-    .append('marker')
-    .attr('id', 'arrow')
-    .attr('viewBox', [0, 0, markerBoxWidth, markerBoxHeight])
-    .attr('refX', refX)
-    .attr('refY', refY)
-    .attr('markerWidth', markerBoxWidth / 2)
-    .attr('markerHeight', markerBoxHeight / 2)
-    .attr('orient', 'auto')
-    .append('path')
-    .attr('d', d3.line()(arrowPoints))
-    .attr('stroke', 'black')
-    .attr('stroke-width', '2') // create line arrow
-    .attr('fill', 'none')
-    .attr('stroke-dasharray', 'none')
 
 let actionN = 0;
 let actionX = 0;
@@ -73,56 +62,154 @@ export function drawVis(allInputs) {
     eleX = [];
     totalAction = 0;
     let eleIndex = 0;
+    let actIndex = 0;
 
+    relateAction = [];
+    indeAction = [];
+    allAction = [];
+
+    let action = {};
+    allInputsCopy = structuredClone(allInputs);
+
+    // draw elements and store actions 
     for (let i = 0; i < eleCount; i++) {
         const x = (width / eleCount) * (0.5 + i);
         eleIndex = i + 1;
         const ele = "element" + eleIndex;
         drawElement(x, elementY, elementWdith, elementHeight, elementSize, allInputs[ele].type, allInputs[ele].eleNum);
         eleX.push(x);
-        totalAction += allInputs[ele].actionCount;
+        const actionCount = allInputs[ele].actionCount;
+        totalAction += actionCount;
+
+        // push the condition actions and their condition
+        for (let j = 0; j < actionCount; j++) {
+            actIndex = j + 1;
+            const act = "action" + actIndex;
+            let c = false;
+            if (allInputsCopy[ele][act].action != "123456") {
+                const condition = allInputsCopy[ele][act].condition;
+                condition.forEach(cond => {
+                    // the current action can be self-initiated
+                    if (cond.ifEle == "0") {
+                        if (condition.length > 1) {
+                            if (allInputsCopy[ele][act].action != "123456") {
+                                action = {};
+                                action.eleIndex = eleIndex;
+                                action.actIndex = actIndex;
+                                relateAction.push(action);
+                                allInputsCopy[ele][act].action = "123456";
+                            }
+                        }
+                    } else {
+                        // if current action has conditions, check conditional actions
+                        checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
+                        c = true;
+                    }
+                });
+                if (c && allInputsCopy[ele][act].action != "123456") {
+                    action = {};
+                    action.eleIndex = eleIndex;
+                    action.actIndex = actIndex;
+                    relateAction.push(action);
+                    allInputsCopy[ele][act].action = "123456";
+                }
+            }
+        }
     }
 
+    // console.log(relateAction);
+
+    // find all the independent actions 
     for (let i = 0; i < eleCount; i++) {
         eleIndex = i + 1;
         const ele = "element" + eleIndex;
-        const actionCount = allInputs[ele].actionCount;
+        const actionCount = allInputsCopy[ele].actionCount;
         for (let j = 0; j < actionCount; j++) {
-            const act = "action" + (j + 1);
-            let actV = allInputs[ele][act].action;
+            actIndex = j + 1;
+            const act = "action" + actIndex;
+            let actV = allInputsCopy[ele][act].action;
             if (actV != "123456") {
-                const condition = allInputs[ele][act].condition;
-                condition.forEach(cond => {
-                    if (cond.ifEle == 0) {
-                        processAction(allInputs, eleX, eleIndex, act, actV);
-                        allInputs[ele][act].action = "123456";
-                    } else {
-                        //draw conditional action first 
-                        const ifEle = "element" + cond.ifEle;
-                        const ifAct = "action" + cond.ifAct;
-                        const ifActV = allInputs[ifEle][ifAct].action;
-                        if (ifActV != "123456") {
-                            processAction(allInputs, eleX, cond.ifEle, ifAct, ifActV);
-                            allInputs[ifEle][ifAct].action = "123456";
-                        }
-                        actV = allInputs[ele][act].action;
-                        if (actV != "123456") {
-                            processAction(allInputs, eleX, eleIndex, act, actV);
-                            // console.log(allInputs[ele][act].action);
-                            allInputs[ele][act].action = "123456";
-                        }
+                if (j == 0) {
+                    actionOrder = true;
+                }
+                let action = {};
+                action.eleIndex = eleIndex;
+                action.actIndex = actIndex;
+                indeAction.push(action);
+            }
+        }
+    }
+
+    if (actionOrder) {
+        allAction = indeAction.concat(relateAction);
+        actionOrder = false;
+    } else {
+        allAction = relateAction.concat(indeAction);
+    }
+
+
+    // draw actions 
+    allAction.forEach(action => {
+        processAction(allInputs, eleX, action.eleIndex, action.actIndex);
+    });
+}
+
+function checkAction(oriEleIndex, oriActIndex, eleIndex, actIndex) {
+    // console.log(eleIndex, actIndex);
+    const ele = "element" + eleIndex;
+    const act = "action" + actIndex;
+    let action = {};
+
+    const oriEle = "element" + oriEleIndex;
+    const oriAct = "action" + oriActIndex;
+
+    if (allInputsCopy[ele][act].action != "123456") {
+
+        const condition = allInputsCopy[ele][act].condition;
+        // if current action has no condition, push current action to relateAction
+        if (condition.length == 1 && condition[0].ifEle == "0") {
+            action = {};
+            action.eleIndex = eleIndex;
+            action.actIndex = actIndex;
+            relateAction.push(action);
+            allInputsCopy[ele][act].action = "123456";
+        } else {
+            // if current action has condition, check conditional action until the initial action
+            condition.forEach(cond => {
+                if (cond.ifEle != 0) {
+                    // if no looping situation
+                    if (oriEleIndex != cond.ifEle || oriActIndex != cond.ifAct) {
+                        checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
                     }
-                });
+                }
+                // if the condition contains self-initated
+                else {
+                    action = {};
+                    action.eleIndex = eleIndex;
+                    action.actIndex = actIndex;
+                    relateAction.push(action);
+                    allInputsCopy[ele][act].action = "123456";
+                }
+            });
+            // push current action to the relate array
+            if (allInputsCopy[ele][act].action != "123456") {
+                action = {};
+                action.eleIndex = eleIndex;
+                action.actIndex = actIndex;
+                relateAction.push(action);
+                allInputsCopy[ele][act].action = "123456";
             }
         }
     }
 }
 
-function processAction(allInputs, eleX, eleIndex, act, actV) {
+function processAction(allInputs, eleX, eleIndex, actIndex) {
     const ele = "element" + eleIndex;
+    const act = "action" + actIndex;
     actionN++;
+    const actV = allInputs[ele][act].action;
     const len = actV.length;
-    console.log(len);
+    // console.log(len);
     // const scale = d3.scaleLog([1, 80], [0, 25]);
     // actionWidth = scale(len) * actionSize;
     actionWidth = len * actionSize / 1.5;
@@ -176,6 +263,7 @@ function drawElement(x, y, w, h, s, info, count) {
         .attr('x', x)
         .attr('y', y - s / 4)
         .attr('text-anchor', 'middle')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .attr('font-weight', 'bold')
         .text(info);
@@ -183,6 +271,7 @@ function drawElement(x, y, w, h, s, info, count) {
     g.append('text')
         .attr('x', x)
         .attr('y', y + s)
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('text-anchor', 'middle')
         .attr('font-size', s - 2)
         .text(count);
@@ -214,6 +303,7 @@ function drawAction(x, y, w, h, s, act) {
         .attr('x', x)
         .attr('y', y)
         .attr('text-anchor', 'middle')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(act);
 }
@@ -272,6 +362,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         .attr('x', csx)
         .attr('y', sy)
         .attr('text-anchor', 'middle')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(f);
 
@@ -288,6 +379,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         .attr('x', ctx)
         .attr('y', ty)
         .attr('text-anchor', 'middle')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(t);
 
@@ -303,6 +395,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         .attr('x', tsx)
         .attr('y', sy + s)
         .attr('text-anchor', 'start')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(effect)
         .call(wrap, effectLen);
@@ -311,6 +404,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         .attr('x', tcsx)
         .attr('y', sy - s / 1.5)
         .attr('text-anchor', 'start')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(count);
 }
@@ -374,13 +468,21 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         if (vx < tx) {
             ctx = tx - configR;
             ltx = ctx - configR;
-            pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
-        } else {
+            // pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
+            pathPoints = "M" + lsx + "," + y + "L" + (vx - configR) + "," + y + "L" + (vx - configR) + "," + (y - configR) + "L" + (vx + configR) + "," + (y - configR) + "L" + (vx + configR) + "," + y + "L" + ltx + "," + y;
+        } else if (vx > tx) {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx + configR;
             ltx = ctx + configR;
             let viaX = vx + 8;
+            pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
+        } else {
+            ty = sy + corner;
+            let lty = ty - s / 4;
+            ctx = tx + configR;
+            ltx = ctx + configR;
+            let viaX = vx + configR * 2 + 8 * 2;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
     }
@@ -394,13 +496,20 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         if (vx > tx) {
             ctx = tx + configR;
             ltx = ctx + configR;
-            pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
-        } else {
+            pathPoints = "M" + lsx + "," + y + "L" + (vx + configR) + "," + y + "L" + (vx + configR) + "," + (y - configR) + "L" + (vx - configR) + "," + (y - configR) + "L" + (vx - configR) + "," + y + "L" + ltx + "," + y;
+        } else if (vx < tx) {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx - configR;
             ltx = ctx - configR;
             let viaX = vx - 8;
+            pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
+        } else {
+            ty = sy + corner;
+            let lty = ty - s / 4;
+            ctx = tx - configR;
+            ltx = ctx - configR;
+            let viaX = vx - configR * 2 - 8 * 2;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
     }
@@ -418,7 +527,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             ctx = tx - configR;
             ltx = ctx - configR;
             vx = lsx;
-            let viaX = vx - 8;
+            let viaX = vx - configR - 8;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         } else {
             csx = sx + w / 2 + configR;
@@ -432,7 +541,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             ctx = tx + configR;
             ltx = ctx + configR;
             vx = lsx;
-            let viaX = vx + 8;
+            let viaX = vx + configR + 8;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
 
@@ -451,6 +560,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         .attr('x', csx)
         .attr('y', sy)
         .attr('text-anchor', 'middle')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(f);
 
@@ -467,6 +577,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         .attr('x', ctx)
         .attr('y', ty)
         .attr('text-anchor', 'middle')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(t);
 
@@ -484,6 +595,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         .attr('x', tsx)
         .attr('y', tsy)
         .attr('text-anchor', 'start')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(effect)
         .call(wrap, effectLen);
@@ -492,6 +604,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         .attr('x', tcsx)
         .attr('y', tcsy)
         .attr('text-anchor', 'start')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(count);
 }
