@@ -9,7 +9,7 @@ function savePDF() {
     const width = svgEle.width.baseVal.value;
     const height = svgEle.height.baseVal.value;
 
-    const pdf = new jspdf.jsPDF('l', 'pt', [width, height]);
+    const pdf = new jspdf.jsPDF('l', 'pt', [width, height]); // https://artskydj.github.io/jsPDF/docs/jsPDF.html
 
     const name = document.querySelector('#name_interaction').value;
 
