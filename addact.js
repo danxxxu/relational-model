@@ -152,6 +152,7 @@ function updateActionList(element) {
   const AllList = element.querySelectorAll(".if_ele");
 
   AllList.forEach(list => {
+    const oldEle = list.value;
     list.innerHTML = ` <option value="">Element</option>
     <option value="0">Self-initiated</option>`;
 
@@ -159,5 +160,7 @@ function updateActionList(element) {
       const index = (i + 1).toString();
       list.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
     }
+
+    list.value = oldEle;
   });
 }

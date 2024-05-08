@@ -30,7 +30,7 @@ function addCommunication(element) {
   <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
     <div class="block">
     <select id="to" name="to_elements">
-    <option value="">--Select an element--</option>` + options + `
+    <option value="">--To which element--</option>` + options + `
   </select>
       <span hidden id="comIn">` + comCount + `</span>
     </div>

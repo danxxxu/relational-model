@@ -409,7 +409,6 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
     .attr('class', 'svg_direct')
     .attr('opacity', opacity);
 
-
     //connect with a line 
     let csx = sx;
     let ctx = tx;
@@ -442,23 +441,38 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
         tcsx = csx - configR - 10 - s * 2;
         anchor = 'start';
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
-    } else {
+    } 
+    // sx == tx
+    else {
         if (effect.length > 60) {
             corner = actionSize + 20;
         } else {
             corner = actionSize + 10;
         }
 
-        csx = sx + w / 2 + configR;
-        ctx = tx + configR;
-        lsx = csx + configR;
-        ltx = ctx + configR;
-        tsx = lsx + 10;
-        tcsx = tsx;
-        ty = y + corner + s / 4;
-        effectLen = eleDist * 0.6;
-        anchor = 'start';
-        pathPoints = "M" + lsx + "," + y + "L" + (lsx + effectLen + 10) + "," + y + "L" + (lsx + effectLen + 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
+        if (sx == eleX[eleX.length - 1]){
+            csx = sx - w / 2 - configR;
+            ctx = tx - configR;
+            lsx = csx - configR;
+            ltx = ctx - configR;
+            ty = sy + corner;
+            tsx = lsx - 10;
+            tcsx = lsx - 10;
+            effectLen = eleDist * 0.6;
+            anchor = 'end';
+            pathPoints = "M" + lsx + "," + y + "L" + (lsx - effectLen - 10) + "," + y + "L" + (lsx - effectLen - 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
+        } else {
+            csx = sx + w / 2 + configR;
+            ctx = tx + configR;
+            lsx = csx + configR;
+            ltx = ctx + configR;
+            tsx = lsx + 10;
+            tcsx = tsx;
+            ty = sy + corner;
+            effectLen = eleDist * 0.6;
+            anchor = 'start';
+            pathPoints = "M" + lsx + "," + y + "L" + (lsx + effectLen + 10) + "," + y + "L" + (lsx + effectLen + 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
+        }
     }
 
     // config from 
