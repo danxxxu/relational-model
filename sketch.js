@@ -388,15 +388,17 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
     let pathPoints = "";
     let y = sy - s / 4;
     let eleDist = eleX[1] - eleX[0];
+    let anchor = 'start';
 
     if (sx < tx) {
         csx = sx + w / 2 + configR;
         ctx = tx - configR;
         lsx = csx + configR;
         ltx = ctx - configR;
-        tsx = csx + configR + 10;
-        tcsx = tsx;
+        tsx = ctx - configR - 10;
+        tcsx = csx + configR + 10;
         effectLen = ltx - lsx - 10;
+        anchor = 'end';
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
     } else if (sx > tx) {
         csx = sx - w / 2 - configR;
@@ -406,6 +408,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         effectLen = lsx - ltx - 10;
         tsx = ctx + configR + 10;
         tcsx = csx - configR - 10 - s * 2;
+        anchor = 'start';
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
     } else {
         if (effect.length > 60) {
@@ -422,6 +425,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         tcsx = tsx;
         ty = y + corner + s / 4;
         effectLen = eleDist * 0.6;
+        anchor = 'start';
         pathPoints = "M" + lsx + "," + y + "L" + (lsx + effectLen + 10) + "," + y + "L" + (lsx + effectLen + 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
     }
 
@@ -470,7 +474,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
     g.append('text')
         .attr('x', tsx)
         .attr('y', sy + s)
-        .attr('text-anchor', 'start')
+        .attr('text-anchor', anchor)
         .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(effect)
@@ -533,6 +537,8 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
     let y = sy - s / 4;
     let tsy = sy + s;
     let tcsy = sy - s / 1.5;
+    let anchor = 'start';
+    let tsyRatio = 0.5;
 
     if (effect.length > 60) {
         corner = actionSize + 20;
@@ -544,24 +550,36 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
     // if sourceX is smaller than viaX
     if (sx < vx) {
         csx = sx + w / 2 + configR;
-        tsx = csx + configR + 10;
-        tcsx = tsx;
+        tcsx = csx + configR + 10;
         lsx = csx + configR;
         // sx < vx < tx
         if (vx < tx) {
             ctx = tx - configR;
             ltx = ctx - configR;
             effectLen = ltx - lsx - 10;
+            tsx = ctx - configR - 10;
+            anchor = 'end';
             pathPoints = "M" + lsx + "," + y + "L" + (vx - configR) + "," + y + "L" + (vx - configR) + "," + (y - configR) + "L" + (vx + configR) + "," + (y - configR) + "L" + (vx + configR) + "," + y + "L" + ltx + "," + y;
         }
-        // sx < tx < vx || tx < sx < vx
+        // sx < tx < vx || tx < sx < vx || sx = tx < vx 
         else if (vx > tx) {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx + configR;
             ltx = ctx + configR;
             let viaX = vx + 8;
-            effectLen = vx - lsx - 10;
+            tsy = lty - tsyRatio * s;
+            anchor = 'start';
+            //tx < sx < vx || sx < tx < vx
+            if (tx != sx) {
+                effectLen = vx - tx - 10;
+                tsx = ltx + 10;
+            }
+            //sx = tx < vx 
+            else {
+                effectLen = vx - lsx;
+                tsx = lsx;
+            }
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
         // sx < vx = tx 
@@ -572,39 +590,58 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             ltx = ctx + configR;
             let viaX = vx + configR * 2 + 8 * 2;
             effectLen = vx - lsx - 10;
+            tsx = vx - 2;
+            anchor = 'end';
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
     }
     // if sourceX is larger than viaX
     else if (sx > vx) {
         csx = sx - w / 2 - configR;
-        // tsx = csx - configR - effectLen - 10;
-        effectLen = lsx - vx - 10;
-        tsx = vx + 10;
         tcsx = csx - configR - 10 - s * 2;
         lsx = csx - configR;
         //tx < vx < sx 
         if (vx > tx) {
             ctx = tx + configR;
             ltx = ctx + configR;
+            tsx = ltx + 10;
+            anchor = 'start';
+            effectLen = lsx - tx - 10;
             pathPoints = "M" + lsx + "," + y + "L" + (vx + configR) + "," + y + "L" + (vx + configR) + "," + (y - configR) + "L" + (vx - configR) + "," + (y - configR) + "L" + (vx - configR) + "," + y + "L" + ltx + "," + y;
         }
-        // vx < tx < sx || vx < sx < tx
+        // vx < tx < sx || vx < sx < tx || vx < sx = tx
         else if (vx < tx) {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx - configR;
             ltx = ctx - configR;
             let viaX = vx - 8;
+            anchor = 'end';
+            tsy = lty - tsyRatio * s;
+            // vx < tx < sx || vx < sx < tx
+            if (tx != sx) {
+                effectLen = tx - vx - 10;
+                tsx = ltx - 10;
+            }
+            // vx < sx = tx
+            else {
+                effectLen = lsx - vx - 10;
+                tsx = lsx;
+            }
+            tsx = vx + 2;
+            anchor = 'start';
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
-        // sx > vx = tx
+        // vx = tx < sx
         else {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx - configR;
             ltx = ctx - configR;
             let viaX = vx - configR * 2 - 8 * 2;
+            effectLen = lsx - vx;
+            tsx = vx + 2;
+            anchor = 'start';
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
     }
@@ -613,13 +650,14 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         // sx = vx < tx 
         if (vx < tx) {
             csx = sx - w / 2 - configR;
-            tsx = csx;
+            tsx = ltx - 10;
+            anchor = 'end';
             tcsx = csx;
             lsx = csx - configR;
             ty = sy + corner;
             let lty = ty - s / 4;
-            tsy = lty + 1.5 * s;
-            tcsy = lty - 0.8 * s;
+            tsy = lty - tsyRatio * s;
+            tcsy = sy - s / 1.5;
             ctx = tx - configR;
             ltx = ctx - configR;
             vx = lsx;
@@ -627,17 +665,18 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             effectLen = tx - tsx;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
-        // tx < sx = tx
+        // tx < sx = vx
         else {
             csx = sx + w / 2 + configR;
-            effectLen = tx - csx;
-            tsx = csx - effectLen;
+            effectLen = ltx - csx;
+            tsx = ltx + 10;
+            anchor = 'start';
             tcsx = csx;
             lsx = csx + configR;
             ty = sy + corner;
             let lty = ty - s / 4;
-            tsy = lty + 1.5 * s;
-            tcsy = lty - 0.8 * s;
+            tsy = lty - tsyRatio * s;
+            tcsy = sy - s / 1.5;
             ctx = tx + configR;
             ltx = ctx + configR;
             vx = lsx;
@@ -694,7 +733,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
     g.append('text')
         .attr('x', tsx)
         .attr('y', tsy)
-        .attr('text-anchor', 'start')
+        .attr('text-anchor', anchor)
         .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(effect)
