@@ -12,6 +12,7 @@ const configR = 8;
 const comSize = 11;
 const elementY = 50;
 const relationSize = 10; // 2px line, 8px rect
+const opacityV = 0.65;
 // sort actions
 let eleX = [];
 let totalAction = 0;
@@ -277,25 +278,48 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     drawAction(actionX, actionY, actionWidth, actionHeight, actionSize, actV);
 
     const comCount = allInputs[ele][act].comCount;
+
     if (comCount == 1) {
         const communication = allInputs[ele][act][comCount];
         const to = communication.to;
         if (communication.direct) {
-            drawDirect(actionX, actionY, actionWidth, eleX[to - 1], actionY, comSize, communication.configF, communication.configT, communication.comNum, communication.effect);
+            drawDirect(actionX, actionY, actionWidth, eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
         } else {
             const via = communication.via;
-            drawMediated(actionX, actionY, actionWidth, eleX[via - 1], eleX[to - 1], actionY, comSize, communication.configF, communication.configT, communication.comNum, communication.effect);
+            drawMediated(actionX, actionY, actionWidth, eleX[via - 1], eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
         }
     } else {
+        let turn = 'none';
+        let prevTurn = 'none';
+        let space = 8;
         for (let k = 0; k < comCount; k++) {
             const communication = allInputs[ele][act][k + 1];
             const to = communication.to;
             const comY = actionY - actionHeight / 2 - actionSize / 8 + (actionHeight / comCount) * (0.5 + k)
             if (communication.direct) {
-                drawDirect(actionX, comY, actionWidth, eleX[to - 1], comY, comSize, communication.configF, communication.configT, communication.comNum, communication.effect);
+                drawDirect(actionX, comY, actionWidth, eleX[to - 1], comY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
             } else {
                 const via = communication.via;
-                drawMediated(actionX, comY, actionWidth, eleX[via - 1], eleX[to - 1], comY, comSize, communication.configF, communication.configT, communication.comNum, communication.effect);
+                const toX = eleX[to - 1];
+                const viaX = eleX[via - 1];
+
+                if (actionX < viaX && viaX >= toX) {
+                    turn = 'right';
+                } else if (actionX > viaX && viaX <= toX) {
+                    turn = 'left';
+                } else {
+                    turn = 'none';
+                }
+                if (turn == 'left' && turn == prevTurn) {
+                    space += 8;
+                } else if (turn == 'right' && turn == prevTurn) {
+                    space += 8;
+                } else {
+                    space = 8;
+                }
+                prevTurn = turn;
+
+                drawMediated(actionX, comY, actionWidth, viaX, toX, comY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
             }
         }
     }
@@ -374,9 +398,17 @@ function drawAction(x, y, w, h, s, act) {
         .text(act);
 }
 
-function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
+function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
+    let opacity = 1;
+
+    if (!p) {
+        opacity = opacityV;
+    }
+
     let g = svg.append('g')
-        .attr('class', 'svg_direct');
+    .attr('class', 'svg_direct')
+    .attr('opacity', opacity);
+
 
     //connect with a line 
     let csx = sx;
@@ -469,7 +501,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         .attr('stroke', 'black')
         .attr('stroke-linejoin', 'round')
         .attr('marker-end', 'url(#arrow)')
-        .attr('fill', 'none')
+        .attr('fill', 'none');
 
     g.append('text')
         .attr('x', tsx)
@@ -522,9 +554,16 @@ function wrap(text, width) {
     });
 }
 
-function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
+function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
+    let opacity = 1;
+
+    if (!p) {
+        opacity = opacityV;
+    }
+
     let g = svg.append('g')
-        .attr('class', 'svg_mediated');
+    .attr('class', 'svg_mediated')
+    .attr('opacity', opacity);
 
     //connect with a line 
     let csx = sx;
@@ -546,7 +585,6 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         corner = actionSize + 10;
     }
 
-
     // if sourceX is smaller than viaX
     if (sx < vx) {
         csx = sx + w / 2 + configR;
@@ -567,7 +605,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             let lty = ty - s / 4;
             ctx = tx + configR;
             ltx = ctx + configR;
-            let viaX = vx + 8;
+            let viaX = vx + space;
             tsy = lty - tsyRatio * s;
             anchor = 'start';
             //tx < sx < vx || sx < tx < vx
@@ -588,7 +626,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             let lty = ty - s / 4;
             ctx = tx + configR;
             ltx = ctx + configR;
-            let viaX = vx + configR * 2 + 8 * 2;
+            let viaX = vx + configR * 2 + space * 2;
             effectLen = vx - lsx - 10;
             tsx = vx - 2;
             anchor = 'end';
@@ -615,7 +653,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             let lty = ty - s / 4;
             ctx = tx - configR;
             ltx = ctx - configR;
-            let viaX = vx - 8;
+            let viaX = vx - space;
             anchor = 'end';
             tsy = lty - tsyRatio * s;
             // vx < tx < sx || vx < sx < tx
@@ -638,7 +676,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             let lty = ty - s / 4;
             ctx = tx - configR;
             ltx = ctx - configR;
-            let viaX = vx - configR * 2 - 8 * 2;
+            let viaX = vx - configR * 2 - space * 2;
             effectLen = lsx - vx;
             tsx = vx + 2;
             anchor = 'start';
@@ -661,7 +699,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             ctx = tx - configR;
             ltx = ctx - configR;
             vx = lsx;
-            let viaX = vx - configR - 8;
+            let viaX = vx - configR - space;
             effectLen = tx - tsx;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
@@ -680,7 +718,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             ctx = tx + configR;
             ltx = ctx + configR;
             vx = lsx;
-            let viaX = vx + configR + 8;
+            let viaX = vx + configR + space;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
 
