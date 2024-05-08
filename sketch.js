@@ -3,6 +3,7 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const svg = d3.select('#container');
 const width = +svg.attr('width'); // + convert string to numbers 
 const height = +svg.attr('height');
+// fixed visualisation elements 
 const elementWdith = 200;
 const elementHeight = 60;
 const elementSize = 18;
@@ -10,34 +11,38 @@ const actionSize = 16;
 const configR = 8;
 const comSize = 11;
 const elementY = 50;
-
+const relationSize = 10; // 2px line, 8px rect
+// sort actions
 let eleX = [];
 let totalAction = 0;
 let allInputsCopy = {};
 let actionOrder = false;
-
 let indeAction = [];
 let relateAction = [];
 let allAction = [];
-
 //define arrow marker variables 
 const markerBoxWidth = 15;
 const markerBoxHeight = 15;
 const refX = markerBoxWidth; // move the arrow to the end of the line 
 const refY = markerBoxHeight / 2;
 const arrowPoints = [[0, 0], [markerBoxWidth, markerBoxHeight / 2], [0, markerBoxHeight]];
-
+// for draw actions
 let actionN = 0;
 let actionX = 0;
 let actionY = 0;
 let actionWidth = 0;
 let actionHeight = 0;
-const effectLen = 180;
+let effectLen = 180;
 let corner = 0;
 let actionDist = 0;
+// draw relatons 
+let actionInfo = {}; // {actionKey: [y,height], ...}
+let allRelations = {}; // {actionKey: condition, ...}
 
 export function drawVis(allInputs) {
     actionN = 0;
+    actionInfo = {};
+    allRelations = [];
 
     svg.selectAll('*').remove();
 
@@ -73,11 +78,8 @@ export function drawVis(allInputs) {
 
     // draw elements and store actions 
     for (let i = 0; i < eleCount; i++) {
-        const x = (width / eleCount) * (0.5 + i);
         eleIndex = i + 1;
         const ele = "element" + eleIndex;
-        drawElement(x, elementY, elementWdith, elementHeight, elementSize, allInputs[ele].type, allInputs[ele].eleNum);
-        eleX.push(x);
         const actionCount = allInputs[ele].actionCount;
         totalAction += actionCount;
 
@@ -86,11 +88,17 @@ export function drawVis(allInputs) {
             actIndex = j + 1;
             const act = "action" + actIndex;
             let c = false;
+
+            const actionKey = eleIndex + `_` + actIndex;
+            allRelations[actionKey] = allInputs[ele][act].condition;
+            // console.log(allRelations);
+
             if (allInputsCopy[ele][act].action != "123456") {
                 const condition = allInputsCopy[ele][act].condition;
                 condition.forEach(cond => {
                     // the current action can be self-initiated
                     if (cond.ifEle == "0") {
+
                         if (condition.length > 1) {
                             if (allInputsCopy[ele][act].action != "123456") {
                                 action = {};
@@ -117,8 +125,6 @@ export function drawVis(allInputs) {
         }
     }
 
-    // console.log(relateAction);
-
     // find all the independent actions 
     for (let i = 0; i < eleCount; i++) {
         eleIndex = i + 1;
@@ -140,6 +146,31 @@ export function drawVis(allInputs) {
         }
     }
 
+    let updateRelateAction = [];
+    let updateIndeAction = [].concat(indeAction);
+    relateAction.forEach(action => {
+        const actionKey = action.eleIndex + '_' + action.actIndex;
+        const condition = allRelations[actionKey];
+
+        if (condition.length > 1 || condition[0].ifEle != "0") {
+            updateRelateAction.push(actionKey);
+        } else {
+            updateIndeAction.push(action);
+        }
+    });
+
+    // relationbar = margin + size and space 
+    const relationBar = 10 + relationSize * 1.6 * (updateRelateAction.length + 1);
+    // draw elements
+    for (let i = 0; i < eleCount; i++) {
+        const x = ((width - relationBar) / eleCount) * (0.5 + i) + relationBar;
+        eleIndex = i + 1;
+        const ele = "element" + eleIndex;
+        drawElement(x, elementY, elementWdith, elementHeight, elementSize, allInputs[ele].type, allInputs[ele].eleNum);
+        eleX.push(x);
+    }
+
+    // draw independent actions first if there are independent actions before the relational action
     if (actionOrder) {
         allAction = indeAction.concat(relateAction);
         actionOrder = false;
@@ -147,13 +178,30 @@ export function drawVis(allInputs) {
         allAction = relateAction.concat(indeAction);
     }
 
-
     // draw actions 
     allAction.forEach(action => {
         processAction(allInputs, eleX, action.eleIndex, action.actIndex);
     });
+
+    // draw independent relations first
+    updateIndeAction.forEach(action => {
+        const actionKey = action.eleIndex + '_' + action.actIndex;
+        const y = actionInfo[actionKey][0];
+        const h = actionInfo[actionKey][1];
+        const x = 10;
+        drawSelfInitiate(x, y, h, actionSize);
+    });
+
+    // then draw relations 
+    for (let i = 0; i < updateRelateAction.length; i++) {
+        const actionKey = updateRelateAction[i];
+        const x = 10 + 1.6 * relationSize * (i + 1);
+        const condition = allRelations[actionKey];
+        drawRelation(x, actionKey, condition, actionSize);
+    }
 }
 
+// order actions based on their condition 
 function checkAction(oriEleIndex, oriActIndex, eleIndex, actIndex) {
     // console.log(eleIndex, actIndex);
     const ele = "element" + eleIndex;
@@ -215,9 +263,17 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     actionWidth = len * actionSize / 1.5;
     actionHeight = actionSize * 2.5;
     actionDist = (height - elementY - 20 - elementHeight * 0.5 - actionHeight * totalAction) / (totalAction + 1);
-    corner = actionHeight / 2 + 20;
+    // corner = actionHeight / 2 + 20;
     actionX = eleX[eleIndex - 1];
     actionY = elementY + elementHeight / 2 + actionN * (actionHeight + actionDist) - 0.5 * actionHeight;
+    const actionKey = eleIndex + `_` + actIndex;
+
+    let info = [];
+    info.push(actionY);
+    info.push(actionHeight);
+    actionInfo[actionKey] = info;
+    // console.log(actionInfo);
+
     drawAction(actionX, actionY, actionWidth, actionHeight, actionSize, actV);
 
     const comCount = allInputs[ele][act].comCount;
@@ -290,6 +346,16 @@ function drawAction(x, y, w, h, s, act) {
     let g = svg.append('g')
         .attr('class', 'svg_action');
 
+    // draw grey background 
+    g.append('rect')
+        .attr('x', 0)
+        .attr('y', y - h + s - 1)
+        .attr('width', width)
+        .attr('height', h + 2)
+        .attr('stroke-width', 0)
+        .attr('fill', '#D3D3D3')
+        .attr('fill-opacity', "0.3");
+
     g.append('rect')
         .attr('x', x - w / 2)
         .attr('y', y - h + s)
@@ -321,6 +387,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
     let tcsx = sx;
     let pathPoints = "";
     let y = sy - s / 4;
+    let eleDist = eleX[1] - eleX[0];
 
     if (sx < tx) {
         csx = sx + w / 2 + configR;
@@ -329,16 +396,24 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         ltx = ctx - configR;
         tsx = csx + configR + 10;
         tcsx = tsx;
+        effectLen = ltx - lsx - 10;
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
     } else if (sx > tx) {
         csx = sx - w / 2 - configR;
         ctx = tx + configR;
         lsx = csx - configR;
         ltx = ctx + configR;
-        tsx = csx - configR - effectLen - 10;
+        effectLen = lsx - ltx - 10;
+        tsx = ctx + configR + 10;
         tcsx = csx - configR - 10 - s * 2;
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
     } else {
+        if (effect.length > 60) {
+            corner = actionSize + 20;
+        } else {
+            corner = actionSize + 10;
+        }
+
         csx = sx + w / 2 + configR;
         ctx = tx + configR;
         lsx = csx + configR;
@@ -346,6 +421,7 @@ function drawDirect(sx, sy, w, tx, ty, s, f, t, count, effect) {
         tsx = lsx + 10;
         tcsx = tsx;
         ty = y + corner + s / 4;
+        effectLen = eleDist * 0.6;
         pathPoints = "M" + lsx + "," + y + "L" + (lsx + effectLen + 10) + "," + y + "L" + (lsx + effectLen + 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
     }
 
@@ -458,53 +534,72 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
     let tsy = sy + s;
     let tcsy = sy - s / 1.5;
 
+    if (effect.length > 60) {
+        corner = actionSize + 20;
+    } else {
+        corner = actionSize + 10;
+    }
+
+
     // if sourceX is smaller than viaX
     if (sx < vx) {
         csx = sx + w / 2 + configR;
         tsx = csx + configR + 10;
         tcsx = tsx;
         lsx = csx + configR;
-
+        // sx < vx < tx
         if (vx < tx) {
             ctx = tx - configR;
             ltx = ctx - configR;
-            // pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
+            effectLen = ltx - lsx - 10;
             pathPoints = "M" + lsx + "," + y + "L" + (vx - configR) + "," + y + "L" + (vx - configR) + "," + (y - configR) + "L" + (vx + configR) + "," + (y - configR) + "L" + (vx + configR) + "," + y + "L" + ltx + "," + y;
-        } else if (vx > tx) {
+        }
+        // sx < tx < vx || tx < sx < vx
+        else if (vx > tx) {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx + configR;
             ltx = ctx + configR;
             let viaX = vx + 8;
+            effectLen = vx - lsx - 10;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
-        } else {
+        }
+        // sx < vx = tx 
+        else {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx + configR;
             ltx = ctx + configR;
             let viaX = vx + configR * 2 + 8 * 2;
+            effectLen = vx - lsx - 10;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
     }
     // if sourceX is larger than viaX
     else if (sx > vx) {
         csx = sx - w / 2 - configR;
-        tsx = csx - configR - effectLen - 10;
+        // tsx = csx - configR - effectLen - 10;
+        effectLen = lsx - vx - 10;
+        tsx = vx + 10;
         tcsx = csx - configR - 10 - s * 2;
         lsx = csx - configR;
-
+        //tx < vx < sx 
         if (vx > tx) {
             ctx = tx + configR;
             ltx = ctx + configR;
             pathPoints = "M" + lsx + "," + y + "L" + (vx + configR) + "," + y + "L" + (vx + configR) + "," + (y - configR) + "L" + (vx - configR) + "," + (y - configR) + "L" + (vx - configR) + "," + y + "L" + ltx + "," + y;
-        } else if (vx < tx) {
+        }
+        // vx < tx < sx || vx < sx < tx
+        else if (vx < tx) {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx - configR;
             ltx = ctx - configR;
             let viaX = vx - 8;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
-        } else {
+        }
+        // sx > vx = tx
+        else {
             ty = sy + corner;
             let lty = ty - s / 4;
             ctx = tx - configR;
@@ -515,6 +610,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
     }
     // if sourceX is equal to viaX 
     else {
+        // sx = vx < tx 
         if (vx < tx) {
             csx = sx - w / 2 - configR;
             tsx = csx;
@@ -528,9 +624,13 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
             ltx = ctx - configR;
             vx = lsx;
             let viaX = vx - configR - 8;
+            effectLen = tx - tsx;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
-        } else {
+        }
+        // tx < sx = tx
+        else {
             csx = sx + w / 2 + configR;
+            effectLen = tx - csx;
             tsx = csx - effectLen;
             tcsx = csx;
             lsx = csx + configR;
@@ -589,7 +689,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         .attr('stroke-linejoin', 'round')
         .attr('marker-end', 'url(#arrow)')
         .attr('stroke-dasharray', '3')
-        .attr('fill', 'none')
+        .attr('fill', 'none');
 
     g.append('text')
         .attr('x', tsx)
@@ -607,4 +707,94 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, f, t, count, effect) {
         .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
         .text(count);
+}
+
+function drawSelfInitiate(x, y, h, s) {
+    let g = svg.append('g')
+        .attr('class', 'self_initiate');
+
+    g.append('rect')
+        .attr('x', x)
+        .attr('y', y - h + s)
+        .attr('width', relationSize - 2)
+        .attr('height', h)
+        .attr('stroke-width', 2)
+        .attr('stroke', 'black')
+        .attr('fill', 'white');
+}
+
+function drawRelation(x, actionKey, condition, s) {
+    const y0 = actionInfo[actionKey][0];
+    const h0 = actionInfo[actionKey][1];
+    let condY = [];
+    let condH = [];
+    let add = [];
+    let dash = 0;
+    let y1, y2;
+
+    condition.forEach(cond => {
+        if (cond.ifEle == "0") {
+            drawSelfInitiate(10, y0, h0, actionSize);
+        } else {
+            const actionKey = cond.ifEle + '_' + cond.ifAct;
+            const y = actionInfo[actionKey][0];
+            const h = actionInfo[actionKey][1];
+            condY.push(y);
+            condH.push(h);
+            add.push(cond.add);
+            // console.log(cond.add);
+        }
+    });
+
+    // check if current action is not a reaction
+    if (condition.length > 1 || condition[0].ifEle != "0") {
+        let g = svg.append('g')
+            .attr('class', 'relation');
+
+        // draw the current action, blue-ish 
+        g.append('rect')
+            .attr('x', x)
+            .attr('y', y0 - h0 + s)
+            .attr('width', relationSize)
+            .attr('height', h0)
+            .attr('stroke-width', 2)
+            .attr('stroke', '#87CEFA') // light sky blue #87CEFA
+            .attr('fill', '#87CEFA');
+
+        // draw the condition
+        for (let i = 0; i < condY.length; i++) {
+            g.append('rect')
+                .attr('x', x)
+                .attr('y', condY[i] - condH[i] + s)
+                .attr('width', relationSize)
+                .attr('height', condH[i])
+                .attr('stroke-width', 2)
+                .attr('stroke', '#F08080') // pink #FFB6C1
+                .attr('fill', '#F08080');
+
+            if (add[i] == "0") {
+                dash = 3;
+            } else if (add[i] == "1") {
+                dash = 0;
+            }
+
+            if (y0 < condY[i]) {
+                y1 = condY[i] + s + 1;
+                y2 = y0 - h0 + s - 1;
+            } else {
+                y1 = y0 + s + 1;
+                y2 = condY[i] - condH[i] + s - 1;
+            }
+
+            g.append('line')
+                .attr('x1', x)
+                .attr('y1', y1)
+                .attr('x2', x)
+                .attr('y2', y2)
+                .attr('stroke-width', 2)
+                .attr('stroke', 'black')
+                .attr('stroke-dasharray', dash)
+                .attr('fill', 'none');
+        }
+    }
 }
