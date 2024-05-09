@@ -406,8 +406,8 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
     }
 
     let g = svg.append('g')
-    .attr('class', 'svg_direct')
-    .attr('opacity', opacity);
+        .attr('class', 'svg_direct')
+        .attr('opacity', opacity);
 
     //connect with a line 
     let csx = sx;
@@ -441,7 +441,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
         tcsx = csx - configR - 10 - s * 2;
         anchor = 'start';
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
-    } 
+    }
     // sx == tx
     else {
         if (effect.length > 60) {
@@ -450,7 +450,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
             corner = actionSize + 10;
         }
 
-        if (sx == eleX[eleX.length - 1]){
+        if (sx == eleX[eleX.length - 1]) {
             csx = sx - w / 2 - configR;
             ctx = tx - configR;
             lsx = csx - configR;
@@ -460,7 +460,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
             tcsx = lsx - 10;
             effectLen = eleDist * 0.6;
             anchor = 'end';
-            pathPoints = "M" + lsx + "," + y + "L" + (lsx - effectLen - 10) + "," + y + "L" + (lsx - effectLen - 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
+            pathPoints = "M" + lsx + "," + y + "L" + (lsx - effectLen - 10) + "," + y + "L" + (lsx - effectLen - 10) + "," + (ty - s / 4) + "L" + ltx + "," + (ty - s / 4);
         } else {
             csx = sx + w / 2 + configR;
             ctx = tx + configR;
@@ -471,7 +471,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
             ty = sy + corner;
             effectLen = eleDist * 0.6;
             anchor = 'start';
-            pathPoints = "M" + lsx + "," + y + "L" + (lsx + effectLen + 10) + "," + y + "L" + (lsx + effectLen + 10) + "," + (y + corner) + "L" + ltx + "," + (y + corner);
+            pathPoints = "M" + lsx + "," + y + "L" + (lsx + effectLen + 10) + "," + y + "L" + (lsx + effectLen + 10) + "," + (ty - s / 4) + "L" + ltx + "," + (ty - s / 4);
         }
     }
 
@@ -519,7 +519,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
 
     g.append('text')
         .attr('x', tsx)
-        .attr('y', sy + s)
+        .attr('y', sy + s / 1.3)
         .attr('text-anchor', anchor)
         .attr('font-family', 'Arial, Helvetica, sans-serif')
         .attr('font-size', s)
@@ -576,8 +576,8 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
     }
 
     let g = svg.append('g')
-    .attr('class', 'svg_mediated')
-    .attr('opacity', opacity);
+        .attr('class', 'svg_mediated')
+        .attr('opacity', opacity);
 
     //connect with a line 
     let csx = sx;
@@ -588,10 +588,10 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
     let tcsx = sx;
     let pathPoints = "";
     let y = sy - s / 4;
-    let tsy = sy + s;
+    let tsy = y + s;
     let tcsy = sy - s / 1.5;
     let anchor = 'start';
-    let tsyRatio = 0.5;
+    let tsyRatio = 0.3;
 
     if (effect.length > 60) {
         corner = actionSize + 20;
