@@ -134,3 +134,11 @@ function checkDirect(e) {
         e.parentNode.parentNode.querySelector("#via").value = "";
     }
 }
+
+function showInstruction(e) {
+    e.parentNode.querySelector("#instruction_text").style.display = "block";
+}
+
+function closeInstruction(e) {
+    e.parentNode.style.display = "none";
+}

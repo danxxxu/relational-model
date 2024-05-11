@@ -200,6 +200,8 @@ export function drawVis(allInputs) {
         const condition = allRelations[actionKey];
         drawRelation(x, actionKey, condition, actionSize);
     }
+
+    svg.insertAdjacentHTML('afterend', ' <button id="savePDF">Download</button>');
 }
 
 // order actions based on their condition 

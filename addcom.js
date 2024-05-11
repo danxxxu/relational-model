@@ -17,14 +17,74 @@ function addCommunication(element) {
   let comHtml = `
   <div class="com">
   <div class="an_com">
-    <div class="ancom_block">To:</div>
-    <div class="ancom_block">Means:</div>
-    <div class="ancom_block">&nbsp</div>
-    <div class="ancom_block" style="margin-top: 8px">Config:</div>
-    <div class="ancom_block" style="margin-top: 8px">Count:</div>
-    <div class="ancom_block">Access:</div>
-    <div class="ancom_block">&nbsp</div>
-    <div class="ancom_block">Effect:</div>
+    <div class="ancom_block">
+      To:
+      <span class="info"
+        >To which element the action is directed at.
+      </span>
+    </div>
+    <div class="ancom_block">
+      Means:<span class="info"
+        >The means by which the action reaches the receiving
+        element.
+        <ul>
+          <li>
+            Direct: the action is performed to the receiving element
+            directly without any intermediate element involved.
+          </li>
+          <li>
+            Via (intermediate element): The action is performed to
+            an intermediate element and reaches the receiving
+            element via the intermediate element. This type of
+            communication is often termed mediated communication.
+          </li>
+        </ul>
+      </span>
+    </div>
+    <div class="ancom_block" style="cursor: default">&nbsp</div>
+    <div class="ancom_block" style="margin-top: 8px">
+      Config:<span class="info"
+        >Short for 'configuration'; indicates the number of elements
+        at both ends of the communication.
+        <ul>
+          <li>
+            From: the number of elements it takes to perform the
+            action.
+          </li>
+          <li>
+            To: the number of elements that can receive the
+            communication.
+          </li>
+        </ul>
+      </span>
+    </div>
+    <div class="ancom_block" style="margin-top: 8px">
+      Count:<span class="info"
+        >The number of communication of the same form that can take
+        place simultaneously.
+      </span>
+    </div>
+    <div class="ancom_block">
+      Access:<span class="info"
+        >The degree to which the communication is accessible or
+        perceivable to all elements.
+        <ul>
+          <li>
+            Private: the communication can only be perceived by the
+            communicating elements.
+          </li>
+          <li>
+            Public: the communication can also be perceived by
+            elements or spectators beyond the communicating
+            elements.
+          </li>
+        </ul>
+      </span>
+    </div>
+    <div class="ancom_block" style="cursor: default">&nbsp</div>
+    <div class="ancom_block">
+      Effect:<span class="info">STILL WORKING ON THIS !!! </span>
+    </div>
   </div>
   <div class="communications">
   <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>

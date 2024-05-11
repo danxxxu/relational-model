@@ -7,22 +7,6 @@ let existType = [];
 
 let allInputs = {};
 
-// const mainR = 55;
-// const dirR = 0;
-// const viaR = 15;
-// const viaR1 = viaR - 1;
-// const mainDist = 50;
-// const viaDist = -10;
-// const dirDist = - 50;
-
-// let node = {};
-// let link = {};
-
-// let nodes = [];
-// let links = [];
-
-// export { mainR, viaR1, viaR };
-// import { drawVis } from "./script.js"
 import { drawVis } from "./sketch.js"
 
 
@@ -139,15 +123,11 @@ function deleteDB() {
 
 function collectAllInputs() {
     allInputs = {};
-    // nodes = []; // {id, index, num, size, text}
-    // links = []; // {source, target, index, distance, dash}
 
     // getting all the inputs
     const allElements = document.querySelectorAll(".element");
     allInputs.eleCount = allElements.length;
     allElements.forEach(element => {
-        // node = {};
-        // link = {};
         let exist = false;
         const nodeIndex = element.querySelector("#index").innerText;
         const index = nodeIndex.replace("#", "element");
@@ -169,16 +149,6 @@ function collectAllInputs() {
         }
 
         allInputs[index].eleNum = element.querySelector("#ele_num").value;
-
-        // add main nodes
-        // node.id = nodeIndex;
-        // node.size = mainR;
-        // node.text = nodeIndex + ` ` + allInputs[index].type;
-        // node.num = `(` + allInputs[index].eleNum + `)`;
-        // nodes.push(node);
-
-        // allInputs[index].actions = [];
-        // allInputs[index].comCount = [];
 
         // get all actions from the selected element 
         const allActions = element.querySelectorAll(".action");
@@ -216,86 +186,6 @@ function collectAllInputs() {
                 allInputs[index][actionIndex][i + 1].to = allCom[i].querySelector("#to").value;
                 allInputs[index][actionIndex][i + 1].direct = allCom[i].querySelector(`#direct_means`).checked;
 
-                // // add direct links 
-                // if (allInputs[index][actionIndex][i + 1].direct) {
-                //     if (toElement != nodeIndex) {
-                //         link = {};
-                //         link.source = nodeIndex;
-                //         link.target = toElement;
-                //         link.distance = mainDist;
-                //         link.dash = `none`;
-                //         links.push(link);
-                //     } else {
-                //         node = {};
-                //         node.id = nodeIndex + `_to_` + toElement;
-                //         node.size = dirR;
-                //         node.text = ``;
-                //         node.num = ``;
-                //         nodes.push(node);
-
-                //         link = {};
-                //         link.source = nodeIndex;
-                //         link.target = node.id;
-                //         link.distance = dirDist;
-                //         link.dash = `none`;
-                //         links.push(link);
-
-                //         link = {};
-                //         link.source = node.id;
-                //         link.target = toElement;
-                //         link.distance = dirDist;
-                //         link.dash = `none`;
-                //         links.push(link);
-                //     }
-                // } else {
-                //     // add via links 
-                //     const viaElement = "#" + allCom[i].querySelector("#via").value;
-                //     // console.log(viaElement);
-
-                //     if (toElement != nodeIndex) {
-                //         node = {};
-                //         node.id = nodeIndex + `_via_` + viaElement + `_to_` + toElement;
-                //         node.size = viaR;
-                //         node.text = viaElement;
-                //         node.num = ``;
-                //         nodes.push(node);
-
-                //         link = {};
-                //         link.source = nodeIndex;
-                //         link.target = node.id;
-                //         link.distance = viaDist;
-                //         link.dash = `5,5`;
-                //         links.push(link);
-
-                //         link = {};
-                //         link.source = node.id;
-                //         link.target = toElement;
-                //         link.distance = viaDist;
-                //         link.dash = `5,5`;
-                //         links.push(link)
-                //     } else {
-                //         node = {};
-                //         node.id = nodeIndex + `_via_` + viaElement + `_to_` + toElement;
-                //         node.size = viaR1;
-                //         node.text = viaElement;
-                //         node.num = ``;
-                //         nodes.push(node);
-
-                //         link = {};
-                //         link.source = nodeIndex;
-                //         link.target = node.id;
-                //         link.distance = viaDist;
-                //         link.dash = `5,5`;
-                //         links.push(link);
-
-                //         link = {};
-                //         link.source = node.id;
-                //         link.target = toElement;
-                //         link.distance = viaDist;
-                //         link.dash = `5,5`;
-                //         links.push(link)
-                //     }
-                // }
                 if (!allInputs[index][actionIndex][i + 1].direct) {
                     allInputs[index][actionIndex][i + 1].via = allCom[i].querySelector("#via").value;
                 }
@@ -308,15 +198,4 @@ function collectAllInputs() {
 
         });
     });
-
-    // for (let i = 0; i < nodes.length; i++) {
-    //     links.forEach(link => {
-    //         if (nodes[i].id == link.source) {
-    //             link.source = i;
-    //         }
-    //         if (nodes[i].id == link.target) {
-    //             link.target = i;
-    //         }
-    //     });
-    // }
 }

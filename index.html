@@ -13,14 +13,13 @@
 
     <script type="module" src="input.js"></script>
     <script type="module" src="display.js"></script>
-    <script type="module" src="permutate.js"></script>
+    <!-- <script type="module" src="permutate.js"></script> -->
     <script type="module" src="randomise.js"></script>
     <script src="addcom.js" defer></script>
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
     <script src="interface.js"></script>
     <script type="module" src="savepdf.js"></script>
-    <!-- <script type="module" src="script.js" defer></script> -->
     <script type="module" src="sketch.js" defer></script>
   </head>
   <style>
@@ -36,19 +35,25 @@
       flex-direction: column;
       justify-content: flex-start;
     }
-    .node {
-      fill: white;
-      stroke: black;
-      stroke-width: 2px;
-    }
-    .link {
-      fill: none;
-      stroke: black;
-      stroke-width: 2px;
-    }
     div {
       margin: 0;
       padding: 0;
+    }
+    #instruction_text {
+      display: none;
+      position: fixed;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      width: 40%;
+      height: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
     }
     #select {
       position: fixed;
@@ -61,26 +66,30 @@
       padding: 15px;
       background-color: white;
     }
-    #show_elements {
+    .top_buttons {
+      position: relative;
+      display: inline-block;
+    }
+    .top_buttons:hover .info {
+      visibility: visible;
+    }
+    .top_block {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 16px;
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
     }
-    #element_list {
+    .top_link {
       font-size: 16px;
       margin: 10px 0 0 0;
       padding: 0;
       border: none;
       background-color: white;
       text-decoration: underline;
-    }
-    #element_list:hover {
       cursor: pointer;
     }
     #all_elements {
-      /* display: inline-flex; */
       flex-direction: column;
       justify-content: flex-start;
       padding: 5px;
@@ -125,6 +134,7 @@
       padding: 2px;
       width: auto;
       height: auto;
+      border: 1px solid burlywood;
       background-color: blanchedalmond;
     }
     .element,
@@ -224,6 +234,9 @@
       width: 63px;
     }
     .ancom_block {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
       font-size: 16px;
       width: 65px;
       height: auto;
@@ -231,6 +244,9 @@
       margin: 4px 0 5px 0;
       text-align: right;
       vertical-align: bottom;
+    }
+    .ancom_block:hover .info {
+      visibility: visible;
     }
     #com_num,
     #config_from,
@@ -250,21 +266,48 @@
     }
     .anno_block {
       width: 120px;
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .info {
+      position: absolute;
+      visibility: hidden;
+      z-index: 50;
+      font-size: 12px;
+      font-weight: normal;
+      padding: 5px;
+      width: 200px;
+      height: auto;
+      text-align: left;
+      color: black;
+      border: 1px solid burlywood;
+      background-color: blanchedalmond;
+    }
+    .anno_block:hover .info {
+      visibility: visible;
     }
     #index {
       text-align: center;
       font-size: 20px;
       font-weight: bold;
     }
+    #vis {
+      position: relative;
+    }
     #container {
-      margin: 0 15px 0 25px;
+      margin: 0 15px 25px 25px;
       border: 2px solid;
       font-family: Arial, Helvetica, sans-serif;
       overflow: visible;
     }
-    #save {
-      width: 964px;
-      margin-top: 8px;
+    #savePDF {
+      position: absolute;
+      width: 100px;
+      font-size: 16px;
+      top: 650px;
+      left: 1160px;
+      z-index: 100;
     }
     .close {
       position: absolute;
@@ -285,6 +328,60 @@
   <body>
     <div id="select">
       <div>
+        <button
+          id="instruction"
+          onclick="showInstruction(this)"
+          style="font-size: 16px"
+        >
+          *Instruction*
+        </button>
+        <div id="instruction_text">
+          <button class="close" onclick="closeInstruction(this)">X</button>
+          This site presents a modelling tool for describing, visualising and
+          creating interactions among various elements, including both humans
+          and non-humans. This tool is built upon a relational model previously
+          proposed to account for different forms of interaction in the context
+          of interactive artworks. A detailed description of the relational
+          model can be found in
+          <a
+            href="/resources/ISEA2023_towards a relational model of interaction.pdf"
+            target="_blank"
+            >this paper</a
+          >. The model starts by identifying the individual actors participating
+          in the interaction each referred to as an element. To describe an
+          interaction, the model examines the actions performed by the elements
+          that influence other elements. Following an action, one or more forms
+          of communication are created and directed at (an)other element(s). The
+          means of communication can be either direct or mediated. The access to
+          communication can be either public or private. Finally, the model
+          examines the effects of communication on the interaction, such as its
+          functions and impacts on other elements.
+          <br />
+          <br />
+          <span style="font-weight: bold">How to use the tool:</span><br />
+          You can either directly work on an empty worksheet or browse the
+          database to load existing interactive artworks for inspirations.
+          Before you start, please name the current worksheet, such as 'Artwork
+          Title (year) by Artist'. This allows you to store the data in the
+          database and reload the worksheet data using the same name.
+          <br />
+          <br />
+          While working on the worksheet, you can hover over various terms used
+          in the relational model to view brief explanations. Clicking on
+          certain text fields will prompt a suggestion list based on database
+          data. You may select an option from the list or input new content as
+          desired. If no visualisation was shown after clicking on the visulise
+          button, there may be important data missing somewhere in the
+          worksheet.
+          <br />
+          //GENERATION!!!//
+          <br />
+          <br />
+          <span style="font-weight: bold">Note:</span><br />
+          There is no right or wrong way of describe an interaction. Feel free
+          to tailor the level of details to suit your purpose and experiment
+          with different approaches to find the most effective description.
+        </div>
         <select
           id="select_interaction"
           name="interaction_ids"
@@ -297,19 +394,43 @@
           style="width: 400px; text-align: center; font-size: 16px"
           placeholder="Please name the current worksheet"
         />
-        <button id="submit" style="width: 70px; font-size: 16px">Save</button>
         <button
+          class="top_buttons"
+          id="submit"
+          style="width: 70px; font-size: 16px"
+        >
+          Save
+          <span class="info"
+            >Store the current worksheet data with the given name in the
+            database. The data will be overwritten if the name already exists in
+            the database.
+          </span>
+        </button>
+        <button
+          class="top_buttons"
           id="delete"
           style="width: 70px; font-size: 16px; color: crimson"
         >
           Delete
+          <span class="info"
+            >Remove both the data and the worksheet name from the database. Use
+            it only when necessary.
+          </span>
         </button>
-        <button id="open_new" style="float: right; font-size: 16px">
-          Open a new worksheet
+        <button
+          class="top_buttons"
+          id="open_new"
+          style="float: right; font-size: 16px"
+        >
+          Open a new worksheet<span
+            class="info"
+            style="position: absolute; top: 25px; left: -30px"
+            >Open an empty worksheet in a new tab.
+          </span>
         </button>
       </div>
-      <div id="show_elements">
-        <button id="element_list" onclick="showAll(this)">
+      <div class="top_block">
+        <button class="top_link" id="element_list" onclick="showAll(this)">
           Show all elements
         </button>
         <div id="all_elements"></div>
@@ -333,14 +454,43 @@
         <!-- annotation -->
         <div class="annotation">
           <div class="anno_block" style="font-size: 20px; font-weight: bold">
-            ELEMENT
+            ELEMENT:
+            <span class="info"
+              >Individual actors in the interaction exhibit the same or similars
+              set of behaviours.
+            </span>
           </div>
-          <div class="anno_block">Type:</div>
-          <div class="anno_block">Count:</div>
-          <div class="anno_action">
-            <div class="anno_block" style="font-size: 20px; font-weight: bold">
-              ACTION:
-            </div>
+          <div class="anno_block">
+            Type:<span class="info"
+              >The categorical description helps to differentiate the elements.
+              If an artwork has elements of the same type performing different
+              roles, indicate the role of the element after '/'.
+            </span>
+          </div>
+          <div class="anno_block">
+            Count:<span class="info"
+              >The number of elements of the same type that can simultaneously
+              participate in the interaction. A '+' indicates that there is no
+              upper limit on how many elements can participate simultaneously.
+            </span>
+          </div>
+          <div
+            class="anno_block"
+            style="font-size: 20px; font-weight: bold; margin-top: 10px"
+          >
+            ACTION:<span class="info"
+              >Something that is done or performed by the element to other
+              element(s) of the same or different type.
+              <br />
+              <br />
+              An action can be initiated by the element itself or as a reaction
+              to other action(s). Please specify the necessary conditions
+              following the action.
+              <br />
+              <br />
+              Please enter the actions and their conditions in a logical or
+              chronological order if such relationships are present.
+            </span>
           </div>
         </div>
       </div>
@@ -425,18 +575,91 @@
                 </select>
               </div>
             </div>
-            <div class="act_block">COMMUNICATION:</div>
-            <!-- action1_Communication1 -->
+            <div
+              class="ancom_block"
+              style="text-align: left; width: 98%; margin: 3px"
+            >
+              COMMUNICATION:
+              <span class="info"
+                >A form of communication is created when an action is done to an
+                element. An action can be directed at different elements thus
+                creating multiple forms of communication.
+                <br />
+                <br />
+                Please enter the communication in a logical or chronological
+                order if such relationships are present.
+              </span>
+            </div>
             <div class="com">
               <div class="an_com">
-                <div class="ancom_block">To:</div>
-                <div class="ancom_block">Means:</div>
-                <div class="ancom_block">&nbsp</div>
-                <div class="ancom_block" style="margin-top: 8px">Config:</div>
-                <div class="ancom_block" style="margin-top: 8px">Count:</div>
-                <div class="ancom_block">Access:</div>
-                <div class="ancom_block">&nbsp</div>
-                <div class="ancom_block">Effect:</div>
+                <div class="ancom_block">
+                  To:
+                  <span class="info"
+                    >To which element the action is directed at.
+                  </span>
+                </div>
+                <div class="ancom_block">
+                  Means:<span class="info"
+                    >The means by which the action reaches the receiving
+                    element.
+                    <ul>
+                      <li>
+                        Direct: the action is performed to the receiving element
+                        directly without any intermediate element involved.
+                      </li>
+                      <li>
+                        Via (intermediate element): The action is performed to
+                        an intermediate element and reaches the receiving
+                        element via the intermediate element. This type of
+                        communication is often termed mediated communication.
+                      </li>
+                    </ul>
+                  </span>
+                </div>
+                <div class="ancom_block" style="cursor: default">&nbsp</div>
+                <div class="ancom_block" style="margin-top: 8px">
+                  Config:<span class="info"
+                    >Short for 'configuration'; indicates the number of elements
+                    at both ends of the communication.
+                    <ul>
+                      <li>
+                        From: the number of elements it takes to perform the
+                        action.
+                      </li>
+                      <li>
+                        To: the number of elements that can receive the
+                        communication.
+                      </li>
+                    </ul>
+                  </span>
+                </div>
+                <div class="ancom_block" style="margin-top: 8px">
+                  Count:<span class="info"
+                    >The number of communication of the same form that can take
+                    place simultaneously.
+                  </span>
+                </div>
+                <div class="ancom_block">
+                  Access:<span class="info"
+                    >The degree to which the communication is accessible or
+                    perceivable to all elements.
+                    <ul>
+                      <li>
+                        Private: the communication can only be perceived by the
+                        communicating elements.
+                      </li>
+                      <li>
+                        Public: the communication can also be perceived by
+                        elements or spectators beyond the communicating
+                        elements.
+                      </li>
+                    </ul>
+                  </span>
+                </div>
+                <div class="ancom_block" style="cursor: default">&nbsp</div>
+                <div class="ancom_block">
+                  Effect:<span class="info">STILL WORKING ON THIS !!! </span>
+                </div>
               </div>
               <div class="communications">
                 <button class="close" id="delete_com" onclick="deleteCom(this)">
@@ -536,11 +759,11 @@
         <button class="control_button" id="permutate">Permutate</button>
       </div>
     </div>
-    <!-- <svg id="container" width="960" height="679"></svg> -->
-    <svg id="container" width="1240" height="679"></svg>
-    <div id="save">
-      <button class="control_button" id="savePDF">Download</button>
+    <div id="vis">
+      <svg id="container" width="1240" height="679"></svg>
+      <button id="savePDF">Download</button>
     </div>
+    <!-- <svg id="container" width="960" height="679"></svg> -->
     <script>
       const firebaseConfig = {
         authDomain: "relational-model-data.firebaseapp.com",
