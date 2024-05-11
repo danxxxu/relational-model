@@ -47,16 +47,16 @@ function addAction(element) {
  </div>
     <div class="act_block">COMMUNICATION:</div> 
     <div class="com">
-    <div class="an_com">
-      <div class="ancom_block">To:</div>
-      <div class="ancom_block">Means:</div>
-      <div class="ancom_block">&nbsp</div>
-      <div class="ancom_block">Access:</div>
-      <div class="ancom_block">&nbsp</div>
-      <div class="ancom_block">Config:</div>
-      <div class="ancom_block">Count:</div>
-      <div class="ancom_block">Effect:</div>
-    </div>   
+              <div class="an_com">
+                <div class="ancom_block">To:</div>
+                <div class="ancom_block">Means:</div>
+                <div class="ancom_block">&nbsp</div>
+                <div class="ancom_block" style="margin-top: 8px">Config:</div>
+                <div class="ancom_block" style="margin-top: 8px">Count:</div>
+                <div class="ancom_block">Access:</div>
+                <div class="ancom_block">&nbsp</div>
+                <div class="ancom_block">Effect:</div>
+              </div>
     <div class="communications">
     <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
       <div class="block">
@@ -87,27 +87,31 @@ function addAction(element) {
       </select>
       </div>
       <div class="block">
-        <input
-          type="radio"
-          id="public_access"
-          name="` + eleIndex + `_act` + actCount + `_access"
-          value="public"
-          checked
-        /><label for="public_access">Public</label>
-      </div>
-      <div class="block">
-        <input
-          type="radio"
-          id="private_access"
-          name="` + eleIndex + `_act` + actCount + `_access"
-          value="private"
-        /><label for="private_access">Private</label>
-      </div>
-      <div class="block">
-        <input list="eCount" id="config_from" /><span>to</span
-        ><input list="eCount" id="config_to" />
-      </div>
+      <input
+        list="eCount"
+        id="config_from"
+        placeholder="From"
+      /><span style="font-size: 25px">&rarr;</span
+      ><input list="eCount" id="config_to" placeholder="To" />
+    </div>
       <div class="block"><input list="eCount" id="com_num" /></div>
+      <div class="block">
+      <input
+        type="radio"
+        id="public_access"
+        name="` + eleIndex + `_act` + actCount + `_access"
+        value="public"
+        checked
+      /><label for="public_access">Public</label>
+    </div>
+    <div class="block">
+      <input
+        type="radio"
+        id="private_access"
+        name="` + eleIndex + `_act` + actCount + `_access"
+        value="private"
+      /><label for="private_access">Private</label>
+    </div>
       <div class="block">                  
       <textarea
       id="effect"
