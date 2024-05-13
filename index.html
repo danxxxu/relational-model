@@ -19,6 +19,7 @@
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
     <script src="interface.js"></script>
+    <script type="module" src="annotation.js"></script>
     <script type="module" src="savepdf.js"></script>
     <script type="module" src="sketch.js" defer></script>
   </head>
@@ -294,9 +295,10 @@
     }
     #vis {
       position: relative;
+      display: inline-flex;
     }
     #container {
-      margin: 0 15px 25px 25px;
+      margin: 0 5px 25px 25px;
       border: 2px solid;
       font-family: Arial, Helvetica, sans-serif;
       overflow: visible;
@@ -308,6 +310,12 @@
       top: 650px;
       left: 1160px;
       z-index: 100;
+    }
+    #vis_anno {
+      margin: 0 25px 25px 5px;
+      border: 2px solid;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: visible;
     }
     .close {
       position: absolute;
@@ -762,6 +770,7 @@
     <div id="vis">
       <svg id="container" width="1240" height="679"></svg>
       <button id="savePDF">Download</button>
+      <svg id="vis_anno" width="250" height="510"></svg>
     </div>
     <!-- <svg id="container" width="960" height="679"></svg> -->
     <script>

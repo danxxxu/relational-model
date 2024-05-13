@@ -10,7 +10,7 @@ const elementSize = 18;
 const actionSize = 16;
 const configR = 8;
 const comSize = 11;
-const elementY = 50;
+const elementY = 60;
 const relationSize = 10; // 2px line, 8px rect
 const opacityV = 0.65;
 // sort actions
@@ -330,6 +330,38 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
 function drawElement(x, y, w, h, s, info, count) {
     let g = svg.append('g')
         .attr('class', 'svg_element');
+
+    if (count == "2") {
+        g.append('rect')
+            .attr('x', x - w / 2 + 5)
+            .attr('y', y - h / 2 - 5)
+            .attr('width', w)
+            .attr('height', h)
+            .attr('rx', 15)
+            .attr('stroke-width', 2)
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
+    } else if (count.includes("+")) {
+        g.append('rect')
+            .attr('x', x - w / 2 + 10)
+            .attr('y', y - h / 2 - 10)
+            .attr('width', w)
+            .attr('height', h)
+            .attr('rx', 15)
+            .attr('stroke-width', 2)
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
+
+        g.append('rect')
+            .attr('x', x - w / 2 + 5)
+            .attr('y', y - h / 2 - 5)
+            .attr('width', w)
+            .attr('height', h)
+            .attr('rx', 15)
+            .attr('stroke-width', 2)
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
+    }
 
     g.append('rect')
         .attr('x', x - w / 2)
