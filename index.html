@@ -11,6 +11,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+      integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
     <script type="module" src="input.js"></script>
     <script type="module" src="display.js"></script>
     <!-- <script type="module" src="permutate.js"></script> -->
@@ -348,9 +355,9 @@
           This site presents a modelling tool for describing, visualising and
           creating interactions among various elements, including both humans
           and non-humans. This tool is built upon a relational model previously
-          proposed to account for different forms of interaction in the context
-          of interactive artworks. A detailed description of the relational
-          model can be found in
+          proposed for describing different forms of interaction in the context
+          of interactive artworks. A detailed description of the model can be
+          found in
           <a
             href="/resources/ISEA2023_towards a relational model of interaction.pdf"
             target="_blank"
@@ -374,8 +381,8 @@
           database and reload the worksheet data using the same name.
           <br />
           <br />
-          While working on the worksheet, you can hover over various terms used
-          in the relational model to view brief explanations. Clicking on
+          While working on the worksheet, you can hover over the various terms
+          used in the relational model to view brief explanations. Clicking on
           certain text fields will prompt a suggestion list based on database
           data. You may select an option from the list or input new content as
           desired. If no visualisation was shown after clicking on the visulise
@@ -425,6 +432,7 @@
             it only when necessary.
           </span>
         </button>
+        <!-- <button id="saveData">Save Data</button> -->
         <button
           class="top_buttons"
           id="open_new"
@@ -471,6 +479,8 @@
           <div class="anno_block">
             Type:<span class="info"
               >The categorical description helps to differentiate the elements.
+              <br />
+              <br />
               If an artwork has elements of the same type performing different
               roles, indicate the role of the element after '/'.
             </span>
@@ -478,8 +488,11 @@
           <div class="anno_block">
             Count:<span class="info"
               >The number of elements of the same type that can simultaneously
-              participate in the interaction. A '+' indicates that there is no
-              upper limit on how many elements can participate simultaneously.
+              participate in the interaction.
+              <br />
+              <br />
+              A '+' indicates that there is no upper limit on how many elements
+              can participate simultaneously.
             </span>
           </div>
           <div
@@ -552,7 +565,8 @@
             </button>
             <div class="act_block">
               <label for="actionV" id="actionIn">1</label>
-              <input id="actionV" placeholder="Action" />
+              <input list="existAction" id="actionV" placeholder="Action" />
+              <datalist id="existAction"></datalist>
             </div>
             <div id="condition" style="width: 100%">
               <div class="act_block">

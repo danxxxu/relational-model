@@ -28,7 +28,8 @@ function addElement(element) {
       <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
       <div class="act_block">
       <label for="actionV" id="actionIn">1</label>
-      <input id="actionV" placeholder="Action"/>
+      <input list="existAction" id="actionV" placeholder="Action" />
+              <datalist id="existAction"></datalist>
     </div>
     <div id="condition" style="width: 100%">
       <div class="act_block">

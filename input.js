@@ -1,9 +1,12 @@
 // access collection 'interactions'
-let interactions = db.collection('interactions');
-let interactionID = db.collection('data').doc('interactionID');
+const interactions = db.collection('interactions');
+let snapshot;
+const interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
-let elementType = db.collection('data').doc('elementType');
+const elementType = db.collection('data').doc('elementType');
 let existType = [];
+const allAction = db.collection('data').doc('action');
+let existAction = [];
 
 let allInputs = {};
 
@@ -13,12 +16,16 @@ import { drawVis } from "./sketch.js"
 document.querySelector("#visualise").addEventListener("click", visualise);
 document.querySelector("#submit").addEventListener("click", submitDB);
 document.querySelector("#delete").addEventListener("click", deleteDB);
+// document.querySelector("#saveData").addEventListener("click", saveData);
 
 window.addEventListener('load', loadData, false);
 
-document.querySelector("#add_element").addEventListener('click', displaySelect());
-
 async function loadData() {
+    // snapshot = await interactions.get();
+
+    const allActions = await allAction.get();
+    existAction = allActions.data().actions;
+
     const Etype = await elementType.get();
     existType = Etype.data().types;
 
@@ -26,7 +33,15 @@ async function loadData() {
     existingID = allId.data().ids;
 
     displayID()
-    displaySelect();
+    // displaySelect();
+    const allEles = document.querySelectorAll(".element");
+    allEles.forEach(element => {
+        displaySelect(element);
+        const allActs = element.querySelectorAll(".action");
+        allActs.forEach(act => {
+            displayAction(act);
+        });
+    });
 }
 
 function displayID() {
@@ -41,20 +56,23 @@ function updateID(id) {
     selectInteraction.innerHTML += `<option value="` + id + `">` + id + `</option>`;
 }
 
-function displaySelect() {
-    const allEles = document.querySelectorAll(".element");
-    allEles.forEach(element => {
-        const eTypes = element.querySelector("#existTypes");
-        existType.forEach(type => {
-            eTypes.innerHTML += `<option value="` + type + `"></option>`
-        });
+function displaySelect(e) {
+    const eTypes = e.querySelector("#existTypes");
+    existType.forEach(type => {
+        eTypes.innerHTML += `<option value="` + type + `"></option>`;
+    });
+}
+
+function displayAction(e) {
+    const eAction = e.querySelector("#existAction");
+    existAction.forEach(action => {
+        eAction.innerHTML += `<option value="` + action + `"></option>`;
     });
 }
 
 // visualise
 function visualise() {
     collectAllInputs();
-    // drawVis(nodes, links);
     drawVis(allInputs);
 }
 
@@ -117,7 +135,9 @@ function deleteDB() {
         interactionID.update({
             ids: firebase.firestore.FieldValue.arrayRemove(getID)
         });
+
         location.reload();
+        document.querySelector("#name_interaction").value = "";
     }
 }
 
@@ -129,6 +149,7 @@ function collectAllInputs() {
     allInputs.eleCount = allElements.length;
     allElements.forEach(element => {
         let exist = false;
+
         const nodeIndex = element.querySelector("#index").innerText;
         const index = nodeIndex.replace("#", "element");
         allInputs[index] = {};
@@ -156,8 +177,23 @@ function collectAllInputs() {
         let actionC = 0;
         allActions.forEach(action => {
             actionC++;
+            let Aexist = false;
 
-            const actionVal = action.querySelector("#actionV").value;
+            let actionVal = action.querySelector("#actionV").value;
+            actionVal = actionVal.toLowerCase().trim();
+            for (let i = 0; i < existAction.length; i++) {
+                if (actionVal == existAction[i]) {
+                    Aexist = true;
+                    break;
+                }
+            }
+            if (!Aexist) {
+                allAction.update({
+                    actions: firebase.firestore.FieldValue.arrayUnion(actionVal)
+                });
+                existAction.push(actionVal);
+            }
+
             // allInputs[index].actions.push(actionVal);
             const actionIndex = "action" + actionC;
             allInputs[index][actionIndex] = {};
@@ -199,3 +235,27 @@ function collectAllInputs() {
         });
     });
 }
+
+// function saveData() {
+//     const allData = snapshot.docs;
+//     let effects = [];
+//     allData.forEach(doc => {
+//         const data = doc.data();
+//         for (let i = 0; i < data.eleCount; i++) {
+//             const ele = "element" + (i + 1);
+//             for (let j = 0; j < data[ele].actionCount; j++) {
+//                 const act = "action" + (j + 1);
+//                 for (let k = 0; k < data[ele][act].comCount; k++) {
+//                     const com = k + 1;
+//                     let line = data[ele][act][com].effect + '\n';
+//                     effects.push(line);
+//                 }
+//             }
+//         }
+//     });
+//     // console.log(effects);
+//     let blob = new Blob(effects, {
+//         type: "text/plain;charset=utf-8",
+//      });
+//      saveAs(blob, "data.txt");
+// }
