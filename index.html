@@ -26,7 +26,7 @@
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
     <script src="interface.js"></script>
-    <script type="module" src="annotation.js"></script>
+    <script type="module" src="legends.js"></script>
     <script type="module" src="savepdf.js"></script>
     <script type="module" src="sketch.js" defer></script>
   </head>
@@ -504,9 +504,12 @@
               element(s) of the same or different type.
               <br />
               <br />
+              Either an action is <b>intended</b> for participating in the interaction, or its effects are registered by other elements thus 'forcing' the acting element to participate (<b>unintended</b>). Please select the corresponding case. 
+              <br />
+              <br />
               An action can be initiated by the element itself or as a reaction
               to other action(s). Please specify the necessary conditions
-              following the action.
+              following the action in the form of <b>"If ... do(es) ..."</b>.
               <br />
               <br />
               Please enter the actions and their conditions in a logical or
@@ -568,6 +571,21 @@
               <input list="existAction" id="actionV" placeholder="Action" />
               <datalist id="existAction"></datalist>
             </div>
+            <div class="act_block">
+              <input
+                type="radio"
+                id="intentional"
+                name="intention"
+                value="intentional"
+                checked
+              /><label for="intentional">Intended</label>
+              <input
+                type="radio"
+                id="unintentional"
+                name="intention"
+                value="unintentional"
+              /><label for="unintentional">Unintended</label>
+            </div>
             <div id="condition" style="width: 100%">
               <div class="act_block">
                 <span>If</span>
@@ -597,20 +615,19 @@
                 </select>
               </div>
             </div>
-            <div
-              class="ancom_block"
-              style="text-align: left; width: 98%; margin: 3px"
-            >
-              COMMUNICATION:
-              <span class="info"
-                >A form of communication is created when an action is done to an
-                element. An action can be directed at different elements thus
-                creating multiple forms of communication.
-                <br />
-                <br />
-                Please enter the communication in a logical or chronological
-                order if such relationships are present.
-              </span>
+            <div class="act_block">
+              <div class="ancom_block" style="margin: 0">
+                COMMUNICATION:
+                <span class="info"
+                  >A form of communication is created when an action is done to
+                  an element. An action can be directed at different elements
+                  thus creating multiple forms of communication.
+                  <br />
+                  <br />
+                  Please enter the communication in a logical or chronological
+                  order if such relationships are present.
+                </span>
+              </div>
             </div>
             <div class="com">
               <div class="an_com">
@@ -784,7 +801,7 @@
     <div id="vis">
       <svg id="container" width="1240" height="679"></svg>
       <button id="savePDF">Download</button>
-      <svg id="vis_anno" width="250" height="510"></svg>
+      <svg id="vis_anno" width="250" height="565"></svg>
     </div>
     <!-- <svg id="container" width="960" height="679"></svg> -->
     <script>

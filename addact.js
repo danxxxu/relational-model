@@ -21,6 +21,21 @@ function addAction(element) {
    <input list="existAction" id="actionV" placeholder="Action" />
    <datalist id="existAction"></datalist>
    </div>
+   <div class="act_block">
+   <input
+         type="radio"
+         id="intentional"
+         name="` + eleIndex + `_act` + actCount + `_intention"
+         value="intentional"
+         checked
+       /><label for="intentional">Intented</label>
+       <input
+       type="radio"
+       id="unintentional"
+       name="` + eleIndex + `_act` + actCount + `_intention"
+       value="unintentional"
+     /><label for="unintentional">Unintented</label>
+ </div>
    <div id="condition" style="width: 100%">
    <div class="act_block">
    <span>If </span
@@ -46,11 +61,8 @@ function addAction(element) {
  </select>
  </div>
  </div>
- <div
- class="ancom_block"
- style="text-align: left; width: 98%; margin: 3px"
->
- COMMUNICATION:
+ <div class="act_block">
+ <div class="ancom_block" style="margin: 0">COMMUNICATION:
  <span class="info"
    >A form of communication is created when an action is done to an
    element. An action can be directed at different elements thus
@@ -60,6 +72,7 @@ function addAction(element) {
    Please enter the communication in a logical or chronological
    order if such relationships are present.
  </span>
+ </div>
 </div>
 <div class="com">
  <div class="an_com">

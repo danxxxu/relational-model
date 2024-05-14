@@ -20,7 +20,7 @@ svg.append('text')
     .attr('text-anchor', 'start')
     .attr('font-size', 16)
     .attr('font-weight', 'bold')
-    .text("Annotation:");
+    .text("Legends:");
 
 // annotate element 
 let ele = svg.append('g')
@@ -30,7 +30,7 @@ const eleW = 0.4 * width;
 const eleX = 0.5 * width - 0.5 * eleW;
 const eleH = 0.2 * width;
 const eleY = height / 9 - eleH + 10;
-const actW = 0.25 * width;
+const actW = 0.25 * width + 3;
 const actH = actW * 0.6;
 
 ele.append('rect')
@@ -68,12 +68,12 @@ ele.append('line')
     .attr('x1', eleX + eleW * 0.5)
     .attr('y1', eleY + eleH)
     .attr('x2', eleX + eleW * 0.5)
-    .attr('y2', 2 * height / 9)
+    .attr('y2', 2 * height / 9 + 60)
     .attr('stroke-width', 2)
     .attr('stroke', 'black')
     .attr('stroke-dasharray', '5')
 
-// annotate action 
+// annotate action/intended 
 ele.append('rect')
     .attr('x', eleX + eleW * 0.5 - actW * 0.5)
     .attr('y', eleY + eleH + 15)
@@ -85,10 +85,50 @@ ele.append('rect')
 
 ele.append('text')
     .attr('x', eleX + eleW * 0.5)
-    .attr('y', eleY + eleH + 38)
+    .attr('y', eleY + eleH + 33)
     .attr('text-anchor', 'middle')
     .attr('font-size', 14)
     .text("Action");
+
+ele.append('text')
+    .attr('x', eleX + eleW * 0.5)
+    .attr('y', eleY + eleH + 48)
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 11)
+    .text("Intended");
+
+// annotate action/unintended
+ele.append('rect')
+    .attr('x', eleX + eleW * 0.5 - actW * 0.5)
+    .attr('y', eleY + eleH + 30 + actH)
+    .attr('width', actW)
+    .attr('height', actH)
+    .attr('stroke-width', 1)
+    .attr('stroke', 'black')
+    .attr('fill', 'white');
+
+ele.append('rect')
+    .attr('x', eleX + eleW * 0.5 - actW * 0.5 + 3)
+    .attr('y', eleY + eleH + 30 + actH + 3)
+    .attr('width', actW - 6)
+    .attr('height', actH - 6)
+    .attr('stroke-width', 1)
+    .attr('stroke', 'black')
+    .attr('fill', 'white');
+
+ele.append('text')
+    .attr('x', eleX + eleW * 0.5)
+    .attr('y', eleY + eleH + 48 + actH)
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 14)
+    .text("Action");
+
+ele.append('text')
+    .attr('x', eleX + eleW * 0.5)
+    .attr('y', eleY + eleH + 63 + actH)
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 11)
+    .text("Unintended");
 
 //annotate condition
 let cond = svg.append('g')
@@ -96,7 +136,7 @@ let cond = svg.append('g')
 
 cond.append('text')
     .attr('x', 0.05 * width)
-    .attr('y', 2 * height / 9 + 14)
+    .attr('y', 2 * height / 9 + 70)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("Condition");
@@ -106,7 +146,7 @@ const condW = condH / 4;
 
 cond.append('rect')
     .attr('x', 0.05 * width)
-    .attr('y', 2 * height / 9 + 23)
+    .attr('y', 2 * height / 9 + 80)
     .attr('width', condW)
     .attr('height', condH)
     .attr('stroke-width', 2)
@@ -115,14 +155,14 @@ cond.append('rect')
 
 cond.append('text')
     .attr('x', 0.05 * width + condW + 5)
-    .attr('y', 2 * height / 9 + condH + 15)
+    .attr('y', 2 * height / 9 + condH + 72)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("Self-initated");
 
 cond.append('rect')
     .attr('x', 0.5 * width)
-    .attr('y', 2 * height / 9 + 23)
+    .attr('y', 2 * height / 9 + 80)
     .attr('width', condW)
     .attr('height', condH)
     .attr('stroke-width', 2)
@@ -131,7 +171,7 @@ cond.append('rect')
 
 cond.append('text')
     .attr('x', 0.5 * width + condW + 5)
-    .attr('y', 2 * height / 9 + condH + 15)
+    .attr('y', 2 * height / 9 + condH + 72)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .attr('stroke', '#F08080')
@@ -140,7 +180,7 @@ cond.append('text')
 
 cond.append('rect')
     .attr('x', 0.725 * width)
-    .attr('y', 2 * height / 9 + 23)
+    .attr('y', 2 * height / 9 + 80)
     .attr('width', condW)
     .attr('height', condH)
     .attr('stroke-width', 2)
@@ -149,7 +189,7 @@ cond.append('rect')
 
 cond.append('text')
     .attr('x', 0.725 * width + condW + 5)
-    .attr('y', 2 * height / 9 + condH + 15)
+    .attr('y', 2 * height / 9 + condH + 72)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .attr('stroke', '#87CEFA')
@@ -159,31 +199,31 @@ cond.append('text')
 // AND / OR
 cond.append('line')
     .attr('x1', width / 6)
-    .attr('y1', height / 3 - 20)
+    .attr('y1', height / 3 + 37)
     .attr('x2', width / 6)
-    .attr('y2', height / 3 - 20 + condH)
+    .attr('y2', height / 3 + 37 + condH)
     .attr('stroke-width', 2)
     .attr('stroke', 'black');
 
 cond.append('text')
     .attr('x', width / 6 + 5)
-    .attr('y', height / 3 - 5)
+    .attr('y', height / 3 + 52)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("AND");
 
 cond.append('line')
     .attr('x1', 2 * width / 3)
-    .attr('y1', height / 3 - 20)
+    .attr('y1', height / 3 + 37)
     .attr('x2', 2 * width / 3)
-    .attr('y2', height / 3 - 20 + condH)
+    .attr('y2', height / 3 + 37 + condH)
     .attr('stroke-width', 2)
     .attr('stroke-dasharray', 3)
     .attr('stroke', 'black');
 
 cond.append('text')
     .attr('x', 2 * width / 3 + 5)
-    .attr('y', height / 3 - 5)
+    .attr('y', height / 3 + 52)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("OR");
@@ -209,7 +249,7 @@ svg.append('defs')
 let com = svg.append('g')
     .attr('class', 'annoCom');
 
-const comY = height / 3 + 28;
+const comY = height / 3 + 85;
 
 com.append('text')
     .attr('x', 0.05 * width)

@@ -199,6 +199,8 @@ function collectAllInputs() {
             allInputs[index][actionIndex] = {};
             allInputs[index][actionIndex].action = actionVal;
 
+            allInputs[index][actionIndex].intention = action.querySelector("#intentional").checked;
+
             const condition = action.querySelector("#condition");
             allInputs[index][actionIndex].condition = [];
 

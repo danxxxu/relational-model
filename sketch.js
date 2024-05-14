@@ -257,6 +257,7 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     const act = "action" + actIndex;
     actionN++;
     const actV = allInputs[ele][act].action;
+    const intend = allInputs[ele][act].intention;
     const len = actV.length;
     // console.log(len);
     // const scale = d3.scaleLog([1, 80], [0, 25]);
@@ -275,7 +276,7 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     actionInfo[actionKey] = info;
     // console.log(actionInfo);
 
-    drawAction(actionX, actionY, actionWidth, actionHeight, actionSize, actV);
+    drawAction(actionX, actionY, actionWidth, actionHeight, actionSize, actV, intend);
 
     const comCount = allInputs[ele][act].comCount;
 
@@ -339,7 +340,7 @@ function drawElement(x, y, w, h, s, info, count) {
             .attr('stroke-width', 2)
             .attr('stroke', 'black')
             .attr('fill', 'white');
-    } else if (count.includes("+")) {
+    } else if (count.includes("+") || count != 1) {
         g.append('rect')
             .attr('x', x - w / 2 + 10)
             .attr('y', y - h / 2 - 10)
@@ -398,7 +399,7 @@ function drawElement(x, y, w, h, s, info, count) {
         .attr('stroke-dasharray', '5')
 }
 
-function drawAction(x, y, w, h, s, act) {
+function drawAction(x, y, w, h, s, act, intend) {
     let g = svg.append('g')
         .attr('class', 'svg_action');
 
@@ -420,6 +421,17 @@ function drawAction(x, y, w, h, s, act) {
         .attr('stroke-width', 1)
         .attr('stroke', 'black')
         .attr('fill', 'white');
+
+    if (!intend) {
+        g.append('rect')
+            .attr('x', x - w / 2 + 3)
+            .attr('y', y - h + s + 3)
+            .attr('width', w - 6)
+            .attr('height', h - 6)
+            .attr('stroke-width', 1)
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
+    }
 
     g.append('text')
         .attr('x', x)

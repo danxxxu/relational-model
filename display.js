@@ -68,6 +68,11 @@ function displayInteraction(doc) {
         for (let j = 0; j < allActions.length; j++) {
             actIndex = "action" + (j + 1);
             allActions[j].querySelector("#actionV").value = doc[eleIndex][actIndex].action;
+            if (doc[eleIndex][actIndex].intention) {
+                allActions[j].querySelector("#intentional").checked = true;
+            } else {
+                allActions[j].querySelector("#unintentional").checked = true;
+            }
             // check number of communications for each action 
             const comCount = doc[eleIndex][actIndex].comCount;
             let allCom = allActions[j].querySelectorAll(".communications");
