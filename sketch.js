@@ -482,7 +482,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
         ltx = ctx + configR;
         effectLen = lsx - ltx - 10;
         tsx = ctx + configR + 10;
-        tcsx = csx - configR - 10 - s * 2;
+        tcsx = csx - configR - 10 - s;
         anchor = 'start';
         pathPoints = "M" + lsx + "," + y + "L" + ltx + "," + y;
     }
@@ -694,7 +694,7 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
     // if sourceX is larger than viaX
     else if (sx > vx) {
         csx = sx - w / 2 - configR;
-        tcsx = csx - configR - 10 - s * 2;
+        tcsx = csx - configR - 10 - s;
         lsx = csx - configR;
         //tx < vx < sx 
         if (vx > tx) {
@@ -864,6 +864,7 @@ function drawRelation(x, actionKey, condition, s) {
     let condY = [];
     let condH = [];
     let add = [];
+    let fn = [];
     let dash = 0;
     let y1, y2;
 
@@ -877,6 +878,7 @@ function drawRelation(x, actionKey, condition, s) {
             condY.push(y);
             condH.push(h);
             add.push(cond.add);
+            fn.push(cond.fnIndex);
             // console.log(cond.add);
         }
     });
@@ -907,18 +909,30 @@ function drawRelation(x, actionKey, condition, s) {
                 .attr('stroke', '#F08080') // pink #FFB6C1
                 .attr('fill', '#F08080');
 
-            if (add[i] == "0") {
-                dash = 3;
-            } else if (add[i] == "1") {
-                dash = 0;
-            }
-
             if (y0 < condY[i]) {
                 y1 = condY[i] + s + 1;
                 y2 = y0 - h0 + s - 1;
             } else {
                 y1 = y0 + s + 1;
                 y2 = condY[i] - condH[i] + s - 1;
+            }
+
+            if (fn[i] != "") {
+                dash = 0;
+                const fnText = "*" + fn[i];
+                g.append('text')
+                    .attr('x', x)
+                    .attr('y', y0 + s * 2)
+                    .attr('text-anchor', 'start')
+                    .attr('font-family', 'Arial, Helvetica, sans-serif')
+                    .attr('font-size', 11)
+                    .text(fnText);
+            } else {
+                if (add[i] == "0") {
+                    dash = 3;
+                } else if (add[i] == "1") {
+                    dash = 0;
+                }
             }
 
             g.append('line')

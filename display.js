@@ -44,6 +44,26 @@ function displayInteraction(doc) {
             allElements[i - 1].remove();
         }
     }
+    //update footnotes and index selection list
+    const footnoteContainer = document.querySelector("#footnote_container");
+    const allFn = doc.footnote;
+    if (allFn) {
+        if (allFn.length > 0) {
+            for (let i = 0; i < allFn.length; i++) {
+                let fnCount = i + 1;
+                let fnID = "footnote" + (i + 1);
+
+                let footnoteHtml = '<div class="footnote_text"> <label style="font-weight: bold">*' + fnCount + ' ' + '</label><input id="' + fnID + '" oninput="resizeInput(this)"/> <button class="close" name="delete_fn" style="width:13px; height: 15px; font-size: 11px; right: 0" onclick="deleteFootnote(this)"> X</button></div>';
+
+                footnoteContainer.insertAdjacentHTML("beforeend", footnoteHtml);
+
+                fnID = "#" + fnID;
+                footnoteContainer.querySelector(fnID).value = allFn[i];
+                footnoteContainer.querySelector(fnID).oninput();
+            }
+        }
+    }
+
     //  update elements
     allElements = document.querySelectorAll(".element");
     for (let i = 0; i < allElements.length; i++) {
@@ -144,6 +164,17 @@ function displayInteraction(doc) {
                 allIfAct[k].value = condValue[k].ifAct;
                 // console.log(allIf[k].parentNode.querySelector("#add"));
                 allIf[k].parentNode.querySelector("#add").value = condValue[k].add;
+
+                //update footnote 
+                if (condValue[k].fnIndex != "") {
+                    for (let i = 0; i < allFn.length; i++) {
+                        const fnCount = i + 1;
+                        const option = '<option value="' + fnCount + '">*' + fnCount + '</option>';
+                        condition.querySelector(".selectFootnote").insertAdjacentHTML("beforeend", option);
+                    }
+
+                    condition.querySelector(".selectFootnote").value = condValue[k].fnIndex;
+                }
             }
         }
     }

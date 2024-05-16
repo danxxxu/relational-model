@@ -212,6 +212,12 @@ function collectAllInputs() {
                 cond.ifEle = allIf[i].value;
                 cond.ifAct = allIfAct[i].value;
                 cond.add = allIf[i].parentNode.querySelector("#add").value;
+                //save footnote index
+                if (allIf.length > 2) {
+                   cond.fnIndex = condition.querySelector(".selectFootnote").value;
+                } else {
+                    cond.fnIndex = "";
+                }
                 allInputs[index][actionIndex].condition.push(cond);
             }
 
@@ -220,7 +226,7 @@ function collectAllInputs() {
             // allInputs[index].comCount.push(allCom.length);
             for (let i = 0; i < allCom.length; i++) {
                 allInputs[index][actionIndex][i + 1] = {};
-                const toElement = "#" + allCom[i].querySelector("#to").value;
+                // const toElement = "#" + allCom[i].querySelector("#to").value;
                 allInputs[index][actionIndex][i + 1].to = allCom[i].querySelector("#to").value;
                 allInputs[index][actionIndex][i + 1].direct = allCom[i].querySelector(`#direct_means`).checked;
 
@@ -236,6 +242,20 @@ function collectAllInputs() {
 
         });
     });
+
+    //save footnote texts
+    const footnoteContainer = document.querySelector("#footnote_container");
+    const allFootnote = footnoteContainer.querySelectorAll(".footnote_text");
+    let fnTexts = [];
+
+    if (allFootnote.length > 0) {
+        allFootnote.forEach(fn => {
+            fnTexts.push(fn.querySelector('input').value);
+        });
+        allInputs.footnote = fnTexts;
+    } else {
+        allInputs.footnote = [];
+    }
 }
 
 // function saveData() {
