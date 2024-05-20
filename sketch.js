@@ -279,26 +279,26 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     drawAction(actionX, actionY, actionWidth, actionHeight, actionSize, actV, intend);
 
     const comCount = allInputs[ele][act].comCount;
+    let space = 8;
 
     if (comCount == 1) {
         const communication = allInputs[ele][act][comCount];
         const to = communication.to;
         if (communication.direct) {
-            drawDirect(actionX, actionY, actionWidth, eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
+            drawDirect(actionX, actionY, actionWidth, eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
         } else {
             const via = communication.via;
-            drawMediated(actionX, actionY, actionWidth, eleX[via - 1], eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
+            drawMediated(actionX, actionY, actionWidth, eleX[via - 1], eleX[to - 1], actionY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
         }
     } else {
         let turn = 'none';
         let prevTurn = 'none';
-        let space = 8;
         for (let k = 0; k < comCount; k++) {
             const communication = allInputs[ele][act][k + 1];
             const to = communication.to;
             const comY = actionY - actionHeight / 2 - actionSize / 8 + (actionHeight / comCount) * (0.5 + k)
             if (communication.direct) {
-                drawDirect(actionX, comY, actionWidth, eleX[to - 1], comY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
+                drawDirect(actionX, comY, actionWidth, eleX[to - 1], comY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
             } else {
                 const via = communication.via;
                 const toX = eleX[to - 1];
@@ -320,7 +320,7 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
                 }
                 prevTurn = turn;
 
-                drawMediated(actionX, comY, actionWidth, viaX, toX, comY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect);
+                drawMediated(actionX, comY, actionWidth, viaX, toX, comY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
             }
         }
     }
@@ -462,7 +462,12 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
     let tcsx = sx;
     let pathPoints = "";
     let y = sy - s / 4;
-    let eleDist = eleX[1] - eleX[0];
+    let eleDist;
+    if (eleX.length > 1) {
+        eleDist = eleX[1] - eleX[0];
+    } else {
+        eleDist = width / 2.5;
+    }
     let anchor = 'start';
 
     if (sx < tx) {
@@ -762,12 +767,28 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
         // tx < sx = vx
-        else {
+        else if (vx > tx) {
             csx = sx + w / 2 + configR;
             effectLen = ltx - csx;
-            tsx = ltx + 10;
             anchor = 'start';
-            tcsx = csx;
+            lsx = csx + configR;
+            tcsx = lsx + 10;
+            ty = sy + corner;
+            let lty = ty - s / 4;
+            tsy = lty - tsyRatio * s;
+            tcsy = sy - s / 1.5;
+            ctx = tx + configR;
+            ltx = ctx + configR;
+            tsx = ltx + 10;
+            vx = lsx;
+            let viaX = vx + configR + space;
+            pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
+        }
+        // tx = sx = vx 
+        else {
+            csx = sx + w / 2 + configR;
+            effectLen = effect.length * 5;
+            anchor = 'start';
             lsx = csx + configR;
             ty = sy + corner;
             let lty = ty - s / 4;
@@ -776,7 +797,9 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
             ctx = tx + configR;
             ltx = ctx + configR;
             vx = lsx;
-            let viaX = vx + configR + space;
+            tsx = csx + 10;
+            tcsx = lsx + 10;
+            let viaX = vx + configR + effectLen + space;
             pathPoints = "M" + lsx + "," + y + "L" + viaX + "," + y + "L" + viaX + "," + lty + "L" + ltx + "," + lty;
         }
 

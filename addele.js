@@ -212,13 +212,36 @@ function addElement(element) {
               value="private"
             /><label for="private_access">Private</label>
           </div>
-          <div class="block">                  
-          <textarea
-          id="effect"
-          rows="1"
-          placeholder="Enter the effect(s) of this communication, each separated by ';'"
-          oninput="OnInput(this)"
-        ></textarea></div>
+          <div class="effect_container">
+          <div
+            class="block"
+            style="position: relative; margin: 3px 3px 0 3px"
+          >
+          <input
+          list = "existEffect"
+          class="effect"
+          ></input>
+          <datalist id="existEffect"></datalist>
+          <button
+              class="close"
+              name="delete_effect"
+              style="
+                width: 13px;
+                height: 15px;
+                font-size: 11px;
+                right: 0;
+              "
+              onclick="deleteEffect(this)"
+            >
+              X
+            </button>
+          </div>
+          <div class="block">
+            <button class="add_effect" onclick="addEffect(this)">
+              +
+            </button>
+          </div>
+        </div>
         </div>
         </div>
         <div class="add_communication">

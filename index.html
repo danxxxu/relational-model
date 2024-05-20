@@ -8,8 +8,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="assets/svg2pdf.js/dist/svg2pdf.umd.min.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
@@ -25,7 +27,10 @@
     <script src="addcom.js" defer></script>
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
+    <script src="addcond.js" defer></script>
+    <script src="addeffect.js" defer></script>
     <script src="interface.js"></script>
+    <script type="module" src="admin.js"></script>
     <script type="module" src="legends.js"></script>
     <script type="module" src="savepdf.js"></script>
     <script type="module" src="sketch.js" defer></script>
@@ -348,10 +353,16 @@
       text-align: center;
       background: none;
     }
-    textarea {
+    .effect {
       width: 235px;
-      height: 45px;
       resize: none;
+    }
+    .effect_container {
+      display: inline-flex;
+      flex-direction: column;
+    }
+    .add_effect {
+      width: 30px;
     }
   </style>
   <body>
@@ -446,7 +457,6 @@
             it only when necessary.
           </span>
         </button>
-        <!-- <button id="saveData">Save Data</button> -->
         <button
           class="top_buttons"
           id="open_new"
@@ -526,7 +536,10 @@
               <br />
               An action can be initiated by the element itself or as a reaction
               to other action(s). Please specify the necessary conditions
-              following the action in the form of <b>"If ... do(es) ..."</b>. When there are more than three conditions, you can add a <b>footnote</b> to specify their order and relationships if needed.
+              following the action in the form of <b>"If ... do(es) ..."</b>.
+              When there are more than three conditions, you can add a
+              <b>footnote</b> to specify their order and relationships if
+              needed.
               <br />
               <br />
               Please enter the actions and their conditions in a logical or
@@ -776,13 +789,35 @@
                     value="private"
                   /><label for="private_access">Private</label>
                 </div>
-                <div class="block">
-                  <textarea
-                    id="effect"
-                    rows="1"
-                    placeholder="Enter the effect(s) of this communication, each separated by ';'"
-                    oninput="OnInput(this)"
-                  ></textarea>
+                <div class="effect_container">
+                  <div
+                    class="block"
+                    style="position: relative; margin: 3px 3px 0 3px"
+                  >
+                    <input
+                    list = "existEffect"
+                    class="effect"
+                    ></input>
+                    <datalist id="existEffect"></datalist>
+                    <button
+                      class="close"
+                      name="delete_effect"
+                      style="
+                        width: 13px;
+                        height: 15px;
+                        font-size: 11px;
+                        right: 0;
+                      "
+                      onclick="deleteEffect(this)"
+                    >
+                      X
+                    </button>
+                  </div>
+                  <div class="block">
+                    <button class="add_effect" onclick="addEffect(this)">
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -812,6 +847,12 @@
         Footnotes:
       </div>
       <div id="footnote_container"></div>
+    </div>
+    <div id="admin_control" style="padding: 10px">
+      <button id="saveData">Save Data</button>
+      <button id="updateType">Update Element Type</button>
+      <button id="updateAction">Update Action List</button>
+      <button id="updateEffect">Update Effect List</button>
     </div>
     <div id="controls">
       <div class="control_block">

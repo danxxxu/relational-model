@@ -1,38 +1,42 @@
 // access collection 'interactions'
 const interactions = db.collection('interactions');
-let snapshot;
+export let snapshot;
 const interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
-const elementType = db.collection('data').doc('elementType');
+export const existData = db.collection('data').doc('data');
+
 let existType = [];
-const allAction = db.collection('data').doc('action');
 let existAction = [];
+let existEffect = [];
 
 let allInputs = {};
 
 import { drawVis } from "./sketch.js"
 
-
 document.querySelector("#visualise").addEventListener("click", visualise);
 document.querySelector("#submit").addEventListener("click", submitDB);
 document.querySelector("#delete").addEventListener("click", deleteDB);
-// document.querySelector("#saveData").addEventListener("click", saveData);
 
 window.addEventListener('load', loadData, false);
 
 async function loadData() {
-    // snapshot = await interactions.get();
+    snapshot = await interactions.get();
 
-    const allActions = await allAction.get();
-    existAction = allActions.data().actions;
+    const allData = await existData.get();
+    existType = allData.data().type;
+    existAction = allData.data().action;
+    existEffect = allData.data().effect;
 
-    const Etype = await elementType.get();
-    existType = Etype.data().types;
+    // const allActions = await allAction.get();
+    // existAction = allActions.data().actions;
+
+    // const Etype = await elementType.get();
+    // existType = Etype.data().types;
 
     const allId = await interactionID.get();
     existingID = allId.data().ids;
 
-    displayID()
+    displayID();
     // displaySelect();
     const allEles = document.querySelectorAll(".element");
     allEles.forEach(element => {
@@ -40,6 +44,10 @@ async function loadData() {
         const allActs = element.querySelectorAll(".action");
         allActs.forEach(act => {
             displayAction(act);
+            const allCom = act.querySelectorAll(".communications");
+            allCom.forEach(com => {
+                displayEffect(com);
+            });
         });
     });
 }
@@ -67,6 +75,13 @@ function displayAction(e) {
     const eAction = e.querySelector("#existAction");
     existAction.forEach(action => {
         eAction.innerHTML += `<option value="` + action + `"></option>`;
+    });
+}
+
+function displayEffect(e) {
+    const eEffect = e.querySelector("#existEffect");
+    existEffect.forEach(effect => {
+        eEffect.innerHTML += `<option value="` + effect + `"></option>`;
     });
 }
 
@@ -123,7 +138,7 @@ function submitDB() {
 function deleteDB() {
     const getID = document.querySelector("#name_interaction").value;
     let check = false;
-    const msg = 'Are you sure to delete"' + getID + '"from the database?'
+    const msg = 'Are you sure to delete "' + getID + '" from the database?'
     check = confirm(msg);
     if (check) {
         interactions.doc(getID).delete().then(() => {
@@ -134,10 +149,11 @@ function deleteDB() {
 
         interactionID.update({
             ids: firebase.firestore.FieldValue.arrayRemove(getID)
+        }).then(() => {
+            console.log("removed");
+            location.reload();
+            document.querySelector("#name_interaction").value = "";
         });
-
-        location.reload();
-        document.querySelector("#name_interaction").value = "";
     }
 }
 
@@ -163,8 +179,8 @@ function collectAllInputs() {
             }
         }
         if (!exist) {
-            elementType.update({
-                types: firebase.firestore.FieldValue.arrayUnion(allInputs[index].type)
+            existData.update({
+                type: firebase.firestore.FieldValue.arrayUnion(allInputs[index].type)
             });
             existType.push(allInputs[index].type);
         }
@@ -188,8 +204,8 @@ function collectAllInputs() {
                 }
             }
             if (!Aexist) {
-                allAction.update({
-                    actions: firebase.firestore.FieldValue.arrayUnion(actionVal)
+                existData.update({
+                    action: firebase.firestore.FieldValue.arrayUnion(actionVal)
                 });
                 existAction.push(actionVal);
             }
@@ -214,7 +230,7 @@ function collectAllInputs() {
                 cond.add = allIf[i].parentNode.querySelector("#add").value;
                 //save footnote index
                 if (allIf.length > 2) {
-                   cond.fnIndex = condition.querySelector(".selectFootnote").value;
+                    cond.fnIndex = condition.querySelector(".selectFootnote").value;
                 } else {
                     cond.fnIndex = "";
                 }
@@ -237,9 +253,30 @@ function collectAllInputs() {
                 allInputs[index][actionIndex][i + 1].configF = allCom[i].querySelector(`#config_from`).value;
                 allInputs[index][actionIndex][i + 1].configT = allCom[i].querySelector(`#config_to`).value;
                 allInputs[index][actionIndex][i + 1].comNum = allCom[i].querySelector(`#com_num`).value;
-                allInputs[index][actionIndex][i + 1].effect = allCom[i].querySelector(`#effect`).value;
-            }
 
+                // gather effects
+                let allEffect = [];
+                const effectTexts = allCom[i].querySelectorAll(`.effect`);
+                effectTexts.forEach(effect => {
+                    let effectV = effect.value.toLowerCase().trim();
+                    allEffect.push(effectV);
+
+                    let Eexist = false;
+                    for (let i = 0; i < existEffect.length; i++) {
+                        if (effectV == existEffect[i]) {
+                            Eexist = true;
+                            break;
+                        }
+                    }
+                    if (!Eexist) {
+                        existData.update({
+                            effect: firebase.firestore.FieldValue.arrayUnion(effectV)
+                        });
+                        existEffect.push(actionVal);
+                    }
+                });
+                allInputs[index][actionIndex][i + 1].effect = allEffect;
+            }
         });
     });
 

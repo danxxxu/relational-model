@@ -61,6 +61,8 @@ function displayInteraction(doc) {
                 footnoteContainer.querySelector(fnID).value = allFn[i];
                 footnoteContainer.querySelector(fnID).oninput();
             }
+        } else {
+            footnoteContainer.innerHTML = "";
         }
     }
 
@@ -124,8 +126,23 @@ function displayInteraction(doc) {
                 allCom[k].querySelector('#config_from').value = doc[eleIndex][actIndex][k + 1].configF;
                 allCom[k].querySelector('#config_to').value = doc[eleIndex][actIndex][k + 1].configT;
                 allCom[k].querySelector('#com_num').value = doc[eleIndex][actIndex][k + 1].comNum;
-                allCom[k].querySelector('#effect').value = doc[eleIndex][actIndex][k + 1].effect;
-                allCom[k].querySelector('#effect').oninput();
+
+                //display effects
+                const allEffect = doc[eleIndex][actIndex][k + 1].effect;
+                let effectTexts = allCom[k].querySelectorAll(".effect");
+                if (effectTexts.length < allEffect.length) {
+                    for (let l = effectTexts.length; l < allEffect.length; l++) {
+                        allCom[k].querySelector('.add_effect').onclick();
+                    }
+                } else if (effectTexts.length > allEffect.length) {
+                    for (let l = effectTexts.length; l > allEffect.length; l--) {
+                        effectTexts[l - 1].parentNode.remove();
+                    }
+                }
+                effectTexts = allCom[k].querySelectorAll(".effect");
+                for (let l = 0; l < allEffect.length; l++) {
+                    effectTexts[l].value = allEffect[l];
+                }
             }
         }
     }
