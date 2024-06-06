@@ -152,7 +152,7 @@ function addElement(element) {
               </div>
               <div class="ancom_block" style="cursor: default">&nbsp</div>
               <div class="ancom_block">
-                Effect:<span class="info">STILL WORKING ON THIS !!! </span>
+                Effect:<span class="info">The function(s), consequence(s) of the communication, how it influences and relates to the receiving elements.</span>
               </div>
             </div>
         <div class="communications">

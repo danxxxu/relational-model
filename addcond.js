@@ -102,10 +102,12 @@ function deleteCondition(element) {
 
 let fnCount = 0;
 function addFootnote(e) {
+    const footnoteContainer = document.querySelector("#footnote_container");
+    const existFootnote = footnoteContainer.querySelectorAll(".footnote_text");
+    fnCount = existFootnote.length;
+    
     if (e.value == "0") {
         fnCount++;
-
-        const footnoteContainer = document.querySelector("#footnote_container");
 
         let fnID = "footnote" + fnCount;
 

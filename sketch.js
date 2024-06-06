@@ -259,10 +259,11 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     const actV = allInputs[ele][act].action;
     const intend = allInputs[ele][act].intention;
     const len = actV.length;
-    // console.log(len);
-    // const scale = d3.scaleLog([1, 80], [0, 25]);
-    // actionWidth = scale(len) * actionSize;
-    actionWidth = len * actionSize / 1.5;
+    if (len < 30) {
+        actionWidth = len * actionSize / 1.5;
+    } else {
+        actionWidth = len * actionSize / 2;
+    }
     actionHeight = actionSize * 2.5;
     actionDist = (height - elementY - 20 - elementHeight * 0.5 - actionHeight * totalAction) / (totalAction + 1);
     // corner = actionHeight / 2 + 20;
@@ -496,7 +497,7 @@ function drawDirect(sx, sy, w, tx, ty, s, p, f, t, count, effect) {
         if (effect.length > 60) {
             corner = actionSize + 20;
         } else {
-            corner = actionSize + 10;
+            corner = actionSize + 13;
         }
 
         if (sx == eleX[eleX.length - 1]) {

@@ -3,7 +3,7 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 const svg = d3.select('#vis_anno');
 const width = +svg.attr('width'); // + convert string to numbers 
 // const height = +svg.attr('height');
-const height = 679;
+const height = 879;
 
 const opacityV = 0.65;
 
@@ -45,9 +45,9 @@ ele.append('rect')
 
 ele.append('text')
     .attr('x', 0.05 * width)
-    .attr('y', eleY + 14)
+    .attr('y', eleY)
     .attr('text-anchor', 'start')
-    .attr('font-size', 14)
+    .attr('font-size', 16)
     .text("Element");
 
 ele.append('text')
@@ -136,17 +136,19 @@ let cond = svg.append('g')
 
 cond.append('text')
     .attr('x', 0.05 * width)
-    .attr('y', 2 * height / 9 + 70)
+    .attr('y', 2 * height / 9 + 90)
     .attr('text-anchor', 'start')
-    .attr('font-size', 14)
+    .attr('font-size', 16)
     .text("Condition");
 
-const condH = height / 9 - 50;
+const heightC = 679;
+const condH = heightC / 9 - 50;
 const condW = condH / 4;
+const condY = 2 * height / 9 + 100;
 
 cond.append('rect')
     .attr('x', 0.05 * width)
-    .attr('y', 2 * height / 9 + 80)
+    .attr('y', condY)
     .attr('width', condW)
     .attr('height', condH)
     .attr('stroke-width', 2)
@@ -155,14 +157,14 @@ cond.append('rect')
 
 cond.append('text')
     .attr('x', 0.05 * width + condW + 5)
-    .attr('y', 2 * height / 9 + condH + 72)
+    .attr('y', condY + condH - 8)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("Self-initated");
 
 cond.append('rect')
     .attr('x', 0.5 * width)
-    .attr('y', 2 * height / 9 + 80)
+    .attr('y', condY)
     .attr('width', condW)
     .attr('height', condH)
     .attr('stroke-width', 2)
@@ -171,7 +173,7 @@ cond.append('rect')
 
 cond.append('text')
     .attr('x', 0.5 * width + condW + 5)
-    .attr('y', 2 * height / 9 + condH + 72)
+    .attr('y', condY + condH - 8)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .attr('stroke', '#F08080')
@@ -180,7 +182,7 @@ cond.append('text')
 
 cond.append('rect')
     .attr('x', 0.725 * width)
-    .attr('y', 2 * height / 9 + 80)
+    .attr('y', condY)
     .attr('width', condW)
     .attr('height', condH)
     .attr('stroke-width', 2)
@@ -189,7 +191,7 @@ cond.append('rect')
 
 cond.append('text')
     .attr('x', 0.725 * width + condW + 5)
-    .attr('y', 2 * height / 9 + condH + 72)
+    .attr('y', condY + condH - 8)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .attr('stroke', '#87CEFA')
@@ -199,31 +201,31 @@ cond.append('text')
 // AND / OR
 cond.append('line')
     .attr('x1', width / 6)
-    .attr('y1', height / 3 + 37)
+    .attr('y1', condY + condH + 15)
     .attr('x2', width / 6)
-    .attr('y2', height / 3 + 37 + condH)
+    .attr('y2', condY + condH + 15 + condH)
     .attr('stroke-width', 2)
     .attr('stroke', 'black');
 
 cond.append('text')
     .attr('x', width / 6 + 5)
-    .attr('y', height / 3 + 52)
+    .attr('y', condY + condH + 30)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("AND");
 
 cond.append('line')
     .attr('x1', 2 * width / 3)
-    .attr('y1', height / 3 + 37)
+    .attr('y1', condY + condH + 15)
     .attr('x2', 2 * width / 3)
-    .attr('y2', height / 3 + 37 + condH)
+    .attr('y2', condY + condH + 15 + condH)
     .attr('stroke-width', 2)
     .attr('stroke-dasharray', 3)
     .attr('stroke', 'black');
 
 cond.append('text')
     .attr('x', 2 * width / 3 + 5)
-    .attr('y', height / 3 + 52)
+    .attr('y', condY + condH + 30)
     .attr('text-anchor', 'start')
     .attr('font-size', 14)
     .text("OR");
@@ -249,13 +251,13 @@ svg.append('defs')
 let com = svg.append('g')
     .attr('class', 'annoCom');
 
-const comY = height / 3 + 85;
+const comY = height / 3 + 110;
 
 com.append('text')
     .attr('x', 0.05 * width)
     .attr('y', comY)
     .attr('text-anchor', 'start')
-    .attr('font-size', 14)
+    .attr('font-size', 16)
     .text("Communication");
 
 // Direct, Public

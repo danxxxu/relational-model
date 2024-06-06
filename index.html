@@ -4,12 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Relational Model of Interaction</title>
-    <!-- <script src="node_modules/jspdf/dist/jspdf.umd.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="assets/svg2pdf.js/dist/svg2pdf.umd.min.js"></script>
 
-    <!-- <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
@@ -496,7 +493,7 @@
           <div class="anno_block" style="font-size: 20px; font-weight: bold">
             ELEMENT:
             <span class="info"
-              >Individual actors in the interaction exhibit the same or similars
+              >Individual actors in the interaction exhibit the same or similar
               set of behaviours.
             </span>
           </div>
@@ -727,7 +724,7 @@
                 </div>
                 <div class="ancom_block" style="cursor: default">&nbsp</div>
                 <div class="ancom_block">
-                  Effect:<span class="info">STILL WORKING ON THIS !!! </span>
+                  Effect:<span class="info">The function(s), consequence(s) of the communication, how it influences and relates to the receiving elements.</span>
                 </div>
               </div>
               <div class="communications">
@@ -848,12 +845,12 @@
       </div>
       <div id="footnote_container"></div>
     </div>
-    <div id="admin_control" style="padding: 10px">
+    <!-- <div id="admin_control" style="padding: 10px">
       <button id="saveData">Save Data</button>
       <button id="updateType">Update Element Type</button>
       <button id="updateAction">Update Action List</button>
       <button id="updateEffect">Update Effect List</button>
-    </div>
+    </div> -->
     <div id="controls">
       <div class="control_block">
         <button class="control_button" id="visualise">Visualise</button>
@@ -868,21 +865,8 @@
     <div id="vis">
       <svg id="container" width="1240" height="679"></svg>
       <button id="savePDF">Download</button>
-      <svg id="vis_anno" width="250" height="565"></svg>
+      <svg id="vis_anno" width="250" height="679"></svg>
     </div>
     <!-- <svg id="container" width="960" height="679"></svg> -->
-    <script>
-      const firebaseConfig = {
-        authDomain: "relational-model-data.firebaseapp.com",
-        projectId: "relational-model-data",
-        storageBucket: "relational-model-data.appspot.com",
-        messagingSenderId: "845462482682",
-        appId: "1:845462482682:web:3fd7c8be3bf7ac09e1e343",
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      // Initialize Cloud Firestore and get a reference to the service
-      const db = firebase.firestore();
-    </script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 let eleIndex, actIndex;
 
 import { drawVis } from "./sketch.js"
+import { db } from "./input.js"
 
 document.querySelector("#select_interaction").addEventListener("change", getInteraction);
 document.querySelector("#open_new").addEventListener("click", openNewTab);

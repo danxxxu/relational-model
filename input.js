@@ -1,3 +1,16 @@
+const firebaseConfig = {
+    authDomain: "relational-model-data.firebaseapp.com",
+    projectId: "relational-model-data",
+    storageBucket: "relational-model-data.appspot.com",
+    messagingSenderId: "845462482682",
+    appId: "1:845462482682:web:3fd7c8be3bf7ac09e1e343",
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+// Initialize Cloud Firestore and get a reference to the service
+export const db = firebase.firestore();
+
+
 // access collection 'interactions'
 const interactions = db.collection('interactions');
 export let snapshot;
@@ -27,17 +40,10 @@ async function loadData() {
     existAction = allData.data().action;
     existEffect = allData.data().effect;
 
-    // const allActions = await allAction.get();
-    // existAction = allActions.data().actions;
-
-    // const Etype = await elementType.get();
-    // existType = Etype.data().types;
-
     const allId = await interactionID.get();
     existingID = allId.data().ids;
 
     displayID();
-    // displaySelect();
     const allEles = document.querySelectorAll(".element");
     allEles.forEach(element => {
         displaySelect(element);
@@ -294,27 +300,3 @@ function collectAllInputs() {
         allInputs.footnote = [];
     }
 }
-
-// function saveData() {
-//     const allData = snapshot.docs;
-//     let effects = [];
-//     allData.forEach(doc => {
-//         const data = doc.data();
-//         for (let i = 0; i < data.eleCount; i++) {
-//             const ele = "element" + (i + 1);
-//             for (let j = 0; j < data[ele].actionCount; j++) {
-//                 const act = "action" + (j + 1);
-//                 for (let k = 0; k < data[ele][act].comCount; k++) {
-//                     const com = k + 1;
-//                     let line = data[ele][act][com].effect + '\n';
-//                     effects.push(line);
-//                 }
-//             }
-//         }
-//     });
-//     // console.log(effects);
-//     let blob = new Blob(effects, {
-//         type: "text/plain;charset=utf-8",
-//      });
-//      saveAs(blob, "data.txt");
-// }
