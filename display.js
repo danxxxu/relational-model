@@ -3,7 +3,7 @@ let eleIndex, actIndex;
 import { drawVis } from "./sketch.js"
 import { db } from "./input.js"
 
-document.querySelector("#select_interaction").addEventListener("change", getInteraction);
+document.querySelector("#select_interaction").addEventListener("change", function () { getInteraction(document.querySelector("#select_interaction").value) });
 document.querySelector("#open_new").addEventListener("click", openNewTab);
 
 function openNewTab() {
@@ -11,8 +11,27 @@ function openNewTab() {
     window.open(window.location.href, "_blank");
 }
 
-function getInteraction() {
-    const selectID = document.querySelector("#select_interaction").value;
+// add url queries for ArtsIT2024
+const searchParams = new URLSearchParams(window.location.search);
+document.addEventListener('DOMContentLoaded', function () {
+    if (searchParams.get('artwork')) {
+        let name = '';
+        if (searchParams.get('artwork') == "bodymovies") {
+            name = 'Body Movies (2001) by Rafael Lozano-Hemmer';
+        }
+        if (searchParams.get('artwork') == "intrafacing") {
+            name = 'IntraFacing (2022) by Alinta Krauth';
+        }
+        if (searchParams.get('artwork') == "vibecheck") {
+            name = 'Vibe Check (2020) by Lauren Lee McCarthy and Kyle McDonald';
+        }
+        getInteraction(name);
+    }
+})
+
+function getInteraction(selectID) {
+    console.log(selectID)
+    // const selectID = document.querySelector("#select_interaction").value;
     const name = document.querySelector("#name_interaction");
 
     if (selectID == 0) {

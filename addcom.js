@@ -1,7 +1,7 @@
 let comCount = 0;
 
 function addCommunication(element) {
-  comCount++;
+  // comCount++;
 
   const allElements = document.querySelectorAll(".element");
   let options = ``;
@@ -9,10 +9,15 @@ function addCommunication(element) {
     const index = i.toString();
     options += `<option value="` + index + `">#` + index + `</option>`;
   }
+  // class action
+  const action = element.parentNode.parentNode;
 
-  const eleIndex = element.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('#index').innerText;
+  const eleIndex = action.parentNode.parentNode.querySelector('#index').innerText;
 
-  const actionIndex = element.parentNode.parentNode.parentNode.querySelector("#actionIn").innerText;
+  const actionIndex = action.querySelector("#actionIn").innerText;
+
+  const allcom = action.querySelectorAll(".communications");
+  comCount = allcom.length + 1;
 
   let comHtml = `
   <div class="com">
@@ -174,19 +179,27 @@ function addCommunication(element) {
 </div>`;
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
   previousCom.insertAdjacentHTML("afterend", comHtml);
-  updateComIndex(element.parentNode.parentNode.parentNode);
+  updateComIndex(action);
 }
 
 function deleteCom(element) {
   // comCount ++;
-  const allCom = element.parentNode.parentNode.parentNode;
+  // class="action"
+  const action = element.parentNode.parentNode.parentNode;
   element.parentNode.parentNode.remove();
-  updateComIndex(allCom);
+  updateComIndex(action);
 }
 
 function updateComIndex(element) {
   const coms = element.querySelectorAll(".communications");
+  const eleIndex = element.parentNode.parentNode.querySelector("#index").innerText;
+  const actionIndex = element.querySelector("#actionIn").innerText;
   for (let i = 0; i < coms.length; i++) {
-    coms[i].querySelector("#comIn").innerText = i + 1;
+    comCount = i + 1;
+    coms[i].querySelector("#comIn").innerText = comCount;
+    coms[i].querySelector("#direct_means").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+    coms[i].querySelector("#via_means").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+    coms[i].querySelector("#public_access").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+    coms[i].querySelector("#private_access").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
   }
 }
