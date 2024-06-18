@@ -51,3 +51,8 @@ function showInstruction(e) {
 function closeInstruction(e) {
     e.parentNode.style.display = "none";
 }
+
+function OnInput(e) {
+  e.style.height = 'auto';
+  e.style.height = (e.scrollHeight) + "px";
+}

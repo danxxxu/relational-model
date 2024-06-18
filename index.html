@@ -361,6 +361,13 @@
     .add_effect {
       width: 30px;
     }
+    #credit {
+      width: 100%;
+      text-align: end;
+      font-size: 14px;
+      margin:0;
+      padding:0;
+    }
   </style>
   <body>
     <div id="select">
@@ -374,16 +381,14 @@
         </button>
         <div id="instruction_text">
           <button class="close" onclick="closeInstruction(this)">X</button>
-          This site presents a modelling tool for describing, visualising and
-          creating interactions among various elements, including both humans
-          and non-humans. This tool is built upon a relational model previously
-          proposed for describing different forms of interaction in the context
+          This site presents a modelling tool for describing and visualising interactions. This tool is built upon a relational model previously
+          developed for describing different forms of interaction in the context
           of interactive artworks. A detailed description of the model can be
           found in
           <a
             href="/resources/ISEA2023_towards a relational model of interaction.pdf"
             target="_blank"
-            >this paper</a
+            >this publication<sup>1</sup></a
           >. The model starts by identifying the individual actors participating
           in the interaction each referred to as an element. To describe an
           interaction, the model examines the actions performed by the elements
@@ -411,13 +416,14 @@
           button, there may be important data missing somewhere in the
           worksheet.
           <br />
-          //GENERATION!!!//
-          <br />
           <br />
           <span style="font-weight: bold">Note:</span><br />
           There is no right or wrong way of describe an interaction. Feel free
           to tailor the level of details to suit your purpose and experiment
           with different approaches to find the most effective description.
+          <br />
+          <br />
+          <span style="font-size: 10px">1. Dan Xu, Maarten H. Lamers, Edwin van der Heide: Towards a Relational Model of Co-located Interaction in Interactive Art. In: Emmanuel Mahé (eds.) Proceedings of the 28th International Symposium on Electronic Art 2023, pp. 723-732. École des Arts Décoratifs (2024). Doi: <a href="https://isea2023.ensad.fr/#towards-models-of-co-located-interaction-in-interactive-art">/ISEA2023-92-full-Xu-et-al-Co-located-Interaction.</a></span>
         </div>
         <select
           id="select_interaction"
@@ -835,6 +841,11 @@
       <div class="add_element">
         <button id="add_element" onclick="addElement(this)">Add element</button>
       </div>
+      <div class="add_element" style="padding-top: 3px;line-height: 80%; width:266px">
+        <p style="font-size: 16px; font-weight: bold; margin-bottom: 0;">Additional information:</p>
+        <p style="font-size: 12px; margin-top: 3px;">e.g. urls or notes about the artwork.</p>
+        <textarea id="additional_info" oninput="OnInput(this)"></textarea>
+      </div>
     </div>
     <div id="footnote">
       <div
@@ -842,6 +853,12 @@
         style="font-weight: bold; text-align: right; margin-right: 2px"
       >
         Footnotes:
+        <span class="info"
+              >You can specify the relationships among the triggering actions in the condition of an action using a footnote.
+              <br />
+              <br />
+              This function will be enabled once more than two triggering actions are specified. 
+            </span>
       </div>
       <div id="footnote_container"></div>
     </div>
@@ -867,6 +884,8 @@
       <button id="savePDF">Download</button>
       <svg id="vis_anno" width="250" height="679"></svg>
     </div>
-    <!-- <svg id="container" width="960" height="679"></svg> -->
+    <div id="credit">
+      <p style="margin: 0; padding: 0 20px 10px 20px;">Developed as part of a PhD research by <a href="https://www.universiteitleiden.nl/en/staffmembers/dan-xu#tab-1">Dan Xu</a>, supervised by Maarten H. Lamers and Edwin van der Heide</p>
+    </div>
   </body>
 </html>

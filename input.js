@@ -165,6 +165,9 @@ function deleteDB() {
 
 function collectAllInputs() {
     allInputs = {};
+    // save additional info
+    const additionalInfo = document.querySelector("#additional_info");
+    allInputs.info = additionalInfo.value;
 
     // getting all the inputs
     const allElements = document.querySelectorAll(".element");

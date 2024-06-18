@@ -11,7 +11,7 @@ function openNewTab() {
     window.open(window.location.href, "_blank");
 }
 
-// add url queries for ArtsIT2024
+// add url queries for ArtsIT2024; {artwork:name}
 const searchParams = new URLSearchParams(window.location.search);
 document.addEventListener('DOMContentLoaded', function () {
     if (searchParams.get('artwork')) {
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 function getInteraction(selectID) {
-    console.log(selectID)
     // const selectID = document.querySelector("#select_interaction").value;
     const name = document.querySelector("#name_interaction");
 
@@ -51,6 +50,10 @@ function getInteraction(selectID) {
 };
 
 function displayInteraction(doc) {
+    // display additional info 
+    const additionalInfo = document.querySelector("#additional_info");
+    additionalInfo.value = doc.info;
+    additionalInfo.oninput();
     // check number of elements to display
     const eleCount = doc.eleCount;
     let allElements = document.querySelectorAll(".element");
