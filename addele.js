@@ -1,7 +1,9 @@
 let eleCount = 0;
 
 function addElement(element) {
-  eleCount++;
+  const allElements = document.querySelectorAll(".element");
+  eleCount = allElements.length + 1;
+  
   let eleHtml = `
     <div class="element"         
     onmouseenter="showElementInfo(event, this)"
@@ -284,7 +286,25 @@ function deleteElement(element) {
 function updateIndex() {
   const allElements = document.querySelectorAll(".element");
   for (let i = 0; i < allElements.length; i++) {
-    allElements[i].querySelector("#index").innerText = `#` + (i + 1);
+    const eleIndex = `#` + (i + 1);
+    allElements[i].querySelector("#index").innerText = eleIndex;
+
+    const allactions = allElements[i].querySelectorAll(".action");
+    for(let j = 0; j < allactions.length; j++){
+      const actionIndex = j + 1;
+      allactions[j].querySelector("#intentional").name = `"` + eleIndex + `_act` + actionIndex + `_intention"`;
+      allactions[j].querySelector("#unintentional").name = `"` + eleIndex + `_act` + actionIndex + `_intention"`;
+
+      const coms = allactions[j].querySelectorAll(".communications");
+      for(let k = 0; k < coms.length; k ++) {
+        const comCount = k + 1;
+        coms[k].querySelector("#comIn").innerText = comCount;
+        coms[k].querySelector("#direct_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+        coms[k].querySelector("#via_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+        coms[k].querySelector("#public_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+        coms[k].querySelector("#private_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+      }
+    }
   }
 }
 

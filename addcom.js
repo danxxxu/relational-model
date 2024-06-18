@@ -179,7 +179,7 @@ function addCommunication(element) {
 </div>`;
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
   previousCom.insertAdjacentHTML("afterend", comHtml);
-  updateComIndex(action);
+  // updateComIndex(action);
 }
 
 function deleteCom(element) {

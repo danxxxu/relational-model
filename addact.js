@@ -10,14 +10,16 @@ function addAction(element) {
     options += `<option value="` + index + `">#` + index + `</option>`;
   }
 
-  const eleIndex = element.parentNode.parentNode.parentNode.parentNode.querySelector('#index').innerText;
-
-  actCount++;
+  // class allactions 
+  const allactions = element.parentNode.parentNode;
+  const eleIndex = allactions.parentNode.querySelector('#index').innerText;
+  const allact = allactions.querySelectorAll(".action");
+  actCount = allact.length + 1;
 
   let actHtml = `<div class="action">
    <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
    <div class="act_block">
-   <label for="actionV" id="actionIn">1</label>
+   <label for="actionV" id="actionIn">`+ actCount + `</label>
    <input list="existAction" id="actionV" placeholder="Action" />
    <datalist id="existAction"></datalist>
    </div>
@@ -241,26 +243,42 @@ function addAction(element) {
     </button>
   </div>
   </div>  `
-  const previousAction = element.parentNode.parentNode.lastElementChild.previousElementSibling;
+  const previousAction = allactions.lastElementChild.previousElementSibling;
   previousAction.insertAdjacentHTML("afterend", actHtml);
-  updateActionList(element.parentNode.parentNode.parentNode);
-  updateActionIndex(element.parentNode.parentNode.parentNode);
+  updateActionList(allactions);
+  // updateActionIndex(allactions);
 }
 
 function deleteAction(element) {
-  // actCount++;
-  const allAct = element.parentNode.parentNode;
+  const allactions = element.parentNode.parentNode;
   element.parentNode.remove();
-  updateActionIndex(allAct);
+  updateActionIndex(allactions);
+  updateActionList(allactions);
 }
 
+// element = allactions
 function updateActionIndex(element) {
+  const eleIndex = element.parentNode.querySelector("#index").innerText;
   const actions = element.querySelectorAll(".action");
   for (let i = 0; i < actions.length; i++) {
-    actions[i].querySelector("#actionIn").innerText = i + 1;
+    const actionIndex = i + 1;
+    actions[i].querySelector("#actionIn").innerText = actionIndex;
+    actions[i].querySelector("#intentional").name = `"` + eleIndex + `_act` + actionIndex + `_intention"`;
+    actions[i].querySelector("#unintentional").name = `"` + eleIndex + `_act` + actionIndex + `_intention"`;
+
+    const coms = actions[i].querySelectorAll(".communications");
+    for (let j = 0; j < coms.length; j++) {
+      const comCount = j + 1;
+      coms[j].querySelector("#comIn").innerText = comCount;
+      coms[j].querySelector("#direct_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+      coms[j].querySelector("#via_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+      coms[j].querySelector("#public_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+      coms[j].querySelector("#private_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+    }
   }
 }
 
+// element = allactions
 function updateActionList(element) {
   const allElements = document.querySelectorAll(".element");
 
