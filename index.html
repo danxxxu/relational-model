@@ -375,9 +375,9 @@
         <button
           id="instruction"
           onclick="showInstruction(this)"
-          style="font-size: 16px"
+          style="font-size: 16px; font-weight: bold;"
         >
-          *Instruction*
+          *About*
         </button>
         <div id="instruction_text">
           <button class="close" onclick="closeInstruction(this)">X</button>
@@ -420,7 +420,7 @@
           <span style="font-weight: bold">Note:</span><br />
           There is no right or wrong way of describe an interaction. Feel free
           to tailor the level of details to suit your purpose and experiment
-          with different approaches to find the most effective description.
+          with different approaches to find the most effective description. If you have any further questions or comments, please contact <a href="mailto:d.xu@liacs.leidenuniv.nl">d.xu@liacs.leidenuniv.nl</a>.
           <br />
           <br />
           <span style="font-size: 10px">1. Dan Xu, Maarten H. Lamers, Edwin van der Heide: Towards a Relational Model of Co-located Interaction in Interactive Art. In: Emmanuel Mahé (eds.) Proceedings of the 28th International Symposium on Electronic Art 2023, pp. 723-732. École des Arts Décoratifs (2024). Doi: <a href="https://isea2023.ensad.fr/#towards-models-of-co-located-interaction-in-interactive-art">/ISEA2023-92-full-Xu-et-al-Co-located-Interaction.</a></span>
@@ -853,7 +853,7 @@
       <div class="add_element" style="padding-top: 3px;line-height: 80%; width:266px">
         <p style="font-size: 16px; font-weight: bold; margin-bottom: 0;">Additional information:</p>
         <p style="font-size: 12px; margin-top: 3px;">e.g. urls or notes about the artwork.</p>
-        <textarea id="additional_info" oninput="OnInput(this)"></textarea>
+        <textarea id="additional_info" style="resize:none" oninput="OnInput(this)"></textarea>
       </div>
     </div>
     <div id="footnote">
@@ -866,7 +866,7 @@
               >You can specify the relationships among the triggering actions in the condition of an action using a footnote.
               <br />
               <br />
-              This function will be enabled once more than two triggering actions are specified. 
+              The footnote function will be enabled once more than two triggering actions are specified. 
             </span>
       </div>
       <div id="footnote_container"></div>
