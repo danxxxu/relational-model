@@ -49,7 +49,41 @@ function getInteraction(selectID) {
     eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 };
 
+let prevLock = false;
 function displayInteraction(doc) {
+    // check lock state, if not and previous sheet is locked, uplock all elements 
+    if (!doc.lock) {
+        const editable = document.querySelector('#editable');
+        editable.disabled = true;
+
+        const save = document.querySelector('#submit');
+        save.disabled = false;
+        const deleteB = document.querySelector('#delete');
+        deleteB.disabled = false;
+        if (prevLock) {
+            const inputFields = document.querySelector("#input");
+            const textarea = inputFields.getElementsByTagName('textarea');
+            for (let i = 0; i < textarea.length; i++) {
+                textarea[i].disabled = false;
+            }
+
+            const inputs = inputFields.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = false;
+            }
+
+            const selects = inputFields.getElementsByTagName('select');
+            for (let i = 0; i < selects.length; i++) {
+                selects[i].disabled = false;
+            }
+
+            const buttons = inputFields.getElementsByTagName('button');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = false;
+            }
+        }
+        prevLock = false;
+    }
     // display additional info 
     const additionalInfo = document.querySelector("#additional_info");
     additionalInfo.value = doc.info;
@@ -220,4 +254,37 @@ function displayInteraction(doc) {
     }
 
     drawVis(doc);
+    // lock all inputs if true
+    if (doc.lock) {
+        const save = document.querySelector('#submit');
+        save.disabled = true;
+        const deleteB = document.querySelector('#delete');
+        deleteB.disabled = true;
+        const editable = document.querySelector('#editable');
+        editable.disabled = false;
+
+        const inputFields = document.querySelector("#input");
+        const textarea = inputFields.getElementsByTagName('textarea');
+        for (let i = 0; i < textarea.length; i++) {
+            textarea[i].disabled = true;
+        }
+
+        const inputs = inputFields.getElementsByTagName('input');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = true;
+        }
+
+        const selects = inputFields.getElementsByTagName('select');
+        for (let i = 0; i < selects.length; i++) {
+            selects[i].disabled = true;
+        }
+
+        const buttons = inputFields.getElementsByTagName('button');
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+        }
+        prevLock = true;
+
+
+    }
 }

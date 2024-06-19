@@ -13,7 +13,9 @@ export const db = firebase.firestore();
 
 // access collection 'interactions'
 const interactions = db.collection('interactions');
+const backup = db.collection('backup');
 export let snapshot;
+
 const interactionID = db.collection('data').doc('interactionID');
 let existingID = [];
 export const existData = db.collection('data').doc('data');
@@ -100,71 +102,108 @@ function visualise() {
 // submit all inputs to database
 function submitDB() {
     // const inputID = prompt('Please name the worksheet (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description".');
+
     const getID = document.querySelector("#name_interaction").value;
     let exist = false;
     let check = false;
+    let lock = false;
 
     const inputID = getID.replace("/", "_");
 
     if (inputID) {
         // check whether id already exist, get existing list and compare  
-        interactionID.get().then((doc) => {
-            existingID = doc.data().ids;
-            for (let i = 0; i < existingID.length; i++) {
-                if (existingID[i] == inputID) {
-                    exist = true;
-                    break;
-                }
+        for (let i = 0; i < existingID.length; i++) {
+            if (existingID[i] == inputID) {
+                exist = true;
+                break;
             }
-            if (exist) {
-                check = confirm("The name already exists, do you want to overwrite the existing data?");
-            }
-            if (!exist || check) {
-                //if the name does not exist or to update the existing interaction, save the entry to the database
-                collectAllInputs();
-                try {
-                    interactions.doc(inputID).set(allInputs).then(alert("Data saved!"));
-                    if (!exist) {
-                        interactionID.update({
-                            ids: firebase.firestore.FieldValue.arrayUnion(inputID)
-                        });
-                        updateID(inputID);
+        }
+        if (exist) {
+            db.collection('interactions').doc(getID).get().then((doc) => {
+                lock = doc.data().lock;
+                if (lock) {
+                    alert("The worksheet with this name is locked, please rename it and save again!");
+                } else {
+                    check = confirm("The name already exists, do you want to overwrite the existing data?");
+                    if (check) {
+                        saveDB(inputID);
                     }
                 }
-                catch (err) {
-                    alert("Please fill in all the input areas and submit again!");
-                }
-            }
-        });
+            });
+        } else {
+            saveDB(inputID);
+            interactionID.update({
+                ids: firebase.firestore.FieldValue.arrayUnion(inputID)
+            });
+            updateID(inputID);
+        }
     } else {
         alert("Please name the worksheet and submit again!");
     }
 }
 
-function deleteDB() {
-    const getID = document.querySelector("#name_interaction").value;
-    let check = false;
-    const msg = 'Are you sure to delete "' + getID + '" from the database?'
-    check = confirm(msg);
-    if (check) {
-        interactions.doc(getID).delete().then(() => {
-            console.log("Deleted!");
-        }).catch((error) => {
-            console.error("Error removing document: ", error);
-        });
-
-        interactionID.update({
-            ids: firebase.firestore.FieldValue.arrayRemove(getID)
-        }).then(() => {
-            console.log("removed");
-            location.reload();
-            document.querySelector("#name_interaction").value = "";
-        });
+function saveDB(inputID) {
+    const lock = confirm("Do you want to save a locked version of the worksheet?\nOnce a worksheet is locked, a permenant copy will be stored in the database");
+    //if the name does not exist or to update the existing interaction, save the entry to the database
+    collectAllInputs(lock);
+    try {
+        interactions.doc(inputID).set(allInputs).then(alert("Data saved!"));
+        if(lock){
+            backup.doc(inputID).set(allInputs);
+        }
+    }
+    catch (err) {
+        console.log(err);
+        alert("Please fill in all the input areas and submit again!");
     }
 }
 
-function collectAllInputs() {
+function deleteDB() {
+    let exist = false;
+    const getID = document.querySelector("#name_interaction").value;
+    for (let i = 0; i < existingID.length; i++) {
+        if (existingID[i] == getID) {
+            exist = true;
+            break;
+        }
+    }
+    if (exist) {
+        let lock = true;
+        db.collection('interactions').doc(getID).get().then((doc) => {
+            lock = doc.data().lock;
+            if (lock) {
+                alert("The worksheet with this name is locked and cannot be deleted!")
+            } else {
+                console.log("unlocked")
+                let check = false;
+                const msg = 'Are you sure to delete "' + getID + '" from the database?'
+                check = confirm(msg);
+                if (check) {
+                    interactions.doc(getID).delete().then(() => {
+                        console.log("Deleted!");
+                    }).catch((error) => {
+                        console.error("Error removing document: ", error);
+                    });
+
+                    interactionID.update({
+                        ids: firebase.firestore.FieldValue.arrayRemove(getID)
+                    }).then(() => {
+                        console.log("removed");
+                        location.reload();
+                        document.querySelector("#name_interaction").value = "";
+                    });
+                }
+            }
+        });
+    } else {
+        alert("This name does not exist in the database!");
+    }
+}
+
+function collectAllInputs(lock) {
     allInputs = {};
+    // save lock states
+    allInputs.lock = lock;
     // save additional info
     const additionalInfo = document.querySelector("#additional_info");
     allInputs.info = additionalInfo.value;

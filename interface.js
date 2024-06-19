@@ -53,6 +53,40 @@ function closeInstruction(e) {
 }
 
 function OnInput(e) {
-  e.style.height = 'auto';
-  e.style.height = (e.scrollHeight) + "px";
+    e.style.height = 'auto';
+    e.style.height = (e.scrollHeight) + "px";
+}
+
+function unlock(e) {
+    const name = e.parentNode.querySelector("#name_interaction");
+    const oldName = name.value;
+    name.value = "COPY of " + oldName;
+
+    const save = document.querySelector('#submit');
+    save.disabled = false;
+    const deleteB = document.querySelector('#delete');
+    deleteB.disabled = false;
+    const editable = document.querySelector('#editable');
+    editable.disabled = true;
+
+    const inputFields = document.querySelector("#input");
+    const textarea = inputFields.getElementsByTagName('textarea');
+    for (let i = 0; i < textarea.length; i++) {
+        textarea[i].disabled = false;
+    }
+
+    const inputs = inputFields.getElementsByTagName('input');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = false;
+    }
+
+    const selects = inputFields.getElementsByTagName('select');
+    for (let i = 0; i < selects.length; i++) {
+        selects[i].disabled = false;
+    }
+
+    const buttons = inputFields.getElementsByTagName('button');
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = false;
+    }
 }
