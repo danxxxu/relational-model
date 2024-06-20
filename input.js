@@ -95,8 +95,10 @@ function displayEffect(e) {
 
 // visualise
 function visualise() {
+    allInputs = {};
     collectAllInputs();
-    drawVis(allInputs);
+    const name = document.querySelector("#name_interaction").value;
+    drawVis(name, allInputs);
 }
 
 // submit all inputs to database
@@ -135,6 +137,7 @@ function submitDB() {
             interactionID.update({
                 ids: firebase.firestore.FieldValue.arrayUnion(inputID)
             });
+            existingID.push(inputID);
             updateID(inputID);
         }
     } else {
@@ -145,17 +148,20 @@ function submitDB() {
 function saveDB(inputID) {
     const lock = confirm("Do you want to save a locked version of the worksheet?\nOnce a worksheet is locked, a permenant copy will be stored in the database");
     //if the name does not exist or to update the existing interaction, save the entry to the database
-    collectAllInputs(lock);
+    allInputs = {};
+    // save lock states
+    allInputs.lock = lock;
+    collectAllInputs();
     try {
         interactions.doc(inputID).set(allInputs).then(alert("Data saved!"));
-        if(lock){
+        if (lock) {
             backup.doc(inputID).set(allInputs);
         }
     }
     catch (err) {
         console.log(err);
         alert("Please fill in all the input areas and submit again!");
-    }
+    }   
 }
 
 function deleteDB() {
@@ -200,10 +206,8 @@ function deleteDB() {
     }
 }
 
-function collectAllInputs(lock) {
-    allInputs = {};
-    // save lock states
-    allInputs.lock = lock;
+function collectAllInputs() {
+
     // save additional info
     const additionalInfo = document.querySelector("#additional_info");
     allInputs.info = additionalInfo.value;

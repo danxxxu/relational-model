@@ -39,7 +39,7 @@ function getInteraction(selectID) {
     } else {
         name.value = selectID;
         db.collection('interactions').doc(selectID).get().then((doc) => {
-            displayInteraction(doc.data());
+            displayInteraction(selectID, doc.data());
         });
     }
 
@@ -50,7 +50,7 @@ function getInteraction(selectID) {
 };
 
 let prevLock = false;
-function displayInteraction(doc) {
+function displayInteraction(name, doc) {
     // check lock state, if not and previous sheet is locked, uplock all elements 
     if (!doc.lock) {
         const editable = document.querySelector('#editable');
@@ -253,7 +253,7 @@ function displayInteraction(doc) {
         }
     }
 
-    drawVis(doc);
+    drawVis(name, doc);
     // lock all inputs if true
     if (doc.lock) {
         const save = document.querySelector('#submit');

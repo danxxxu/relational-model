@@ -119,7 +119,7 @@ function addAction(element) {
        </ul>
      </span>
    </div>
-   <div class="ancom_block" style="margin-top: 8px">
+   <div class="ancom_block" style="margin-top: 5px">
      Count:<span class="info"
        >The number of communication of the same form that can take
        place simultaneously.
@@ -143,7 +143,7 @@ function addAction(element) {
      </span>
    </div>
    <div class="ancom_block" style="cursor: default">&nbsp</div>
-   <div class="ancom_block">
+   <div class="ancom_block" style="margin-top: 2px">
      Effect:<span class="info">The function(s), consequence(s) of the communication, how it influences and relates to the receiving elements.</span>
    </div>
  </div>

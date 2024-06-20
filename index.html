@@ -39,8 +39,7 @@
       width: auto;
       height: auto;
       padding: 0;
-      margin: 0;
-      margin: 0;
+      margin: auto;
       display: inline-flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -67,13 +66,14 @@
     }
     #select {
       position: fixed;
+      top: 0;
       z-index: 100;
       box-sizing: border-box;
       width: 100%;
-      height: 80px;
+      height: 75px;
       overflow: visible;
       margin: 0;
-      padding: 15px;
+      padding: 10px 15px 5px 15px;
       background-color: white;
     }
     .top_buttons {
@@ -108,8 +108,10 @@
       border: 1px solid black;
     }
     #spacer {
+      /* position: sticky; */
+      /* top:0; */
       width: 100%;
-      height: 90px;
+      height: 75px;
     }
     #input {
       display: inline-flex;
@@ -131,23 +133,18 @@
     }
     #controls {
       display: inline-flex;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      padding: 10px;
+      margin: 25px;
+      /* padding: 10px; */
       width: auto;
       height: auto;
       /* border: 1px solid rgb(156, 155, 155); */
     }
-    .control_block {
-      width: 200px;
-      height: auto;
-      /* border: 1px solid; */
-    }
     .control_button {
-      float: right;
-      font-size: 20px;
-      padding: 10px;
-      width: 125px;
+      font-size: 16px;
+      padding: 10px 15px 10px 15px;
+    }
+    .control_button:hover .info {
+      visibility: visible;
     }
     .element_info {
       position: fixed;
@@ -362,11 +359,10 @@
       width: 30px;
     }
     #credit {
+      text-align: start;
+      margin-left: 15px;
       width: 100%;
-      text-align: end;
       font-size: 14px;
-      margin:0;
-      padding:0;
     }
   </style>
   <body>
@@ -389,30 +385,26 @@
             href="https://isea2023.ensad.fr/#towards-models-of-co-located-interaction-in-interactive-art"
             target="_blank"
             >this publication<sup>1</sup></a
-          >. The model starts by identifying the individual actors participating
-          in the interaction each referred to as an element. To describe an
-          interaction, the model examines the actions performed by the elements
-          that influence other elements. Following an action, one or more forms
-          of communication are created and directed at (an)other element(s). The
-          means of communication can be either direct or mediated. The access to
-          communication can be either public or private. Finally, the model
-          examines the effects of communication on the interaction, such as its
-          functions and impacts on other elements.
+          >. Three key concepts are used in the model to dissect an interaction: element, action, and communication. An element refers to an individual actor participating
+          in the interaction. Elements with the same properties and behaviours are grouped together in a profile with an index starting with "#". For an element, the model examines the actions performed by them to interact with other elements. Following an action, one or more forms
+          of communication are created and directed at (an)other element(s). Various descriptors are used to facilitate the description of these concepts. 
           <br />
           <br />
           <span style="font-weight: bold">How to use the tool:</span><br />
           You can either directly work on an empty worksheet or browse the
-          database to load existing interactive artworks for inspirations.
+          database to load existing interactive artworks for inspirations. An example is locked for view only if all input fields are disabled. You can click on the Unlock button to create an editable copy. 
           Before you start, please name the current worksheet, such as 'Artwork
           Title (year) by Artist'. This allows you to store the data in the
           database and reload the worksheet data using the same name.
           <br />
           <br />
-          While working on the worksheet, you can hover over the various terms
-          used in the relational model to view brief explanations. Clicking on
-          certain text fields will prompt a suggestion list based on database
-          data. You may select an option from the list or input new content as
-          desired. If no visualisation was shown after clicking on the visulise
+          While working on the worksheet, you can hover over the text descriptors to view brief explanations. Clicking on
+          the text input fields will prompt a suggestion list based on 
+         the data from existing examples. You may select an option from the list or input new content if nothing matches your description. 
+          <br />
+          <br />
+          You can click on the visualisation button below to generate a visualisation of the current description. 
+          If no visualisation was shown after clicking on the
           button, there may be important data missing somewhere in the
           worksheet.
           <br />
@@ -467,7 +459,7 @@
             onclick="unlock(this)"
             disabled="true"
           >Unlock<span class="info"
-              >Create an unlocked version of the worksheet, you can edit and save it with another name.
+              >Create an unlocked version of the worksheet, you can edit and save it with a different name.
             </span></button>
         <button
           class="top_buttons"
@@ -514,7 +506,7 @@
           </div>
           <div class="anno_block">
             Type:<span class="info"
-              >The categorical description helps to differentiate the elements.
+              >The categorical description helps to differentiate the elements. Common element types are human or art system in interactive art. 
               <br />
               <br />
               If an artwork has elements of the same type performing different
@@ -536,8 +528,7 @@
             style="font-size: 20px; font-weight: bold; margin-top: 10px"
           >
             ACTION:<span class="info"
-              >Something that is done or performed by the element to other
-              element(s) of the same or different type.
+              >Something that is done or performed by the element to participate in the interaction.
               <br />
               <br />
               Either an action is <b>intended</b> for participating in the
@@ -548,14 +539,14 @@
               <br />
               An action can be initiated by the element itself or as a reaction
               to other action(s). Please specify the necessary conditions
-              following the action in the form of <b>"If ... do(es) ..."</b>.
+              in the form of <b>"If ... do(es) ..."</b>.
               When there are more than three conditions, you can add a
               <b>footnote</b> to specify their order and relationships if
               needed.
               <br />
               <br />
-              Please enter the actions and their conditions in a logical or
-              chronological order if such relationships are present.
+              Please enter the actions of the same elements and their conditions in a logical or
+              chronological order if such relationship is present.
             </span>
           </div>
         </div>
@@ -661,13 +652,13 @@
               <div class="ancom_block" style="margin: 0">
                 COMMUNICATION:
                 <span class="info"
-                  >A form of communication is created when an action is done to
-                  an element. An action can be directed at different elements
+                  >A form of communication is created when an action is done to another
+                  element. An action can be directed at different elements
                   thus creating multiple forms of communication.
                   <br />
                   <br />
                   Please enter the communication in a logical or chronological
-                  order if such relationships are present.
+                  order if such relationship is present.
                 </span>
               </div>
             </div>
@@ -685,11 +676,11 @@
                     element.
                     <ul>
                       <li>
-                        Direct: the action is performed to the receiving element
+                        <b>Direct</b> the action is performed to the receiving element
                         directly without any intermediate element involved.
                       </li>
                       <li>
-                        Via (intermediate element): The action is performed to
+                        <b>Via</b> (intermediate element): The action is performed to
                         an intermediate element and reaches the receiving
                         element via the intermediate element. This type of
                         communication is often termed mediated communication.
@@ -704,19 +695,19 @@
                     at both ends of the communication.
                     <ul>
                       <li>
-                        From: the number of elements it takes to perform the
+                        <b>From</b>: the number of elements performing the
                         action.
                       </li>
                       <li>
-                        To: the number of elements that can receive the
+                        <b>To</b>: the number of elements receiving the
                         communication.
                       </li>
                     </ul>
                   </span>
                 </div>
-                <div class="ancom_block" style="margin-top: 8px">
+                <div class="ancom_block" style="margin-top: 5px">
                   Count:<span class="info"
-                    >The number of communication of the same form that can take
+                    >The number of the communication of this form that can take
                     place simultaneously.
                   </span>
                 </div>
@@ -726,11 +717,11 @@
                     perceivable to all elements.
                     <ul>
                       <li>
-                        Private: the communication can only be perceived by the
+                        <b>Private</b>: the communication can only be perceived by the
                         communicating elements.
                       </li>
                       <li>
-                        Public: the communication can also be perceived by
+                        <b>Public</b>: the communication can also be perceived by
                         elements or spectators beyond the communicating
                         elements.
                       </li>
@@ -738,8 +729,8 @@
                   </span>
                 </div>
                 <div class="ancom_block" style="cursor: default">&nbsp</div>
-                <div class="ancom_block">
-                  Effect:<span class="info">The function(s), consequence(s) of the communication, how it influences and relates to the receiving elements.</span>
+                <div class="ancom_block" style="margin-top: 2px">
+                  Effect:<span class="info">The function(s), consequence(s) of the communication, its impact(s) on and relation(s) to the receiving elements.</span>
                 </div>
               </div>
               <div class="communications">
@@ -850,7 +841,7 @@
       <div class="add_element">
         <button id="add_element" onclick="addElement(this)">Add element</button>
       </div>
-      <div class="add_element" style="padding-top: 3px;line-height: 80%; width:266px">
+      <div class="add_element" style="padding-top: 3px;line-height: 80%; width:266px; margin-right: 15px;">
         <p style="font-size: 16px; font-weight: bold; margin-bottom: 0;">Additional information:</p>
         <p style="font-size: 12px; margin-top: 3px;">e.g. urls or notes about the artwork.</p>
         <textarea id="additional_info" style="resize:none" oninput="OnInput(this)"></textarea>
@@ -879,7 +870,9 @@
     </div> -->
     <div id="controls">
       <div class="control_block">
-        <button class="control_button" id="visualise">Visualise</button>
+        <button class="control_button" id="visualise">Visualise<span class="info"
+          >Generate a visualisation of the described interaction in the container below.
+        </span></button>
       </div>
       <!-- <div class="control_block">
         <button class="control_button" id="randomise">Randomise</button>
@@ -894,7 +887,7 @@
       <svg id="vis_anno" width="250" height="679"></svg>
     </div>
     <div id="credit">
-      <p style="margin: 0; padding: 0 20px 10px 20px;">Developed as part of a PhD research by <a href="https://www.universiteitleiden.nl/en/staffmembers/dan-xu#tab-1" target="_blank">Dan Xu</a>, supervised by Maarten H. Lamers and Edwin van der Heide</p>
+      <p>Developed as part of a PhD research by <a href="https://www.universiteitleiden.nl/en/staffmembers/dan-xu#tab-1" target="_blank">Dan Xu</a>, supervised by Maarten H. Lamers and Edwin van der Heide</p>
     </div>
   </body>
 </html>

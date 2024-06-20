@@ -40,12 +40,14 @@ let actionDist = 0;
 let actionInfo = {}; // {actionKey: [y,height], ...}
 let allRelations = {}; // {actionKey: condition, ...}
 
-export function drawVis(allInputs) {
+export function drawVis(name, allInputs) {
+
     actionN = 0;
     actionInfo = {};
     allRelations = [];
 
     svg.selectAll('*').remove();
+    addName(name);
 
     // define arrow 
     svg.append('defs')
@@ -325,6 +327,20 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
             }
         }
     }
+}
+
+function addName(name) {
+    // console.log(name);
+
+    svg.append('text')
+    .attr('x', 0.01 * width)
+    .attr('y', 0.99 * height)
+    .attr('text-anchor', 'start')
+    .attr('font-family', 'Arial, Helvetica, sans-serif')
+    .attr('font-size', 12)
+    .attr('font-weight', 'bold')
+    .attr('font-style', 'italic')
+    .text(name);
 }
 
 function drawElement(x, y, w, h, s, info, count) {
