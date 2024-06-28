@@ -36,7 +36,7 @@ document.querySelector("#updateEffect").addEventListener("click", updateEffect);
 //      saveAs(blob, "data.txt");
 // }
 
-// get list of all existing types
+// get list of all existing types; DOESN'T REMOVE
 function updateType() {
     const allData = snapshot.docs;
     allData.forEach(doc => {

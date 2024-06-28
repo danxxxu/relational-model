@@ -4,4 +4,4 @@ This site presents a modelling tool for describing and visualising interactions.
 
 You can access the tool via [this link](https://danxxxu.github.io/relational-model/).
 
-The tool is developed as part of a PhD research by Dan Xu, supervised by Maarten H. Lamers and Edwin van der Heide
+The tool is developed as part of a PhD research by Dan Xu, supervised by Maarten H. Lamers, Edwin van der Heide, Fons J. Verbeek
