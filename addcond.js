@@ -21,7 +21,7 @@ function condition(element) {
     }
 }
 
-let fnPresent = true;
+let fnPresent = false;
 function addCondition(element) {
     const condHtml = `
 <div class="act_block">
@@ -91,13 +91,15 @@ function addCondition(element) {
 function deleteCondition(element) {
     const cond = element.parentNode.parentNode.querySelectorAll(".if_ele");
 
-    if (cond.length < 4 && fnPresent) {
+    // if there are 3 conditions and footnotes
+    if (cond.length == 3 && fnPresent) {
         element.parentNode.parentNode.querySelector(".selectFootnote").parentNode.remove();
 
         fnPresent = false;
     }
 
     element.parentNode.remove();
+
 }
 
 let fnCount = 0;
