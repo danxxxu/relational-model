@@ -190,6 +190,7 @@
       justify-content: flex-start;
       /* border: 1px solid pink; */
       padding: 0;
+      letter-spacing: -0.5px;
     }
     #actionV {
       width: 150px;
@@ -620,7 +621,8 @@
               /><label for="unintentional">Unintended</label>
             </div>
             <div id="condition" style="width: 100%">
-              <div class="act_block">
+              <div id="trigger">
+                <div class="act_block">
                 <span>If</span>
                 <select
                   class="if_ele"
@@ -646,7 +648,21 @@
                   <option value="0">OR</option>
                   <option value="1">AND</option>
                 </select>
+                </div>
               </div>
+              <div id="response">  
+                <div class="act_block">           
+                  <span>Then this action</span> <select
+                  id="add"
+                  style="width: 50px"
+                  onchange="addCondition(this)"
+                >
+                  <option value="">+</option>
+                  <option value="0">OR</option>
+                  <option value="1">AND</option>
+                </select>
+              </div>
+            </div>
             </div>
             <div class="act_block">
               <div class="ancom_block" style="margin: 0">

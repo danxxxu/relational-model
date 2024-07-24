@@ -21,9 +21,42 @@ function condition(element) {
     }
 }
 
-let fnPresent = false;
-function addCondition(element) {
-    const condHtml = `
+const responseHTML = `
+    <div class="act_block">
+              <select
+                class="if_ele"
+                style="width: 50px;"
+                onchange="condition(this)"
+              >
+                <option value="">Element</option>
+                <option value="1">#1</option>
+              </select>
+              <div id="perform" style="display: inline">
+                <span> do(es) </span>
+                <select class="if_act" style="width: 95px">
+                  <option value="">Action</option>
+                </select>
+              </div>
+              <select
+                id="add"
+                style="width: 50px"
+                onchange="addCondition(this)"
+              >
+                <option value="">+</option>
+                <option value="0">OR</option>
+                <option value="1">AND</option>
+              </select>
+              <button
+              class="close"
+              name="delete_cond"
+              style="width:13px; height: 15px; font-size: 11px; right: 0"
+              onclick="deleteCondition(this)"
+            >
+              X
+            </button>
+            </div>`;
+
+const triggerHTML = `
 <div class="act_block">
               <span>If </span
               ><select
@@ -58,27 +91,45 @@ function addCondition(element) {
             >
               X
             </button>
-            </div>
-`;
+            </div>`;
+
+let fnPresent = false;
+function addCondition(element) {
+    const eleID = element.parentNode.parentNode.id;
+    let condHtml;
+
+    if (eleID == "trigger") {
+        condHtml = triggerHTML;
+    } else if (eleID == "response") {
+        condHtml = responseHTML;
+    }
+
     if (element.value != "") {
         element.parentNode.insertAdjacentHTML("afterend", condHtml);
     }
 
     const allElements = document.querySelectorAll(".element");
 
+    //update all if_ele 
     const allIfEle = document.querySelectorAll(".if_ele");
-    allIfEle.forEach(element => {
-        const oldSelect = element.value;
-        element.innerHTML = ` <option value="">Element</option>
+    allIfEle.forEach(e => {
+        const oldSelect = e.value;
+        const ifID = e.parentNode.parentNode.id;
+        if (ifID == "trigger") {
+            e.innerHTML = ` <option value="">Element</option>
     <option value="0">Self-initiated</option>`;
+        } else if (ifID == "response") {
+            e.innerHTML = ` <option value="">Element</option>`;
+        }
+
         for (let i = 0; i < allElements.length; i++) {
             const index = (i + 1).toString();
-            element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+            e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
         }
-        element.value = oldSelect;
+        e.value = oldSelect;
     });
 
-    const cond = element.parentNode.parentNode.querySelectorAll(".if_ele");
+    const cond = element.parentNode.parentNode.querySelectorAll(".act_block");
 
     if (cond.length == 3) {
         const condition = element.parentNode.parentNode;
@@ -89,7 +140,7 @@ function addCondition(element) {
 }
 
 function deleteCondition(element) {
-    const cond = element.parentNode.parentNode.querySelectorAll(".if_ele");
+    const cond = element.parentNode.parentNode.querySelectorAll(".act_block");
 
     // if there are 3 conditions and footnotes
     if (cond.length == 3 && fnPresent) {
@@ -107,7 +158,7 @@ function addFootnote(e) {
     const footnoteContainer = document.querySelector("#footnote_container");
     const existFootnote = footnoteContainer.querySelectorAll(".footnote_text");
     fnCount = existFootnote.length;
-    
+
     if (e.value == "0") {
         fnCount++;
 

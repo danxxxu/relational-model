@@ -210,46 +210,12 @@ function displayInteraction(name, doc) {
         const allActions = allElements[i].querySelectorAll(".action");
         for (let j = 0; j < allActions.length; j++) {
             actIndex = "action" + (j + 1);
+
             //update condition field
-            const condValue = doc[eleIndex][actIndex].condition;
-
-            let condition = allActions[j].querySelector("#condition");
-            let allIf = condition.querySelectorAll(".if_ele");
-
-            if (allIf.length < condValue.length) {
-                for (let k = allIf.length; k < condValue.length; k++) {
-                    allIf[0].parentNode.querySelector("#add").value = condValue[k - 1].add;
-                    allIf[0].parentNode.querySelector("#add").onchange();
-                }
-            } else if (allIf.length > condValue.length) {
-                for (let k = allIf.length; k > condValue.length; k--) {
-                    allIf[k - 1].parentNode.remove();
-                }
-            }
-
-            // condition = allActions[j].querySelector("#condition");
-            allIf = condition.querySelectorAll(".if_ele");
-            // console.log(allIf.length)
-            let allIfAct = condition.querySelectorAll(".if_act");
-
-            for (let k = 0; k < allIf.length; k++) {
-                allIf[k].value = condValue[k].ifEle;
-                allIf[k].onchange();
-                allIfAct[k].value = condValue[k].ifAct;
-                // console.log(allIf[k].parentNode.querySelector("#add"));
-                allIf[k].parentNode.querySelector("#add").value = condValue[k].add;
-
-                //update footnote 
-                if (condValue[k].fnIndex != "") {
-                    for (let i = 0; i < allFn.length; i++) {
-                        const fnCount = i + 1;
-                        const option = '<option value="' + fnCount + '">*' + fnCount + '</option>';
-                        condition.querySelector(".selectFootnote").insertAdjacentHTML("beforeend", option);
-                    }
-
-                    condition.querySelector(".selectFootnote").value = condValue[k].fnIndex;
-                }
-            }
+            //display triggers 
+            displayCondition(doc[eleIndex][actIndex].condition, allActions[j].querySelector("#trigger"), allFn);
+            //display response
+            displayCondition(doc[eleIndex][actIndex].response, allActions[j].querySelector("#response"), allFn);
         }
     }
 
@@ -284,7 +250,47 @@ function displayInteraction(name, doc) {
             buttons[i].disabled = true;
         }
         prevLock = true;
+    }
+}
 
+function displayCondition(condValue, condition, allFn) {
+    let allBlock = condition.querySelectorAll(".act_block");
 
+    if (allBlock.length < condValue.length) {
+        for (let k = allBlock.length; k < condValue.length; k++) {
+            allBlock[0].querySelector("#add").value = condValue[k - 1].add;
+            allBlock[0].querySelector("#add").onchange();
+        }
+    } else if (allBlock.length > condValue.length) {
+        for (let k = allBlock.length; k > condValue.length; k--) {
+            allBlock[k - 1].remove();
+        }
+    }
+
+    allBlock = condition.querySelectorAll(".act_block");
+
+    for (let k = 0; k < allBlock.length; k++) {
+
+        if (k == 0) {
+            allBlock[k].querySelector("#add").value = condValue[k].add;
+        }
+
+        if (allBlock[k].querySelector(".if_ele")) {
+            allBlock[k].querySelector(".if_ele").value = condValue[k].ifEle;
+            allBlock[k].querySelector(".if_ele").onchange();
+            allBlock[k].querySelector(".if_act").value = condValue[k].ifAct;
+            allBlock[k].querySelector("#add").value = condValue[k].add;
+
+            //update footnote 
+            if (condValue[k].fnIndex != "") {
+                for (let i = 0; i < allFn.length; i++) {
+                    const fnCount = i + 1;
+                    const option = '<option value="' + fnCount + '">*' + fnCount + '</option>';
+                    condition.querySelector(".selectFootnote").insertAdjacentHTML("beforeend", option);
+                }
+
+                condition.querySelector(".selectFootnote").value = condValue[k].fnIndex;
+            }
+        }
     }
 }

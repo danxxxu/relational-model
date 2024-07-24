@@ -161,7 +161,7 @@ function saveDB(inputID) {
     catch (err) {
         console.log(err);
         alert("Please fill in all the input areas and submit again!");
-    }   
+    }
 }
 
 function deleteDB() {
@@ -269,7 +269,9 @@ function collectAllInputs() {
 
             allInputs[index][actionIndex].intention = action.querySelector("#intentional").checked;
 
-            const condition = action.querySelector("#condition");
+            // save conditions
+            // get the triggering actions  
+            const condition = action.querySelector("#trigger");
             allInputs[index][actionIndex].condition = [];
 
             const allIf = condition.querySelectorAll(".if_ele");
@@ -287,6 +289,31 @@ function collectAllInputs() {
                     cond.fnIndex = "";
                 }
                 allInputs[index][actionIndex].condition.push(cond);
+            }
+
+            // get the accompanying reactions 
+            const response = action.querySelector("#response");
+            allInputs[index][actionIndex].response = [];
+
+            const resBlock = response.querySelectorAll(".act_block");
+
+            for (let i = 0; i < resBlock.length; i++) {
+                let res = {};
+
+                if (i == 0) {
+                    res.add = resBlock[i].querySelector("#add").value;
+                } else if (resBlock[i].querySelector(".if_ele")) {
+                    res.ifEle = resBlock[i].querySelector(".if_ele").value;
+                    res.ifAct = resBlock[i].querySelector(".if_act").value;
+                    res.add = resBlock[i].querySelector("#add").value;
+                }
+
+                if (resBlock.length > 2) {
+                    res.fnIndex = response.querySelector(".selectFootnote").value;
+                } else {
+                    res.fnIndex = "";
+                }
+                allInputs[index][actionIndex].response.push(res);
             }
 
             const allCom = action.querySelectorAll(".communications");

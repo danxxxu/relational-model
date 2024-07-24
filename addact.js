@@ -39,6 +39,7 @@ function addAction(element) {
      /><label for="unintentional">Unintented</label>
  </div>
    <div id="condition" style="width: 100%">
+   <div id="trigger">
    <div class="act_block">
    <span>If </span
    ><select
@@ -62,6 +63,20 @@ function addAction(element) {
    <option value="1">AND</option>
  </select>
  </div>
+ </div>
+<div id="response">  
+                <div class="act_block">           
+                  <span>Then this action</span> <select
+                  id="add"
+                  style="width: 50px"
+                  onchange="addCondition(this)"
+                >
+                  <option value="">+</option>
+                  <option value="0">OR</option>
+                  <option value="1">AND</option>
+                </select>
+              </div>
+            </div>
  </div>
  <div class="act_block">
  <div class="ancom_block" style="margin: 0">COMMUNICATION:
