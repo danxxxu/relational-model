@@ -94,7 +94,6 @@ export function drawVis(name, allInputs) {
 
             const actionKey = eleIndex + `_` + actIndex;
             allRelations[actionKey] = allInputs[ele][act].condition;
-            // console.log(allRelations);
 
             if (allInputsCopy[ele][act].action != "123456") {
                 const condition = allInputsCopy[ele][act].condition;
@@ -149,21 +148,55 @@ export function drawVis(name, allInputs) {
         }
     }
 
-    let updateRelateAction = [];
+    let condRes = [];
     let updateIndeAction = [].concat(indeAction);
     relateAction.forEach(action => {
-        const actionKey = action.eleIndex + '_' + action.actIndex;
+        const actionKey = action.eleIndex + '_' + action.actIndex; // num_num
         const condition = allRelations[actionKey];
 
         if (condition.length > 1 || condition[0].ifEle != "0") {
-            updateRelateAction.push(actionKey);
+            let relation = {};
+            const ele = "element" + action.eleIndex;
+            const act = "action" + action.actIndex;
+            const response = allInputs[ele][act].response;
+
+            relation.condition = condition;
+            relation.response = response;
+
+            condRes.push(relation);
         } else {
             updateIndeAction.push(action);
         }
     });
 
+    // get unique condition-response pairs
+    const objectsEqual = (o1, o2) =>
+        Object.keys(o1).length === Object.keys(o2).length
+        && Object.keys(o1).every(p => o1[p] === o2[p]);
+    const arraysEqual = (a1, a2) =>
+        a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+
+    let uniqRelation = [];
+    uniqRelation.push(condRes[0]);
+    let exist = false;
+
+    for (let j = 0; j < condRes.length; j++) {
+        for (let i = 0; i < uniqRelation.length; i++) {
+            if (arraysEqual(condRes[j].condition, uniqRelation[i].condition)) {
+                exist = true;
+                break;
+            } else {
+                exist = false;
+            }
+        }
+        if (!exist) {
+            uniqRelation.push(condRes[j]);
+        }
+    }
+
     // relationbar = margin + size and space 
-    const relationBar = 10 + relationSize * 1.6 * (updateRelateAction.length + 1);
+    const relationBar = 10 + relationSize * 1.6 * (uniqRelation.length + 1);
+
     // draw elements
     for (let i = 0; i < eleCount; i++) {
         const x = ((width - relationBar) / eleCount) * (0.5 + i) + relationBar;
@@ -196,11 +229,9 @@ export function drawVis(name, allInputs) {
     });
 
     // then draw relations 
-    for (let i = 0; i < updateRelateAction.length; i++) {
-        const actionKey = updateRelateAction[i];
+    for (let i = 0; i < uniqRelation.length; i++) {
         const x = 10 + 1.6 * relationSize * (i + 1);
-        const condition = allRelations[actionKey];
-        drawRelation(x, actionKey, condition, actionSize);
+        drawRelation(x, uniqRelation[i], actionSize);
     }
 }
 
@@ -333,14 +364,14 @@ function addName(name) {
     // console.log(name);
 
     svg.append('text')
-    .attr('x', 0.01 * width)
-    .attr('y', 0.99 * height)
-    .attr('text-anchor', 'start')
-    .attr('font-family', 'Arial, Helvetica, sans-serif')
-    .attr('font-size', 12)
-    .attr('font-weight', 'bold')
-    .attr('font-style', 'italic')
-    .text(name);
+        .attr('x', 0.01 * width)
+        .attr('y', 0.99 * height)
+        .attr('text-anchor', 'start')
+        .attr('font-family', 'Arial, Helvetica, sans-serif')
+        .attr('font-size', 12)
+        .attr('font-weight', 'bold')
+        .attr('font-style', 'italic')
+        .text(name);
 }
 
 function drawElement(x, y, w, h, s, info, count) {
@@ -898,75 +929,121 @@ function drawSelfInitiate(x, y, h, s) {
         .attr('fill', 'white');
 }
 
-function drawRelation(x, actionKey, condition, s) {
-    const y0 = actionInfo[actionKey][0];
-    const h0 = actionInfo[actionKey][1];
+// function drawRelation(x, actionKey, condition, s) {
+function drawRelation(x, uniqR, s) {
+    const condition = uniqR.condition;
+    const response = uniqR.response;
+
+    let actionKey = response[0].ifEle + '_' + response[0].ifAct;
+    let y0 = actionInfo[actionKey][0];
+    let h0 = actionInfo[actionKey][1];
+    let resY = [];
+    let resH = [];
+    let resAdd = [];
+    let resFn = [];
+
     let condY = [];
     let condH = [];
     let add = [];
     let fn = [];
-    let dash = 0;
+    // let dash = 0;
     let y1, y2;
+
+    response.forEach(res => {
+        actionKey = res.ifEle + '_' + res.ifAct;
+        const y = actionInfo[actionKey][0];
+        const h = actionInfo[actionKey][1];
+        resY.push(y);
+        resH.push(h);
+        resAdd.push(res.add);
+        resFn.push(res.fnIndex);
+    });
 
     condition.forEach(cond => {
         if (cond.ifEle == "0") {
             drawSelfInitiate(10, y0, h0, actionSize);
         } else {
-            const actionKey = cond.ifEle + '_' + cond.ifAct;
+            actionKey = cond.ifEle + '_' + cond.ifAct;
             const y = actionInfo[actionKey][0];
             const h = actionInfo[actionKey][1];
             condY.push(y);
             condH.push(h);
             add.push(cond.add);
             fn.push(cond.fnIndex);
-            // console.log(cond.add);
         }
     });
 
-    // check if current action is not a reaction
-    if (condition.length > 1 || condition[0].ifEle != "0") {
-        let g = svg.append('g')
-            .attr('class', 'relation');
+    // check if current action is not a triggering action
+    let g = svg.append('g')
+        .attr('class', 'relation');
 
-        // draw the current action, blue-ish 
+    // draw the reactions, blue-ish 
+    drawBlock(g, x, s, resY, resH[0], '#87CEFA', resFn, resAdd)
+
+    // draw the condition
+    drawBlock(g, x, s, condY, condH[0], '#F08080', fn, add)
+
+    // add footnote 
+    condY = condY.sort((a, b) => a - b);
+    const minCond = condY[0];
+    const maxCond = condY[condY.length - 1];
+    resY = resY.sort((a, b) => a - b);
+    const minRes = resY[0];
+    const maxRes = resY[resY.length - 1];
+
+    drawFootnote(g, x, s, maxCond, fn);
+    drawFootnote(g, x, s, maxRes, resFn);
+
+    // connect response and condition 
+    if (maxCond < minRes) {
+        y1 = maxCond + s - 1;
+        y2 = minRes + s + 1 - condH[0];
+    } else if (maxRes < minCond) {
+        y1 = maxRes + s - 1;
+        y2 = minCond + s + 1 - condH[0];
+    }
+
+    g.append('line')
+        .attr('x1', x)
+        .attr('y1', y1)
+        .attr('x2', x)
+        .attr('y2', y2)
+        .attr('stroke-width', 2)
+        .attr('stroke', 'black')
+        .attr('stroke-dasharray', 0)
+        .attr('fill', 'none');
+}
+
+function drawBlock(g, x, s, arrayY, h, color, fn, add) {
+    let dash = 0;
+    let y1, y2;
+    for (let i = 0; i < arrayY.length; i++) {
         g.append('rect')
             .attr('x', x)
-            .attr('y', y0 - h0 + s)
+            .attr('y', arrayY[i] - h + s)
             .attr('width', relationSize)
-            .attr('height', h0)
+            .attr('height', h)
             .attr('stroke-width', 2)
-            .attr('stroke', '#87CEFA') // light sky blue #87CEFA
-            .attr('fill', '#87CEFA');
+            .attr('stroke', color) // #F08080
+            .attr('fill', color);
 
-        // draw the condition
-        for (let i = 0; i < condY.length; i++) {
-            g.append('rect')
-                .attr('x', x)
-                .attr('y', condY[i] - condH[i] + s)
-                .attr('width', relationSize)
-                .attr('height', condH[i])
-                .attr('stroke-width', 2)
-                .attr('stroke', '#F08080') // pink #FFB6C1
-                .attr('fill', '#F08080');
-
-            if (y0 < condY[i]) {
-                y1 = condY[i] + s + 1;
-                y2 = y0 - h0 + s - 1;
+        if (i < (arrayY.length - 1)) {
+            if (arrayY[i] < arrayY[i + 1]) {
+                y1 = arrayY[i] - h + s - 1;
+                y2 = arrayY[i + 1] + s + 1;
             } else {
-                y1 = y0 + s + 1;
-                y2 = condY[i] - condH[i] + s - 1;
+                y1 = arrayY[i + 1] - h + s - 1;
+                y2 = arrayY[i] + s + 1;
             }
+        } else if (arrayY.length == 1) {
+            y1 = arrayY[i] - h + s - 1;
+            y2 = arrayY[i] + s + 1;
+            dash = 0;
+        }
 
+        if (arrayY.length > 1) {
             if (fn[i] != "") {
                 dash = 0;
-                const fnText = "*" + fn[i];
-                g.append('text')
-                    .attr('x', x)
-                    .attr('y', y0 + s * 2)
-                    .attr('text-anchor', 'start')
-                    .attr('font-family', 'Arial, Helvetica, sans-serif')
-                    .attr('font-size', 11)
-                    .text(fnText);
             } else {
                 if (add[i] == "0") {
                     dash = 3;
@@ -974,16 +1051,31 @@ function drawRelation(x, actionKey, condition, s) {
                     dash = 0;
                 }
             }
-
-            g.append('line')
-                .attr('x1', x)
-                .attr('y1', y1)
-                .attr('x2', x)
-                .attr('y2', y2)
-                .attr('stroke-width', 2)
-                .attr('stroke', 'black')
-                .attr('stroke-dasharray', dash)
-                .attr('fill', 'none');
         }
+
+        g.append('line')
+            .attr('x1', x)
+            .attr('y1', y1)
+            .attr('x2', x)
+            .attr('y2', y2)
+            .attr('stroke-width', 2)
+            .attr('stroke', 'black')
+            .attr('stroke-dasharray', dash)
+            .attr('fill', 'none');
     }
+}
+
+function drawFootnote(g, x, s, y, fn) {
+    fn.forEach(f => {
+        if (f != "") {
+            const fnText = "*" + f;
+            g.append('text')
+                .attr('x', x)
+                .attr('y', y + s * 2)
+                .attr('text-anchor', 'start')
+                .attr('font-family', 'Arial, Helvetica, sans-serif')
+                .attr('font-size', 11)
+                .text(fnText);
+        }
+    });
 }

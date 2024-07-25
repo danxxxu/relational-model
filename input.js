@@ -301,6 +301,8 @@ function collectAllInputs() {
                 let res = {};
 
                 if (i == 0) {
+                    res.ifEle = index.replace("element", "");;
+                    res.ifAct = actionC;
                     res.add = resBlock[i].querySelector("#add").value;
                 } else if (resBlock[i].querySelector(".if_ele")) {
                     res.ifEle = resBlock[i].querySelector(".if_ele").value;

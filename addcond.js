@@ -133,7 +133,7 @@ function addCondition(element) {
 
     if (cond.length == 3) {
         const condition = element.parentNode.parentNode;
-        const fnSelectHTML = '<div class="act_block"><select class="selectFootnote" onchange="addFootnote(this)"><option value="">+Footnote</option><option value="0">add</option></select></div>'
+        const fnSelectHTML = '<div class="fn_block"><select class="selectFootnote" onchange="addFootnote(this)"><option value="">+Footnote</option><option value="0">add</option></select></div>'
         condition.insertAdjacentHTML("beforeend", fnSelectHTML);
         fnPresent = true;
     }
