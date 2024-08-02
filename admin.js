@@ -7,6 +7,7 @@ let existEffect = [];
 
 import { snapshot, existData } from "./input.js";
 
+// download data
 // document.querySelector("#saveData").addEventListener("click", saveData);
 document.querySelector("#updateType").addEventListener("click", updateType);
 document.querySelector("#updateAction").addEventListener("click", updateAction);
@@ -60,7 +61,7 @@ function updateType() {
             }
         }
     });
-
+    console.log("update type!")
     let allType = {};
     allType.type = existType;
     existData.update(allType);
@@ -96,7 +97,7 @@ function updateAction() {
 
         }
     });
-
+    console.log("update action!")
     let allAct = {};
     allAct.action = existAction;
     existData.update(allAct);
@@ -138,7 +139,7 @@ function updateEffect() {
             }
         }
     });
-
+    console.log("update effect!")
     let allEffect = {};
     allEffect.effect = existEffect;
     existData.update(allEffect);

@@ -10,7 +10,7 @@ function addElement(element) {
     onmouseleave="hideElementInfo(this)">
     <div class="element_info"></div>
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
-    <div class="block"><span id="index">#1</span></div>
+    <div class="block" style="width:100%"><span id="index">#1</span><button class="generate" onclick="generateElement(this)">Generate element</button><button class="generate" onclick="completeElement(this)">Complete element</button></div>
     <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"/><datalist id="existTypes"></datalist></div>
     <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
