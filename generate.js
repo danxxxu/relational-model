@@ -38,6 +38,13 @@ function generateElement(e) {
     allAct.forEach(action => {
         const actV = action.querySelector("#actionV");
         actV.value = existAction[getRandomInt(existAction.length)];
+
+        const check = getRandomInt(2);
+        if(check == 0){
+            action.querySelector("#intentional").checked = true;
+        } else {
+            action.querySelector("#unintentional").checked = true;
+        }
     });
 }
 
