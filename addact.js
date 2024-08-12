@@ -247,6 +247,10 @@ function addAction(element) {
       </button>
     </div>
   </div>
+                  <div class="block">
+                  <button class="generate" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
+                  <button class="generate" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                </div>
     </div>
     </div>
     <div class="add_communication">

@@ -40,7 +40,7 @@ function generateElement(e) {
         actV.value = existAction[getRandomInt(existAction.length)];
 
         const check = getRandomInt(2);
-        if(check == 0){
+        if (check == 0) {
             action.querySelector("#intentional").checked = true;
         } else {
             action.querySelector("#unintentional").checked = true;
@@ -74,4 +74,45 @@ function completeElement(e) {
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
-}   
+}
+
+const numOptions = ["1", "2", "3", "4", "5", "1+", "2+", "3+", "4+", "5+"]
+
+function randomiseCommunication(e) {
+    const com = e.parentNode.parentNode; // class=communications
+
+    // direct at a random element
+    const to = com.querySelector("#to");
+    const options = to.getElementsByTagName('option');
+    const index = getRandomInt(options.length - 1);
+    to.selectedIndex = index + 1;
+
+    // choose a random means
+    const check = getRandomInt(2);
+    if (check == 0) {
+        com.querySelector("#direct_means").checked = true;
+        com.querySelector("#via").value = "";
+    } else {
+        com.querySelector("#via_means").checked = true;
+
+        const via = com.querySelector("#via");
+        const options = via.getElementsByTagName('option');
+        const index = getRandomInt(options.length - 1);
+        via.selectedIndex = index + 1;
+    }
+
+    // choose random configuration 
+    com.querySelector("#config_from").value = numOptions[getRandomInt(numOptions.length)];
+    com.querySelector("#config_to").value = numOptions[getRandomInt(numOptions.length)];
+
+    // choose random count 
+    com.querySelector("#com_num").value = numOptions[getRandomInt(numOptions.length)];
+
+    // choose random access
+    const checkA = getRandomInt(2);
+    if (checkA == 0) {
+        com.querySelector("#public_access").checked = true;
+    } else {
+        com.querySelector("#private_access").checked = true;
+    }
+}

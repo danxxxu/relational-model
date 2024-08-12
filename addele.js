@@ -3,7 +3,7 @@ let eleCount = 0;
 function addElement(element) {
   const allElements = document.querySelectorAll(".element");
   eleCount = allElements.length + 1;
-  
+
   let eleHtml = `
     <div class="element"         
     onmouseenter="showElementInfo(event, this)"
@@ -259,6 +259,10 @@ function addElement(element) {
             </button>
           </div>
         </div>
+                        <div class="block">
+                  <button class="generate" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
+                  <button class="generate" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                </div>
         </div>
         </div>
         <div class="add_communication">
@@ -305,13 +309,13 @@ function updateIndex() {
     allElements[i].querySelector("#index").innerText = eleIndex;
 
     const allactions = allElements[i].querySelectorAll(".action");
-    for(let j = 0; j < allactions.length; j++){
+    for (let j = 0; j < allactions.length; j++) {
       const actionIndex = j + 1;
       allactions[j].querySelector("#intentional").name = `"` + eleIndex + `_act` + actionIndex + `_intention"`;
       allactions[j].querySelector("#unintentional").name = `"` + eleIndex + `_act` + actionIndex + `_intention"`;
 
       const coms = allactions[j].querySelectorAll(".communications");
-      for(let k = 0; k < coms.length; k ++) {
+      for (let k = 0; k < coms.length; k++) {
         const comCount = k + 1;
         coms[k].querySelector("#comIn").innerText = comCount;
         coms[k].querySelector("#direct_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;

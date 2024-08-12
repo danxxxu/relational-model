@@ -175,6 +175,10 @@ function addCommunication(element) {
                     </button>
                   </div>
                 </div>
+                                <div class="block">
+                  <button class="generate" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
+                  <button class="generate" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                </div>
 </div>    
 </div>`;
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
@@ -197,9 +201,9 @@ function updateComIndex(element) {
   for (let i = 0; i < coms.length; i++) {
     comCount = i + 1;
     coms[i].querySelector("#comIn").innerText = comCount;
-    coms[i].querySelector("#direct_means").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
-    coms[i].querySelector("#via_means").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
-    coms[i].querySelector("#public_access").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
-    coms[i].querySelector("#private_access").name = `"`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+    coms[i].querySelector("#direct_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+    coms[i].querySelector("#via_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
+    coms[i].querySelector("#public_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+    coms[i].querySelector("#private_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
   }
 }
