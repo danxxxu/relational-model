@@ -110,7 +110,7 @@ export function drawVis(name, allInputs) {
                                 allInputsCopy[ele][act].action = "123456";
                             }
                         }
-                    } else {
+                    } else if(cond.ifEle != "") {
                         // if current action has conditions, check conditional actions
                         checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
                         c = true;
@@ -242,8 +242,8 @@ function checkAction(oriEleIndex, oriActIndex, eleIndex, actIndex) {
     const act = "action" + actIndex;
     let action = {};
 
-    const oriEle = "element" + oriEleIndex;
-    const oriAct = "action" + oriActIndex;
+    // const oriEle = "element" + oriEleIndex;
+    // const oriAct = "action" + oriActIndex;
 
     if (allInputsCopy[ele][act].action != "123456") {
 
@@ -258,7 +258,7 @@ function checkAction(oriEleIndex, oriActIndex, eleIndex, actIndex) {
         } else {
             // if current action has condition, check conditional action until the initial action
             condition.forEach(cond => {
-                if (cond.ifEle != 0) {
+                if (cond.ifEle != 0 && cond.ifEle != "") {
                     // if no looping situation
                     if (oriEleIndex != cond.ifEle || oriActIndex != cond.ifAct) {
                         checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
@@ -801,8 +801,8 @@ function drawMediated(sx, sy, w, vx, tx, ty, s, space, p, f, t, count, effect) {
             csx = sx - w / 2 - configR;
             tsx = ltx - 10;
             anchor = 'end';
-            tcsx = csx;
             lsx = csx - configR;
+            tcsx = lsx - 10;
             ty = sy + corner;
             let lty = ty - s / 4;
             tsy = lty - tsyRatio * s;

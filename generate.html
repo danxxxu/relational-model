@@ -258,7 +258,7 @@
     .ancom_block {
       position: relative;
       display: inline-block;
-      cursor: pointer;
+      cursor: help;
       font-size: 16px;
       width: 65px;
       height: auto;
@@ -293,7 +293,7 @@
       width: 120px;
       position: relative;
       display: inline-block;
-      cursor: pointer;
+      cursor: help;
     }
     .info {
       position: absolute;
@@ -676,6 +676,10 @@
                   <option value="1">AND</option>
                 </select>
               </div>
+             </div>
+             <div class="act_block">
+              <button class="generate" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
+              <button class="generate" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
             </div>
             </div>
             <div class="act_block">
@@ -853,8 +857,8 @@
                   </div>
                 </div>
                 <div class="block">
-                  <button class="generate" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
-                  <button class="generate" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                  <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
+                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
                 </div>
               </div>
             </div>
@@ -901,6 +905,9 @@
       <button id="updateType">Update Element Type</button>
       <button id="updateAction">Update Action List</button>
       <button id="updateEffect">Update Effect List</button>
+    </div>
+    <div style="margin: 15px">
+      <button class="generate" onclick="randomiseAllCommunication()">Randomise all communication</button>
     </div>
     <div id="controls">
       <div class="control_block">

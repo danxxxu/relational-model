@@ -116,3 +116,19 @@ function randomiseCommunication(e) {
         com.querySelector("#private_access").checked = true;
     }
 }
+
+function randomiseAllCommunication(){
+    // click Randomise for all communications 
+    const allEle = document.body.querySelectorAll(".element");
+    allEle.forEach(element => {
+        const allAct = element.querySelectorAll(".action");
+        allAct.forEach(action => {
+            const allCom = action.querySelectorAll(".communications");
+            allCom.forEach(com => {
+                com.querySelector("#randomise_com").click();
+            });
+        });
+    });
+
+    document.body.querySelector("#visualise").click();
+}
