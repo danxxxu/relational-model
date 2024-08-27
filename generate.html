@@ -678,8 +678,8 @@
               </div>
              </div>
              <div class="act_block">
-              <button class="generate" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
-              <button class="generate" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
+              <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
+              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
             </div>
             </div>
             <div class="act_block">
@@ -908,6 +908,7 @@
     </div>
     <div style="margin: 15px">
       <button class="generate" onclick="randomiseAllCommunication()">Randomise all communication</button>
+      <button class="generate" onclick="randomiseAllCondition()">Randomise all condition</button>
     </div>
     <div id="controls">
       <div class="control_block">

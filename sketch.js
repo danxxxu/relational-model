@@ -110,7 +110,7 @@ export function drawVis(name, allInputs) {
                                 allInputsCopy[ele][act].action = "123456";
                             }
                         }
-                    } else if(cond.ifEle != "") {
+                    } else if (cond.ifEle != "") {
                         // if current action has conditions, check conditional actions
                         checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
                         c = true;
@@ -257,22 +257,36 @@ function checkAction(oriEleIndex, oriActIndex, eleIndex, actIndex) {
             allInputsCopy[ele][act].action = "123456";
         } else {
             // if current action has condition, check conditional action until the initial action
+            let self = false;
             condition.forEach(cond => {
-                if (cond.ifEle != 0 && cond.ifEle != "") {
-                    // if no looping situation
-                    if (oriEleIndex != cond.ifEle || oriActIndex != cond.ifAct) {
-                        checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
-                    }
-                }
-                // if the condition contains self-initated
-                else {
-                    action = {};
-                    action.eleIndex = eleIndex;
-                    action.actIndex = actIndex;
-                    relateAction.push(action);
-                    allInputsCopy[ele][act].action = "123456";
+                if (cond.ifEle == 0) {
+                    self = true;
                 }
             });
+            if (self) {
+                action = {};
+                action.eleIndex = eleIndex;
+                action.actIndex = actIndex;
+                relateAction.push(action);
+                allInputsCopy[ele][act].action = "123456";
+            } else {
+                condition.forEach(cond => {
+                    if (cond.ifEle != 0 && cond.ifEle != "") {
+                        // if no looping situation
+                        if (oriEleIndex != cond.ifEle || oriActIndex != cond.ifAct) {
+                            checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
+                        }
+                    }
+                    // if the condition contains self-initated
+                    // else {
+                    //     action = {};
+                    //     action.eleIndex = eleIndex;
+                    //     action.actIndex = actIndex;
+                    //     relateAction.push(action);
+                    //     allInputsCopy[ele][act].action = "123456";
+                    // }
+                });
+            }
             // push current action to the relate array
             if (allInputsCopy[ele][act].action != "123456") {
                 action = {};

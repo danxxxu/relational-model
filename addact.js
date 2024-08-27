@@ -341,6 +341,10 @@ function addGenerateAction(element) {
                 </select>
               </div>
             </div>
+            <div class="act_block">
+              <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
+              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
+            </div>
  </div>
  <div class="act_block">
  <div class="ancom_block" style="margin: 0">COMMUNICATION:

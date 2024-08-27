@@ -1,5 +1,10 @@
+document.onload = updateIfIndex();
+
 function condition(element) {
-    const index = element.value;
+    const eleIndex = element.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#index").innerHTML.replace("#", "");
+    const currentAct = element.parentNode.parentNode.parentNode.parentNode.querySelector("#actionIn").innerText;
+
+    const index = element.value; // element index 
     const parent = element.parentNode;
     const allElements = document.querySelectorAll(".element");
     if (index === "0") {
@@ -15,8 +20,10 @@ function condition(element) {
         const disActions = allElements[index - 1].querySelectorAll(".action");
         disActions.forEach(action => {
             const actIndex = action.querySelector("#actionIn").innerText;
-            const act = action.querySelector("#actionV").value;
-            actionList.innerHTML += `<option value="` + actIndex + `">` + actIndex + ` ` + act + `</option>`;
+            if (eleIndex != index || currentAct != actIndex) {
+                const act = action.querySelector("#actionV").value;
+                actionList.innerHTML += `<option value="` + actIndex + `">` + actIndex + ` ` + act + `</option>`;
+            }
         });
     }
 }
@@ -108,11 +115,26 @@ function addCondition(element) {
         element.parentNode.insertAdjacentHTML("afterend", condHtml);
     }
 
-    const allElements = document.querySelectorAll(".element");
+    updateIfIndex();
 
+    const cond = element.parentNode.parentNode.querySelectorAll(".act_block");
+
+    if (cond.length == 3) {
+        const condition = element.parentNode.parentNode;
+        const fnSelectHTML = '<div class="fn_block"><select class="selectFootnote" onchange="addFootnote(this)"><option value="">+Footnote</option><option value="0">add</option></select></div>'
+        condition.insertAdjacentHTML("beforeend", fnSelectHTML);
+        fnPresent = true;
+    }
+}
+
+function updateIfIndex() {
+    const allElements = document.querySelectorAll(".element");
     //update all if_ele 
     const allIfEle = document.querySelectorAll(".if_ele");
     allIfEle.forEach(e => {
+        const eleIndex = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#index").innerHTML.replace("#", "");
+        const actNum = e.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll(".action").length;
+
         const oldSelect = e.value;
         const ifID = e.parentNode.parentNode.id;
         if (ifID == "trigger") {
@@ -123,20 +145,18 @@ function addCondition(element) {
         }
 
         for (let i = 0; i < allElements.length; i++) {
-            const index = (i + 1).toString();
-            e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+            if (actNum != 1) {
+                const index = (i + 1).toString();
+                e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+            } else if (allElements.length > 1) {
+                const index = (i + 1).toString();
+                if (eleIndex != index) {
+                    e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+                }
+            }
         }
         e.value = oldSelect;
     });
-
-    const cond = element.parentNode.parentNode.querySelectorAll(".act_block");
-
-    if (cond.length == 3) {
-        const condition = element.parentNode.parentNode;
-        const fnSelectHTML = '<div class="fn_block"><select class="selectFootnote" onchange="addFootnote(this)"><option value="">+Footnote</option><option value="0">add</option></select></div>'
-        condition.insertAdjacentHTML("beforeend", fnSelectHTML);
-        fnPresent = true;
-    }
 }
 
 function deleteCondition(element) {
