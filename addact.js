@@ -524,7 +524,7 @@ function addGenerateAction(element) {
     <div class="add_communication">
     <button
       id="add_com"
-      onclick="addCommunication(this)"
+      onclick="addGenerateCommunication(this)"
     >
       Add communication
     </button>

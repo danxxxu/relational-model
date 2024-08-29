@@ -559,14 +559,14 @@ function addGenerateElement(element) {
         <div class="add_communication">
         <button
           id="add_com"
-          onclick="addCommunication(this)"
+          onclick="addGenerateCommunication(this)"
         >
           Add communication
         </button>
       </div>
       </div>
       <div class="add_action">
-      <button id="add_action" onclick="addAction(this)">
+      <button id="add_action" onclick="addGenerateAction(this)">
         Add action
       </button>
     </div>
