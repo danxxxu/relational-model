@@ -19,7 +19,7 @@
 
     <script type="module" src="input.js"></script>
     <script type="module" src="display.js"></script>
-    <!-- <script type="module" src="permutate.js"></script> -->
+    <script src="permutate.js"></script>
     <!-- <script type="module" src="randomise.js"></script> -->
     <script src="addcom.js" defer></script>
     <script src="addact.js" defer></script>
@@ -368,16 +368,26 @@
       width: 100%;
       font-size: 14px;
     }
+    .permutate,
     .generate {
-      margin: 0 0 0 10px;
+      margin: 0 0 0 8px;
       background-color: #5C62D6;
       color: white;
-      padding: 2px 8px;
+      padding: 2px 5px;
       border-radius: 6px;
       border: 1px solid grey; 
     }
     .generate:hover {
       background-color: #9196f4;
+    }
+    .permutate{
+      background-color: darkcyan;
+    }
+    .permutate:hover{
+      background-color: rgb(0, 184, 184);
+    }
+    #permutateCount{
+      width: 57px;
     }
   </style>
   <body>
@@ -679,7 +689,7 @@
              </div>
              <div class="act_block">
               <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
-              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
+              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
             </div>
             </div>
             <div class="act_block">
@@ -858,7 +868,8 @@
                 </div>
                 <div class="block">
                   <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
-                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="100" onchange="loadPermutation(this)"/>
                 </div>
               </div>
             </div>

@@ -1,46 +1,72 @@
-const mainR = 55;
-const dirR = 0;
-const viaR = 15;
-const viaR1 = viaR - 1;
-const mainDist = 50;
-const viaDist = -10;
-const dirDist = - 50;
+let perComCount = 0;
+let iter = 2;
+let store = [];
+let add = true;
 
-let allInputs = {};
-let node = {};
-let link = {};
+function permutateCommunication(e) {
+    const com = e.parentNode.parentNode;
+    let pair = {}; // {to: , via: }
+    const permutateCount = com.querySelector("#permutateCount");
 
-// let nodes = [];
-// let links = [];
+    // set config 1 to 1 
+    com.querySelector("#config_from").value = 1;
+    com.querySelector("#config_to").value = 1;
+    com.querySelector("#com_num").value = 1;
+    // set iteraction 
+    const to = com.querySelector("#to");
+    const via = com.querySelector("#via");
+    const options = to.getElementsByTagName('option');
+    // number of elements 
+    const eleNum = options.length - 1;
+    permutateCount.setAttribute("max", eleNum * (eleNum + 1));
+    if (perComCount < eleNum * (eleNum + 1)) {
+        if (perComCount < eleNum) {
+            // all forms of direct communication
+            com.querySelector("#direct_means").checked = true;
+            via.selectedIndex = 0;
+            to.selectedIndex = perComCount + 1;
+            pair.to = perComCount + 1;
+            pair.via = 0;
+        } else {
+            // all forms of mediated communication
+            com.querySelector("#via_means").checked = true;
+            // perComCount = perComCount - eleNum * iter;
+            if (perComCount < eleNum * iter) {
+                to.selectedIndex = iter - 1;
+                via.selectedIndex = perComCount - eleNum * (iter - 1) + 1;
+                pair.to = iter - 1;
+                pair.via = perComCount - eleNum * (iter - 1) + 1;
+            }
+            if (perComCount == eleNum * iter - 1) {
+                iter++;
+            }
+        }
+        perComCount++;
+        permutateCount.value = perComCount;
+        if (add) {
+            store.push(pair);
+            // console.log(store);
+        }
+        if (perComCount == eleNum * (eleNum + 1)) {
+            perComCount = 0;
+            iter = 2;
+            add = false;
+        }
+    }
+}
 
-let counter = 0;
+function loadPermutation(e){
+    const com = e.parentNode.parentNode;
+    const permutateCount = e.value;
+    const selectPair = store[permutateCount - 1];
 
-export { mainR, viaR1, viaR };
-import { drawVis } from "./script.js"
-
-document.querySelector("#permutate").addEventListener("click", permutate);
-
-function permutate() {
-    counter++;
-
-    const allElements = document.querySelectorAll(".element");
-    allElements.forEach(element => {
-        node = {};
-        link = {};
-
-        const index = element.querySelector("#index").innerText;
-        allInputs[index] = {};
-        allInputs[index].type = element.querySelector("#type").value;
-        allInputs[index].eleNum = element.querySelector("#ele_num").value;
-
-        // add main nodes
-        // node.id = index;
-        // node.size = mainR;
-        // node.text = index + ` ` + allInputs[index].type;
-        // node.num = `(` + allInputs[index].eleNum + `)`;
-        // nodes.push(node);
-    });
-
-    // console.log(nodes);
-    // console.log(counter);
+    if(selectPair.via == 0) {
+        com.querySelector("#direct_means").checked = true;
+        com.querySelector("#to").selectedIndex = selectPair.to;
+        com.querySelector("#via").selectedIndex = selectPair.via;
+    } else {
+        com.querySelector("#via_means").checked = true;
+        com.querySelector("#to").selectedIndex = selectPair.to;
+        com.querySelector("#via").selectedIndex = selectPair.via;
+    }
 }

@@ -357,7 +357,8 @@ function addGenerateCommunication(element) {
               </div>
                               <div class="block">
                 <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
-                <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                <input type="number" id="permutateCount" name="permutateCount" min="0" max="100" onchange="loadPermutation(this)"/>
               </div>
 </div>    
 </div>`;
