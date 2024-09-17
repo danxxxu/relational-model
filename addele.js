@@ -553,7 +553,7 @@ function addGenerateElement(element) {
                         <div class="block">
                   <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
                   <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
-                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="100" onchange="loadPermutation(this)"/>
+                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
         </div>
         </div>
@@ -581,6 +581,8 @@ function addGenerateElement(element) {
   eleList.style.display = "none";
   eleList.innerHTML = "";
   eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
+
+  updateAllPermutation();
 }
 
 function deleteElement(element) {
@@ -592,6 +594,8 @@ function deleteElement(element) {
   eleList.style.display = "none";
   eleList.innerHTML = "";
   eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
+
+  updateAllPermutation();
 }
 
 function updateIndex() {
@@ -614,6 +618,7 @@ function updateIndex() {
         coms[k].querySelector("#via_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
         coms[k].querySelector("#public_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
         coms[k].querySelector("#private_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+        coms[k].querySelector("#permutateCount").value = 0;
       }
     }
   }
@@ -624,12 +629,27 @@ function updateDropdown() {
 
   const allIfEle = document.querySelectorAll(".if_ele");
   allIfEle.forEach(element => {
+    const eleIndex = element.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#index").innerHTML.replace("#", "");
+    const actNum = element.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll(".action").length;
+
     const oldSelect = element.value;
-    element.innerHTML = ` <option value="">Element</option>
+    const ifID = element.parentNode.parentNode.id;
+    if (ifID == "trigger") {
+      element.innerHTML = ` <option value="">Element</option>
     <option value="0">Self-initiated</option>`;
+    } else if (ifID == "response") {
+      element.innerHTML = ` <option value="">Element</option>`;
+    }
     for (let i = 0; i < allElements.length; i++) {
-      const index = (i + 1).toString();
-      element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+      if (actNum > 1) {
+        const index = (i + 1).toString();
+        element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+      } else if (allElements.length > 1) {
+        const index = (i + 1).toString();
+        if (eleIndex != index) {
+          element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+        }
+      }
     }
     element.value = oldSelect;
   });
@@ -655,4 +675,86 @@ function updateDropdown() {
       viaEle.value = oldVia;
     });
   });
+}
+
+///////////// PERMUTATE //////////////
+let perComCount = 0;
+let allPermutation = [];
+
+window.addEventListener("load", updateAllPermutation);
+document.querySelector("#add_element").addEventListener("click", updateAllPermutation);
+
+function updateAllPermutation() {
+  allPermutation = [];
+  let iter = 1;
+  const allEle = document.querySelectorAll(".element");
+  const eleNum = allEle.length;
+  for (let i = 0; i < eleNum * (eleNum + 1); i++) {
+    let pair = {};
+    if (i < eleNum * iter) {
+      if (iter == 1) {
+        pair.to = i + 1;
+        pair.via = 0;
+      } else {
+        pair.to = iter - 1;
+        pair.via = i - eleNum * (iter - 1) + 1;
+      }
+    }
+    if (i == eleNum * iter - 1) {
+      iter++;
+    }
+    allPermutation.push(pair);
+  }
+}
+
+function permutateCommunication(e) {
+  const com = e.parentNode.parentNode;
+  const permutateCount = com.querySelector("#permutateCount");
+  const allEle = document.querySelectorAll(".element");
+  const eleNum = allEle.length;
+  permutateCount.setAttribute("max", eleNum * (eleNum + 1));
+  permutateCount.removeAttribute('disabled');
+  perComCount = permutateCount.value;
+  if (perComCount == eleNum * (eleNum + 1)) {
+    perComCount = 0;
+  }
+  // set config 1 to 1 
+  com.querySelector("#config_from").value = 1;
+  com.querySelector("#config_to").value = 1;
+  com.querySelector("#com_num").value = 1;
+  // set iteraction 
+  const to = com.querySelector("#to");
+  const via = com.querySelector("#via");
+
+  if (perComCount < eleNum * (eleNum + 1)) {
+    to.selectedIndex = allPermutation[perComCount].to;
+    via.selectedIndex = allPermutation[perComCount].via;
+    if (allPermutation[perComCount].via == 0) {
+      com.querySelector("#direct_means").checked = true;
+    } else {
+      com.querySelector("#via_means").checked = true;
+    }
+    perComCount++;
+    permutateCount.value = perComCount;
+    if (perComCount == eleNum * (eleNum + 1)) {
+      perComCount = 0;
+    }
+  }
+  permutateCount.setAttribute("min", 1);
+}
+
+function loadPermutation(e) {
+  const com = e.parentNode.parentNode;
+  const permutateCount = e.value;
+  const selectPair = allPermutation[permutateCount - 1];
+
+  if (selectPair.via == 0) {
+    com.querySelector("#direct_means").checked = true;
+    com.querySelector("#to").selectedIndex = selectPair.to;
+    com.querySelector("#via").selectedIndex = selectPair.via;
+  } else {
+    com.querySelector("#via_means").checked = true;
+    com.querySelector("#to").selectedIndex = selectPair.to;
+    com.querySelector("#via").selectedIndex = selectPair.via;
+  }
 }

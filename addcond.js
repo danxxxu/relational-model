@@ -145,7 +145,7 @@ function updateIfIndex() {
         }
 
         for (let i = 0; i < allElements.length; i++) {
-            if (actNum != 1) {
+            if (actNum > 1) {
                 const index = (i + 1).toString();
                 e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
             } else if (allElements.length > 1) {

@@ -518,7 +518,7 @@ function addGenerateAction(element) {
                   <div class="block">
                   <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
                   <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
-                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="100" onchange="loadPermutation(this)"/>
+                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
     </div>
     </div>
