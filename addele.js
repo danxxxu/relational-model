@@ -618,7 +618,9 @@ function updateIndex() {
         coms[k].querySelector("#via_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
         coms[k].querySelector("#public_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
         coms[k].querySelector("#private_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
+        if(window.location.href.includes("generate")) {
         coms[k].querySelector("#permutateCount").value = 0;
+        }
       }
     }
   }
