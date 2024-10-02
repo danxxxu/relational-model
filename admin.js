@@ -86,6 +86,7 @@ function updateAction() {
 
                 for (let k = 0; k < existAction.length; k++) {
                     if (existAction[k] == actV) {
+                        console.log("same action")
                         exist = true;
                         break
                     }
@@ -125,8 +126,9 @@ function updateEffect() {
 
                     effectList.forEach(effect => {
                         let exist = false;
-                        for (let l = 0; l < existEffect; i++) {
+                        for (let l = 0; l < existEffect.length; l++) {
                             if (existEffect[l] == effect) {
+                                console.log("same effect")
                                 exist = true;
                                 break;
                             }
