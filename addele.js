@@ -5,9 +5,7 @@ function addElement(element) {
   eleCount = allElements.length + 1;
 
   let eleHtml = `
-    <div class="element"         
-    onmouseenter="showElementInfo(event, this)"
-    onmouseleave="hideElementInfo(this)">
+    <div class="element">
     <div class="element_info"></div>
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
     <div class="block" style="width:100%"><span id="index">#1</span></div>
@@ -292,9 +290,7 @@ function addGenerateElement(element) {
   eleCount = allElements.length + 1;
 
   let generateEleHtml = `
-    <div class="element"         
-    onmouseenter="showElementInfo(event, this)"
-    onmouseleave="hideElementInfo(this)">
+    <div class="element">
     <div class="element_info"></div>
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
     <div class="block" style="width:100%"><span id="index">#1</span><button class="generate" onclick="generateElement(this)">Generate element</button><button class="generate" onclick="completeElement(this)">Complete element</button></div>
