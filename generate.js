@@ -76,8 +76,10 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-const numOptions = ["1", "2", "3", "4", "5", "1+", "2+", "3+", "4+", "5+"]
 
+//////////////////// OLD RANDOMISATION NOT USED //////////////////// 
+//////////////////// Randomise communication //////////////////// 
+const numOptions = ["1", "2", "3", "4", "5", "1+", "2+", "3+", "4+", "5+"]
 function randomiseCommunication(e) {
     const com = e.parentNode.parentNode; // class=communications
 
@@ -117,21 +119,21 @@ function randomiseCommunication(e) {
     }
 }
 
-function randomiseAllCommunication() {
-    // click Randomise for all communications 
-    const allEle = document.body.querySelectorAll(".element");
-    allEle.forEach(element => {
-        const allAct = element.querySelectorAll(".action");
-        allAct.forEach(action => {
-            const allCom = action.querySelectorAll(".communications");
-            allCom.forEach(com => {
-                com.querySelector("#randomise_com").click();
-            });
-        });
-    });
+// function randomiseAllCommunication() {
+//     // click Randomise for all communications 
+//     const allEle = document.body.querySelectorAll(".element");
+//     allEle.forEach(element => {
+//         const allAct = element.querySelectorAll(".action");
+//         allAct.forEach(action => {
+//             const allCom = action.querySelectorAll(".communications");
+//             allCom.forEach(com => {
+//                 com.querySelector("#randomise_com").click();
+//             });
+//         });
+//     });
 
-    document.body.querySelector("#visualise").click();
-}
+//     document.body.querySelector("#visualise").click();
+// }
 
 
 function randomiseCondition(e) {
@@ -359,15 +361,16 @@ function randmiseAdd(add) {
 //     }
 // }
 
-function randomiseAllCondition() {
-    // click Randomise for all communications 
-    const allEle = document.body.querySelectorAll(".element");
-    allEle.forEach(element => {
-        const allAct = element.querySelectorAll(".action");
-        allAct.forEach(action => {
-            action.querySelector("#randomise_cond").click();
-        });
-    });
+// function randomiseAllCondition() {
+//     // click Randomise for all communications 
+//     const allEle = document.body.querySelectorAll(".element");
+//     allEle.forEach(element => {
+//         const allAct = element.querySelectorAll(".action");
+//         allAct.forEach(action => {
+//             action.querySelector("#randomise_cond").click();
+//         });
+//     });
 
-    document.body.querySelector("#visualise").click();
-}
+//     document.body.querySelector("#visualise").click();
+// }
+//////////////////// OLD RANDOMISATION NOT USED //////////////////// 

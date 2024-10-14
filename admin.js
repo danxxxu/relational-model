@@ -9,9 +9,9 @@ import { snapshot, existData } from "./input.js";
 
 // download data
 // document.querySelector("#saveData").addEventListener("click", saveData);
-document.querySelector("#updateType").addEventListener("click", updateType);
-document.querySelector("#updateAction").addEventListener("click", updateAction);
-document.querySelector("#updateEffect").addEventListener("click", updateEffect);
+// document.querySelector("#updateType").addEventListener("click", updateType);
+// document.querySelector("#updateAction").addEventListener("click", updateAction);
+// document.querySelector("#updateEffect").addEventListener("click", updateEffect);
 
 // function saveData() {
 //     const allData = snapshot.docs;

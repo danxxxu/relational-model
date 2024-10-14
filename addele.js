@@ -371,8 +371,7 @@ function addGenerateElement(element) {
               </div>
             </div>
             <div class="act_block">
-              <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
-              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
+              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate</button>
               <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
             </div>
             </div>
@@ -548,8 +547,7 @@ function addGenerateElement(element) {
           </div>
         </div>
                         <div class="block">
-                  <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
-                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate</button>
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
         </div>
@@ -579,7 +577,7 @@ function addGenerateElement(element) {
   eleList.innerHTML = "";
   eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 
-  updateAllPermutation();
+  // updateAllPermutation();
 }
 
 function deleteElement(element) {
@@ -592,7 +590,7 @@ function deleteElement(element) {
   eleList.innerHTML = "";
   eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 
-  updateAllPermutation();
+  // updateAllPermutation();
 }
 
 function updateIndex() {
@@ -674,86 +672,4 @@ function updateDropdown() {
       viaEle.value = oldVia;
     });
   });
-}
-
-///////////// PERMUTATE //////////////
-let perComCount = 0;
-let allPermutation = [];
-
-window.addEventListener("load", updateAllPermutation);
-document.querySelector("#add_element").addEventListener("click", updateAllPermutation);
-
-function updateAllPermutation() {
-  allPermutation = [];
-  let iter = 1;
-  const allEle = document.querySelectorAll(".element");
-  const eleNum = allEle.length;
-  for (let i = 0; i < eleNum * (eleNum + 1); i++) {
-    let pair = {};
-    if (i < eleNum * iter) {
-      if (iter == 1) {
-        pair.to = i + 1;
-        pair.via = 0;
-      } else {
-        pair.to = iter - 1;
-        pair.via = i - eleNum * (iter - 1) + 1;
-      }
-    }
-    if (i == eleNum * iter - 1) {
-      iter++;
-    }
-    allPermutation.push(pair);
-  }
-}
-
-function permutateCommunication(e) {
-  const com = e.parentNode.parentNode;
-  const permutateCount = com.querySelector("#permutateCount");
-  const allEle = document.querySelectorAll(".element");
-  const eleNum = allEle.length;
-  permutateCount.setAttribute("max", eleNum * (eleNum + 1));
-  permutateCount.removeAttribute('disabled');
-  perComCount = permutateCount.value;
-  if (perComCount == eleNum * (eleNum + 1)) {
-    perComCount = 0;
-  }
-  // set config 1 to 1 
-  com.querySelector("#config_from").value = 1;
-  com.querySelector("#config_to").value = 1;
-  com.querySelector("#com_num").value = 1;
-  // set iteraction 
-  const to = com.querySelector("#to");
-  const via = com.querySelector("#via");
-
-  if (perComCount < eleNum * (eleNum + 1)) {
-    to.selectedIndex = allPermutation[perComCount].to;
-    via.selectedIndex = allPermutation[perComCount].via;
-    if (allPermutation[perComCount].via == 0) {
-      com.querySelector("#direct_means").checked = true;
-    } else {
-      com.querySelector("#via_means").checked = true;
-    }
-    perComCount++;
-    permutateCount.value = perComCount;
-    if (perComCount == eleNum * (eleNum + 1)) {
-      perComCount = 0;
-    }
-  }
-  permutateCount.setAttribute("min", 1);
-}
-
-function loadPermutation(e) {
-  const com = e.parentNode.parentNode;
-  const permutateCount = e.value;
-  const selectPair = allPermutation[permutateCount - 1];
-
-  if (selectPair.via == 0) {
-    com.querySelector("#direct_means").checked = true;
-    com.querySelector("#to").selectedIndex = selectPair.to;
-    com.querySelector("#via").selectedIndex = selectPair.via;
-  } else {
-    com.querySelector("#via_means").checked = true;
-    com.querySelector("#to").selectedIndex = selectPair.to;
-    com.querySelector("#via").selectedIndex = selectPair.via;
-  }
 }

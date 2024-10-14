@@ -20,7 +20,6 @@
     <script type="module" src="input.js"></script>
     <script type="module" src="display.js"></script>
     <script src="permutate.js" defer></script>
-    <!-- <script type="module" src="randomise.js"></script> -->
     <script src="addcom.js" defer></script>
     <script src="addact.js" defer></script>
     <script src="addele.js" defer></script>
@@ -87,9 +86,9 @@
     .top_block {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 16px;
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      /* display: inline-flex; */
+      /* flex-direction: column; */
+      /* justify-content: flex-start; */
     }
     .top_link {
       font-size: 16px;
@@ -387,10 +386,13 @@
       background-color: rgb(0, 184, 184);
     }
     #permutateCount{
-      width: 57px;
+      width: 77px;
     }
     #permutateCondCount{
       width: 77px;
+    }
+    .data {
+      display: none;
     }
   </style>
   <body>
@@ -505,6 +507,9 @@
         <button class="top_link" id="element_list" onclick="showAll(this)">
           Show all elements
         </button>
+        <!-- <button class="permutate" id="create_combi" onclick="createCombination()">
+          Create combinations
+        </button> -->
         <div id="all_elements"></div>
       </div>
     </div>
@@ -692,8 +697,8 @@
               </div>
              </div>
              <div class="act_block">
-              <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button>
-              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Permutate</button>
+              <!-- <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button> -->
+              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate</button>
               <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
             </div>
             </div>
@@ -872,8 +877,8 @@
                   </div>
                 </div>
                 <div class="block">
-                  <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button>
-                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Permutate</button>
+                  <!-- <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button> -->
+                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate</button>
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
               </div>
@@ -923,8 +928,8 @@
       <button id="updateEffect">Update Effect List</button>
     </div> -->
     <div style="margin: 15px">
-      <button class="generate" onclick="randomiseAllCommunication()">Randomise all communication</button>
-      <button class="generate" onclick="randomiseAllCondition()">Randomise all condition</button>
+      <button class="permutate" onclick="randomiseAllCommunication()">Randomise all communication</button>
+      <button class="permutate" onclick="randomiseAllCondition()">Randomise all condition</button>
     </div>
     <div id="controls">
       <div class="control_block">
