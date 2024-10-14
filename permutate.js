@@ -261,3 +261,32 @@ function shuffle(array) {
       array[randomIndex], array[currentIndex]];
   }
 }
+
+function randomiseAllCommunication() {
+  // click Randomise for all communications 
+  const allEle = document.body.querySelectorAll(".element");
+  allEle.forEach(element => {
+      const allAct = element.querySelectorAll(".action");
+      allAct.forEach(action => {
+          const allCom = action.querySelectorAll(".communications");
+          allCom.forEach(com => {
+              com.querySelector("#permutate_com").click();
+          });
+      });
+  });
+
+  document.body.querySelector("#visualise").click();
+}
+
+function randomiseAllCondition() {
+    // click Randomise for all communications 
+    const allEle = document.body.querySelectorAll(".element");
+    allEle.forEach(element => {
+        const allAct = element.querySelectorAll(".action");
+        allAct.forEach(action => {
+            action.querySelector("#permutate_cond").click();
+        });
+    });
+
+    document.body.querySelector("#visualise").click();
+}
