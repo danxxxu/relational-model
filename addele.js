@@ -293,7 +293,11 @@ function addGenerateElement(element) {
     <div class="element">
     <div class="element_info"></div>
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
-    <div class="block" style="width:100%"><span id="index">#1</span><button class="generate" onclick="generateElement(this)">Generate element</button><button class="generate" onclick="completeElement(this)">Complete element</button></div>
+    <div class="block" style="width:100%"><span id="index">#1</span><button class="generate" onclick="generateElement(this)">Generate element<span class="info"
+          >Generate a random element profile based on the artwork selection in the database. Over-write existing data entries. 
+        </span></button><button class="permutate" onclick="completeElement(this)">Complete element<span class="info"
+          >Fill in the empty input fields of the element profile. Does not over-write existing data entries.
+        </span></button></div>
     <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"/><datalist id="existTypes"></datalist></div>
     <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
@@ -371,7 +375,9 @@ function addGenerateElement(element) {
               </div>
             </div>
             <div class="act_block">
-              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate</button>
+              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
+                    >Randomly generate a condition.
+                  </span></button>
               <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
             </div>
             </div>
@@ -547,7 +553,9 @@ function addGenerateElement(element) {
           </div>
         </div>
                         <div class="block">
-                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate</button>
+                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
+                    >Randomly generate a form of communication.
+                  </span></button>
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
         </div>

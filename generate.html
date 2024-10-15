@@ -379,11 +379,17 @@
     .generate:hover {
       background-color: #9196f4;
     }
+    .generate:hover .info {
+      visibility: visible;
+    }
     .permutate{
       background-color: darkcyan;
     }
-    .permutate:hover{
+    .permutate:hover {
       background-color: rgb(0, 184, 184);
+    }
+    .permutate:hover .info {
+      visibility: visible;
     }
     #permutateCount{
       width: 77px;
@@ -599,7 +605,11 @@
           X
         </button>
         <!-- <div class="element_info"></div> -->
-        <div class="block" style="width:100%"><span id="index">#1</span><button class="generate" onclick="generateElement(this)">Generate element</button><button class="generate" onclick="completeElement(this)">Complete element</button></div>
+        <div class="block" style="width:100%"><span id="index">#1</span><button class="generate" onclick="generateElement(this)">Generate element<span class="info"
+          >Generate a random element profile based on the artwork selection in the database. Over-write existing data entries. 
+        </span></button><button class="permutate" onclick="completeElement(this)">Complete element<span class="info"
+          >Fill in the empty input fields of the element profile. Does not over-write existing data entries.
+        </span></button></div>
         <div class="block">
           <input
             list="existTypes"
@@ -698,7 +708,9 @@
              </div>
              <div class="act_block">
               <!-- <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button> -->
-              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate</button>
+              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
+                >Randomly generate a condition.
+              </span></button>
               <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
             </div>
             </div>
@@ -878,7 +890,9 @@
                 </div>
                 <div class="block">
                   <!-- <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button> -->
-                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate</button>
+                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
+                    >Randomly generate a form of communication.
+                  </span></button>
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
               </div>
@@ -928,8 +942,12 @@
       <button id="updateEffect">Update Effect List</button>
     </div> -->
     <div style="margin: 15px">
-      <button class="permutate" onclick="randomiseAllCommunication()">Randomise all communication</button>
-      <button class="permutate" onclick="randomiseAllCondition()">Randomise all condition</button>
+      <button class="generate" onclick="randomiseAllCommunication()">Generate all communication<span class="info"
+        >Randomly fill in all forms of communication in the input field.
+      </span></button>
+      <button class="generate" onclick="randomiseAllCondition()">Generate all condition<span class="info"
+        >Randomly fill in all conditions for all the actions in the input field.
+      </span></button>
     </div>
     <div id="controls">
       <div class="control_block">

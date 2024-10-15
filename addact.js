@@ -342,7 +342,9 @@ function addGenerateAction(element) {
               </div>
             </div>
             <div class="act_block">
-              <button class="permutate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate</button>
+              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
+                    >Randomly generate a condition.
+                  </span></button>
               <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
             </div>
  </div>
@@ -516,7 +518,9 @@ function addGenerateAction(element) {
     </div>
   </div>
                   <div class="block">
-                  <button class="permutate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate</button>
+                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
+                    >Randomly generate a form of communication.
+                  </span></button>
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
     </div>
