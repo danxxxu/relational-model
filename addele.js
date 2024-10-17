@@ -335,7 +335,13 @@ function addGenerateElement(element) {
        value="unintentional"
      /><label for="unintentional">Unintented</label>
  </div>
-    <div id="condition" style="width: 100%">
+    <div id="condition" style="width: 100%; background-color: #cdcffc;">
+            <div class="act_block">
+              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
+                    >Randomly generate a condition.
+                  </span></button>
+              <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
+            </div>
     <div id="trigger">
       <div class="act_block">
               <span>If </span
@@ -374,12 +380,6 @@ function addGenerateElement(element) {
                 </select>
               </div>
             </div>
-            <div class="act_block">
-              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
-                    >Randomly generate a condition.
-                  </span></button>
-              <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
-            </div>
             </div>
             <div class="act_block">
               <div class="ancom_block" style="margin: 0">COMMUNICATION:
@@ -396,6 +396,7 @@ function addGenerateElement(element) {
           </div>
           <div class="com">
             <div class="an_com">
+              <div class="ancom_block" style="height: 20px;"></div>
               <div class="ancom_block">
                 To:
                 <span class="info"
@@ -467,6 +468,12 @@ function addGenerateElement(element) {
             </div>
         <div class="communications">
         <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
+                <div class="block">
+                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
+                    >Randomly generate a form of communication.
+                  </span></button>
+                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
+                </div>
           <div class="block">
           <select id="to" name="to_elements" style="float: left;">
           <option value="">--To which element--</option>
@@ -552,12 +559,6 @@ function addGenerateElement(element) {
             </button>
           </div>
         </div>
-                        <div class="block">
-                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
-                    >Randomly generate a form of communication.
-                  </span></button>
-                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
-                </div>
         </div>
         </div>
         <div class="add_communication">

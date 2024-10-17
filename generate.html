@@ -391,11 +391,14 @@
     .permutate:hover .info {
       visibility: visible;
     }
+    #demo,
+    #permutateCondCount,
     #permutateCount{
       width: 77px;
-    }
-    #permutateCondCount{
-      width: 77px;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      background-color:#5C62D6;
+      color: white;
     }
     .data {
       display: none;
@@ -405,53 +408,39 @@
     <div id="select">
       <div>
         <button
+          class="generate"
           id="instruction"
           onclick="showInstruction(this)"
-          style="font-size: 16px; font-weight: bold;"
+          style="font-size: 16px; font-weight: bold; margin: 0; width: 80px;"
         >
           *About*
         </button>
         <div id="instruction_text">
           <button class="close" onclick="closeInstruction(this)">X</button>
-          This site presents a modelling tool for describing and visualising interactions. This tool is built upon a relational model previously
-          developed for describing different forms of interaction in the context
-          of interactive artworks. A detailed description of the model can be
-          found in
-          <a
-            href="https://isea2023.ensad.fr/#towards-models-of-co-located-interaction-in-interactive-art"
-            target="_blank"
-            >this publication<sup>1</sup></a
-          >. Three key concepts are used in the model to dissect an interaction: element, action, and communication. An element refers to an individual actor participating
-          in the interaction. Elements with the same properties and behaviours are grouped together in a profile with an index starting with "#". For an element, the model examines the actions performed by them to interact with other elements. Following an action, one or more forms
-          of communication are created and directed at (an)other element(s). Various descriptors are used to facilitate the description of these concepts. 
+          This page presents the experimental generative functions of the relational modelling tool. The tool was initially designed for describing and visualising interactions in interactive art. If you would like to use the tool only for these purposes read more about it, you can access its main interface <a href="./index.html" target="_blank">here</a> or watch the tutorial <a href="https://youtu.be/HeniTtbI1SI?si=oTD_L0sLw7MFiF_B" target="_blank">here</a>.
           <br />
           <br />
-          <span style="font-weight: bold">How to use the tool:</span><br />
-          You can either directly work on an empty worksheet or browse the
-          database to load existing interactive artworks for inspirations. An example is locked for view only if all input fields are disabled. You can click on the Unlock button to create an editable copy. 
-          Before you start, please name the current worksheet, such as 'Artwork
-          Title (year) by Artist'. This allows you to store the data in the
-          database and reload the worksheet data using the same name.
+          <span style="font-weight: bold">How to use the generative functions:</span><br />
+          To start generating an interactive dialogue, you must first specify its layout: the number of element profiles; the number of actions each element plays; the number of communication each action creates. 
           <br />
           <br />
-          While working on the worksheet, you can hover over the text descriptors to view brief explanations. Clicking on
-          the text input fields will prompt a suggestion list based on 
-         the data from existing examples. You may select an option from the list or input new content if nothing matches your description. 
+          The generative functions can be accessed via the coloured buttons:
           <br />
           <br />
-          You can click on the visualisation button below to generate a visualisation of the current description. 
-          If no visualisation was shown after clicking on the
-          button, there may be important data missing somewhere in the
-          worksheet.
+          <button class="generate" style="margin:0">Generate element</button> automatically fills in the Type, Count and Action of the element profile with randomly selected data entries based on the artwork collection in the database.
+          <br />
+          <br />
+          <button class="permutate" style="margin:0">Complete element</button> only fills in the empty data entries. 
+          <br />
+          <br />
+          <button class="generate" style="margin:0">Generate</button> randomly generates condition and communication based on the existing elements and actions in the current worksheet. A unique index for each combination is provided in <input type="number" id="demo" min="0" max="" value="0"/>. You can also use the index box to go over the possible combinations. 
+          <br />
+          <br />
+          <button class="generate" style="margin:0">Generate all communication</button> <button class="generate">Generate all condition</button> will automatically generate all communication and condition for all the actions in the current worksheet.
           <br />
           <br />
           <span style="font-weight: bold">Note:</span><br />
-          There is no right or wrong way of describe an interaction. Feel free
-          to tailor the level of details to suit your purpose and experiment
-          with different approaches to find the most effective description. If you have any further questions or comments, please contact <a href="mailto:d.xu@liacs.leidenuniv.nl">d.xu@liacs.leidenuniv.nl</a>.
-          <br />
-          <br />
-          <span style="font-size: 10px">1. Dan Xu, Maarten H. Lamers, Edwin van der Heide: Towards a Relational Model of Co-located Interaction in Interactive Art. In: Emmanuel Mahé (eds.) Proceedings of the 28th International Symposium on Electronic Art 2023, pp. 723-732. École des Arts Décoratifs (2024).</span>
+          These generative functions are intended as experiments and their practical usage is debatable. However, we do wish to stimulate conversations and ideas for designing features to assist the creative process based on the relational model. If you have any further questions or comments, please contact <a href="mailto:d.xu@liacs.leidenuniv.nl">d.xu@liacs.leidenuniv.nl</a>.
         </div>
         <select
           id="select_interaction"
@@ -663,7 +652,14 @@
                 value="unintentional"
               /><label for="unintentional">Unintended</label>
             </div>
-            <div id="condition" style="width: 100%">
+            <div id="condition" style="width: 100%; background-color: #cdcffc;">
+              <div class="act_block">
+                <!-- <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button> -->
+                <button class="generate" id="permutate_cond" style="margin:0 0 3px 0" onclick="permutateCondition(this)">Generate<span class="info"
+                  >Randomly generate a condition.
+                </span></button>
+                <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
+              </div>
               <div id="trigger">
                 <div class="act_block">
                 <span>If</span>
@@ -706,13 +702,6 @@
                 </select>
               </div>
              </div>
-             <div class="act_block">
-              <!-- <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button> -->
-              <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
-                >Randomly generate a condition.
-              </span></button>
-              <input type="number" id="permutateCondCount" name="permutateCondCount" min="0" max="" value="0" onchange="loadCondPermutation(this)" disabled/>
-            </div>
             </div>
             <div class="act_block">
               <div class="ancom_block" style="margin: 0">
@@ -730,6 +719,7 @@
             </div>
             <div class="com">
               <div class="an_com">
+                <div class="ancom_block" style="height: 20px;"></div>
                 <div class="ancom_block">
                   To:
                   <span class="info"
@@ -803,6 +793,13 @@
                 <button class="close" id="delete_com" onclick="deleteCom(this)">
                   X
                 </button>
+                <div class="block">
+                  <!-- <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button> -->
+                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
+                    >Randomly generate a form of communication.
+                  </span></button>
+                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
+                </div>
                 <div class="block">
                   <select id="to" name="to_elements" style="float: left">
                     <option value="">--To which element--</option>
@@ -887,13 +884,6 @@
                       +
                     </button>
                   </div>
-                </div>
-                <div class="block">
-                  <!-- <button class="generate" id="randomise_com" style="margin:0" onclick="randomiseCommunication(this)">Randomise</button> -->
-                  <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
-                    >Randomly generate a form of communication.
-                  </span></button>
-                  <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
               </div>
             </div>

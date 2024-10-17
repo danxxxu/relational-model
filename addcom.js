@@ -202,6 +202,7 @@ function addGenerateCommunication(element) {
   let generateComHtml = `
 <div class="com">
 <div class="an_com">
+  <div class="ancom_block" style="height: 20px;"></div>
   <div class="ancom_block">
     To:
     <span class="info"
@@ -273,6 +274,12 @@ function addGenerateCommunication(element) {
 </div>
 <div class="communications">
 <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
+              <div class="block">
+                <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
+                    >Randomly generate a form of communication.
+                  </span></button>
+                <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
+              </div>
   <div class="block">
   <select id="to" name="to_elements">
   <option value="">--To which element--</option>` + options + `
@@ -354,12 +361,6 @@ function addGenerateCommunication(element) {
                     +
                   </button>
                 </div>
-              </div>
-                              <div class="block">
-                <button class="generate" id="permutate_com" style="margin:0" onclick="permutateCommunication(this)">Generate<span class="info"
-                    >Randomly generate a form of communication.
-                  </span></button>
-                <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
               </div>
 </div>    
 </div>`;
