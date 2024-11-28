@@ -483,8 +483,8 @@
             style="font-size: 16px"
             onclick="unlock(this)"
             disabled="true"
-          >Unlock<span class="info"
-              >Create an unlocked version of the worksheet, you can edit and save it with a different name.
+          >Copy<span class="info"
+              >Create an unlocked copy of the worksheet, you can edit and save it with a different name.
             </span></button>
         <button
           class="top_buttons"
@@ -604,6 +604,7 @@
             list="existTypes"
             id="type"
             placeholder="Type/role (if applicable)"
+            onchange="updateDropdown()"
           /><datalist id="existTypes"></datalist>
         </div>
         <div class="block">
@@ -653,6 +654,7 @@
               /><label for="unintentional">Unintended</label>
             </div>
             <div id="condition" style="width: 100%; background-color: #cdcffc;">
+              <div class="act_block">CONDITION:</div>
               <div class="act_block">
                 <!-- <button class="generate" id="randomise_cond" style="margin:0" onclick="randomiseCondition(this)">Randomise</button> -->
                 <button class="generate" id="permutate_cond" style="margin:0 0 3px 0" onclick="permutateCondition(this)">Generate<span class="info"

@@ -103,7 +103,6 @@ function visualise() {
 
 // submit all inputs to database
 function submitDB() {
-    // const inputID = prompt('Please name the worksheet (avoid using . and /), e.g. "artwork title (year) by artist" or "ddmmyyyy short description".');
 
     const getID = document.querySelector("#name_interaction").value;
     let exist = false;
@@ -146,7 +145,7 @@ function submitDB() {
 }
 
 function saveDB(inputID) {
-    const lock = confirm("Do you want to save a locked version of the worksheet?\nOnce a worksheet is locked, a permenant copy will be stored in the database");
+    const lock = confirm("Click OK if you want to lock the current worksheet and do not wish to edit it further. You can always create an editable copy by clicking on the Copy button.\n\nClick Cancel if you only want to save the current worksheet and edit it later.");
     //if the name does not exist or to update the existing interaction, save the entry to the database
     allInputs = {};
     // save lock states

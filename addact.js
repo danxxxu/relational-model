@@ -39,6 +39,7 @@ function addAction(element) {
      /><label for="unintentional">Unintented</label>
  </div>
    <div id="condition" style="width: 100%">
+   <div class="act_block">CONDITION:</div>
    <div id="trigger">
    <div class="act_block">
    <span>If </span
@@ -303,6 +304,7 @@ function addGenerateAction(element) {
      /><label for="unintentional">Unintented</label>
  </div>
    <div id="condition" style="width: 100%; background-color: #cdcffc;">
+            <div class="act_block">CONDITION:</div>
                <div class="act_block">
               <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
                     >Randomly generate a condition.

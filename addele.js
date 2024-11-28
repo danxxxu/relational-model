@@ -9,7 +9,7 @@ function addElement(element) {
     <div class="element_info"></div>
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
     <div class="block" style="width:100%"><span id="index">#1</span></div>
-    <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"/><datalist id="existTypes"></datalist></div>
+    <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"          onchange="updateDropdown()" /><datalist id="existTypes"></datalist></div>
     <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
     <option value="2"></option>
@@ -47,6 +47,7 @@ function addElement(element) {
      /><label for="unintentional">Unintented</label>
  </div>
     <div id="condition" style="width: 100%">
+    <div class="act_block">CONDITION:</div>
     <div id="trigger">
       <div class="act_block">
               <span>If </span
@@ -298,7 +299,7 @@ function addGenerateElement(element) {
         </span></button><button class="permutate" onclick="completeElement(this)">Complete element<span class="info"
           >Fill in the empty input fields of the element profile. Does not over-write existing data entries.
         </span></button></div>
-    <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"/><datalist id="existTypes"></datalist></div>
+    <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"             onchange="updateDropdown()" /><datalist id="existTypes"></datalist></div>
     <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
     <option value="2"></option>
@@ -336,6 +337,7 @@ function addGenerateElement(element) {
      /><label for="unintentional">Unintented</label>
  </div>
     <div id="condition" style="width: 100%; background-color: #cdcffc;">
+            <div class="act_block">CONDITION:</div>
             <div class="act_block">
               <button class="generate" id="permutate_cond" style="margin:0" onclick="permutateCondition(this)">Generate<span class="info"
                     >Randomly generate a condition.
@@ -647,13 +649,13 @@ function updateDropdown() {
       element.innerHTML = ` <option value="">Element</option>`;
     }
     for (let i = 0; i < allElements.length; i++) {
+      const index = (i + 1).toString();
+      const eleType = allElements[i].querySelector("#type").value;
       if (actNum > 1) {
-        const index = (i + 1).toString();
-        element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+        element.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
       } else if (allElements.length > 1) {
-        const index = (i + 1).toString();
         if (eleIndex != index) {
-          element.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+          element.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
         }
       }
     }
@@ -673,8 +675,9 @@ function updateDropdown() {
 
       for (let i = 0; i < allElements.length; i++) {
         const index = (i + 1).toString();
-        toEle.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
-        viaEle.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+        const eleType = allElements[i].querySelector("#type").value;
+        toEle.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
+        viaEle.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
       }
 
       toEle.value = oldTo;

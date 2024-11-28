@@ -399,7 +399,7 @@
           <br />
           <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/HeniTtbI1SI?si=fZbqHC-U9GJm03Hr" title="Tutorial on the Relational Modeling Tool" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
           You can either directly work on an empty worksheet or browse the
-          database to load existing interactive artworks for inspirations. An example is locked for view only if all input fields are disabled. You can click on the Unlock button to create an editable copy. 
+          database to load existing interactive artworks for inspirations. An example is locked for view only if all input fields are disabled. You can click on the Copy button to create an editable copy. 
           Before you start, please name the current worksheet, such as 'Artwork
           Title (year) by Artist'. This allows you to store the data in the
           database and reload the worksheet data using the same name.
@@ -468,8 +468,8 @@
             style="font-size: 16px"
             onclick="unlock(this)"
             disabled="true"
-          >Unlock<span class="info"
-              >Create an unlocked version of the worksheet, you can edit and save it with a different name.
+          >Copy<span class="info"
+              >Create an unlocked copy of the current worksheet, you can edit and save it with a different name.
             </span></button>
         <button
           class="top_buttons"
@@ -582,6 +582,7 @@
             list="existTypes"
             id="type"
             placeholder="Type/role (if applicable)"
+            onchange="updateDropdown()"
           /><datalist id="existTypes"></datalist>
         </div>
         <div class="block">
@@ -631,6 +632,7 @@
               /><label for="unintentional">Unintended</label>
             </div>
             <div id="condition" style="width: 100%">
+              <div class="act_block">CONDITION:</div>
               <div id="trigger">
                 <div class="act_block">
                 <span>If</span>
