@@ -41,197 +41,204 @@ let actionInfo = {}; // {actionKey: [y,height], ...}
 let allRelations = {}; // {actionKey: condition, ...}
 
 export function drawVis(name, allInputs) {
+    try {
+        actionN = 0;
+        actionInfo = {};
+        allRelations = [];
 
-    actionN = 0;
-    actionInfo = {};
-    allRelations = [];
+        svg.selectAll('*').remove();
+        addName(name);
 
-    svg.selectAll('*').remove();
-    addName(name);
+        // define arrow 
+        svg.append('defs')
+            .append('marker')
+            .attr('id', 'arrow')
+            .attr('viewBox', [0, 0, markerBoxWidth, markerBoxHeight])
+            .attr('refX', refX)
+            .attr('refY', refY)
+            .attr('markerWidth', markerBoxWidth / 2)
+            .attr('markerHeight', markerBoxHeight / 2)
+            .attr('orient', 'auto')
+            .append('path')
+            .attr('d', d3.line()(arrowPoints))
+            .attr('stroke', 'black')
+            .attr('stroke-width', '2') // create line arrow
+            .attr('fill', 'none')
+            .attr('stroke-dasharray', 'none')
 
-    // define arrow 
-    svg.append('defs')
-        .append('marker')
-        .attr('id', 'arrow')
-        .attr('viewBox', [0, 0, markerBoxWidth, markerBoxHeight])
-        .attr('refX', refX)
-        .attr('refY', refY)
-        .attr('markerWidth', markerBoxWidth / 2)
-        .attr('markerHeight', markerBoxHeight / 2)
-        .attr('orient', 'auto')
-        .append('path')
-        .attr('d', d3.line()(arrowPoints))
-        .attr('stroke', 'black')
-        .attr('stroke-width', '2') // create line arrow
-        .attr('fill', 'none')
-        .attr('stroke-dasharray', 'none')
+        const eleCount = allInputs.eleCount;
+        eleX = [];
+        totalAction = 0;
+        let eleIndex = 0;
+        let actIndex = 0;
 
-    const eleCount = allInputs.eleCount;
-    eleX = [];
-    totalAction = 0;
-    let eleIndex = 0;
-    let actIndex = 0;
+        relateAction = [];
+        indeAction = [];
+        allAction = [];
 
-    relateAction = [];
-    indeAction = [];
-    allAction = [];
+        let action = {};
+        allInputsCopy = structuredClone(allInputs);
 
-    let action = {};
-    allInputsCopy = structuredClone(allInputs);
+        // draw elements and store actions 
+        for (let i = 0; i < eleCount; i++) {
+            eleIndex = i + 1;
+            const ele = "element" + eleIndex;
+            const actionCount = allInputs[ele].actionCount;
+            totalAction += actionCount;
 
-    // draw elements and store actions 
-    for (let i = 0; i < eleCount; i++) {
-        eleIndex = i + 1;
-        const ele = "element" + eleIndex;
-        const actionCount = allInputs[ele].actionCount;
-        totalAction += actionCount;
+            // push the condition actions and their condition
+            for (let j = 0; j < actionCount; j++) {
+                actIndex = j + 1;
+                const act = "action" + actIndex;
+                let c = false;
 
-        // push the condition actions and their condition
-        for (let j = 0; j < actionCount; j++) {
-            actIndex = j + 1;
-            const act = "action" + actIndex;
-            let c = false;
+                const actionKey = eleIndex + `_` + actIndex;
+                allRelations[actionKey] = allInputs[ele][act].condition;
 
-            const actionKey = eleIndex + `_` + actIndex;
-            allRelations[actionKey] = allInputs[ele][act].condition;
+                if (allInputsCopy[ele][act].action != "123456") {
+                    const condition = allInputsCopy[ele][act].condition;
+                    condition.forEach(cond => {
+                        // the current action can be self-initiated
+                        if (cond.ifEle == "0") {
 
-            if (allInputsCopy[ele][act].action != "123456") {
-                const condition = allInputsCopy[ele][act].condition;
-                condition.forEach(cond => {
-                    // the current action can be self-initiated
-                    if (cond.ifEle == "0") {
-
-                        if (condition.length > 1) {
-                            if (allInputsCopy[ele][act].action != "123456") {
-                                action = {};
-                                action.eleIndex = eleIndex;
-                                action.actIndex = actIndex;
-                                relateAction.push(action);
-                                allInputsCopy[ele][act].action = "123456";
+                            if (condition.length > 1) {
+                                if (allInputsCopy[ele][act].action != "123456") {
+                                    action = {};
+                                    action.eleIndex = eleIndex;
+                                    action.actIndex = actIndex;
+                                    relateAction.push(action);
+                                    allInputsCopy[ele][act].action = "123456";
+                                }
                             }
+                        } else if (cond.ifEle != "") {
+                            // if current action has conditions, check conditional actions
+                            checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
+                            c = true;
                         }
-                    } else if (cond.ifEle != "") {
-                        // if current action has conditions, check conditional actions
-                        checkAction(eleIndex, actIndex, cond.ifEle, cond.ifAct);
-                        c = true;
+                    });
+                    if (c && allInputsCopy[ele][act].action != "123456") {
+                        action = {};
+                        action.eleIndex = eleIndex;
+                        action.actIndex = actIndex;
+                        relateAction.push(action);
+                        allInputsCopy[ele][act].action = "123456";
                     }
-                });
-                if (c && allInputsCopy[ele][act].action != "123456") {
-                    action = {};
+                }
+            }
+        }
+
+        // find all the independent actions 
+        for (let i = 0; i < eleCount; i++) {
+            eleIndex = i + 1;
+            const ele = "element" + eleIndex;
+            const actionCount = allInputsCopy[ele].actionCount;
+            for (let j = 0; j < actionCount; j++) {
+                actIndex = j + 1;
+                const act = "action" + actIndex;
+                let actV = allInputsCopy[ele][act].action;
+                if (actV != "123456") {
+                    if (j == 0) {
+                        actionOrder = true;
+                    }
+                    let action = {};
                     action.eleIndex = eleIndex;
                     action.actIndex = actIndex;
-                    relateAction.push(action);
-                    allInputsCopy[ele][act].action = "123456";
+                    indeAction.push(action);
                 }
             }
         }
-    }
 
-    // find all the independent actions 
-    for (let i = 0; i < eleCount; i++) {
-        eleIndex = i + 1;
-        const ele = "element" + eleIndex;
-        const actionCount = allInputsCopy[ele].actionCount;
-        for (let j = 0; j < actionCount; j++) {
-            actIndex = j + 1;
-            const act = "action" + actIndex;
-            let actV = allInputsCopy[ele][act].action;
-            if (actV != "123456") {
-                if (j == 0) {
-                    actionOrder = true;
-                }
-                let action = {};
-                action.eleIndex = eleIndex;
-                action.actIndex = actIndex;
-                indeAction.push(action);
-            }
-        }
-    }
+        let condRes = [];
+        // let updateIndeAction = [].concat(indeAction); // no condition bars when conditions are not specified
+        let updateIndeAction = [];
+        relateAction.forEach(action => {
+            const actionKey = action.eleIndex + '_' + action.actIndex; // num_num
+            const condition = allRelations[actionKey];
 
-    let condRes = [];
-    let updateIndeAction = [].concat(indeAction);
-    relateAction.forEach(action => {
-        const actionKey = action.eleIndex + '_' + action.actIndex; // num_num
-        const condition = allRelations[actionKey];
+            if (condition.length > 1 || condition[0].ifEle != "0") {
+                let relation = {};
+                const ele = "element" + action.eleIndex;
+                const act = "action" + action.actIndex;
+                const response = allInputs[ele][act].response;
 
-        if (condition.length > 1 || condition[0].ifEle != "0") {
-            let relation = {};
-            const ele = "element" + action.eleIndex;
-            const act = "action" + action.actIndex;
-            const response = allInputs[ele][act].response;
+                relation.condition = condition;
+                relation.response = response;
 
-            relation.condition = condition;
-            relation.response = response;
-
-            condRes.push(relation);
-        } else {
-            updateIndeAction.push(action);
-        }
-    });
-
-    // get unique condition-response pairs
-    const objectsEqual = (o1, o2) =>
-        Object.keys(o1).length === Object.keys(o2).length
-        && Object.keys(o1).every(p => o1[p] === o2[p]);
-    const arraysEqual = (a1, a2) =>
-        a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
-
-    let uniqRelation = [];
-    uniqRelation.push(condRes[0]);
-    let exist = false;
-
-    for (let j = 0; j < condRes.length; j++) {
-        for (let i = 0; i < uniqRelation.length; i++) {
-            if (arraysEqual(condRes[j].condition, uniqRelation[i].condition)) {
-                exist = true;
-                break;
+                condRes.push(relation);
             } else {
-                exist = false;
+                updateIndeAction.push(action);
+            }
+        });
+
+        // get unique condition-response pairs
+        const objectsEqual = (o1, o2) =>
+            Object.keys(o1).length === Object.keys(o2).length
+            && Object.keys(o1).every(p => o1[p] === o2[p]);
+        const arraysEqual = (a1, a2) =>
+            a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+
+        let uniqRelation = [];
+        uniqRelation.push(condRes[0]);
+        let exist = false;
+
+        for (let j = 0; j < condRes.length; j++) {
+            for (let i = 0; i < uniqRelation.length; i++) {
+                if (arraysEqual(condRes[j].condition, uniqRelation[i].condition)) {
+                    exist = true;
+                    break;
+                } else {
+                    exist = false;
+                }
+            }
+            if (!exist) {
+                uniqRelation.push(condRes[j]);
             }
         }
-        if (!exist) {
-            uniqRelation.push(condRes[j]);
+
+        // relationbar = margin + size and space 
+        const relationBar = 10 + relationSize * 1.6 * (uniqRelation.length + 1);
+
+        // draw elements
+        for (let i = 0; i < eleCount; i++) {
+            const x = ((width - relationBar) / eleCount) * (0.5 + i) + relationBar;
+            eleIndex = i + 1;
+            const ele = "element" + eleIndex;
+            drawElement(x, elementY, elementWdith, elementHeight, elementSize, allInputs[ele].type, allInputs[ele].eleNum);
+            eleX.push(x);
+        }
+
+        // draw independent actions first if there are independent actions before the relational action
+        if (actionOrder) {
+            allAction = indeAction.concat(relateAction);
+            actionOrder = false;
+        } else {
+            allAction = relateAction.concat(indeAction);
+        }
+
+        // draw actions 
+        allAction.forEach(action => {
+            processAction(allInputs, eleX, action.eleIndex, action.actIndex);
+        });
+
+        // draw independent relations first
+        updateIndeAction.forEach(action => {
+            const actionKey = action.eleIndex + '_' + action.actIndex;
+            const y = actionInfo[actionKey][0];
+            const h = actionInfo[actionKey][1];
+            const x = 10;
+            drawSelfInitiate(x, y, h, actionSize);
+        });
+
+        // then draw relations 
+        for (let i = 0; i < uniqRelation.length; i++) {
+            const x = 10 + 1.6 * relationSize * (i + 1);
+            if (uniqRelation[i] != null) {
+                drawRelation(x, uniqRelation[i], actionSize);
+            }
         }
     }
-
-    // relationbar = margin + size and space 
-    const relationBar = 10 + relationSize * 1.6 * (uniqRelation.length + 1);
-
-    // draw elements
-    for (let i = 0; i < eleCount; i++) {
-        const x = ((width - relationBar) / eleCount) * (0.5 + i) + relationBar;
-        eleIndex = i + 1;
-        const ele = "element" + eleIndex;
-        drawElement(x, elementY, elementWdith, elementHeight, elementSize, allInputs[ele].type, allInputs[ele].eleNum);
-        eleX.push(x);
-    }
-
-    // draw independent actions first if there are independent actions before the relational action
-    if (actionOrder) {
-        allAction = indeAction.concat(relateAction);
-        actionOrder = false;
-    } else {
-        allAction = relateAction.concat(indeAction);
-    }
-
-    // draw actions 
-    allAction.forEach(action => {
-        processAction(allInputs, eleX, action.eleIndex, action.actIndex);
-    });
-
-    // draw independent relations first
-    updateIndeAction.forEach(action => {
-        const actionKey = action.eleIndex + '_' + action.actIndex;
-        const y = actionInfo[actionKey][0];
-        const h = actionInfo[actionKey][1];
-        const x = 10;
-        drawSelfInitiate(x, y, h, actionSize);
-    });
-
-    // then draw relations 
-    for (let i = 0; i < uniqRelation.length; i++) {
-        const x = 10 + 1.6 * relationSize * (i + 1);
-        drawRelation(x, uniqRelation[i], actionSize);
+    catch (err) {
+        alert(err.message);
     }
 }
 
@@ -332,11 +339,13 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
     if (comCount == 1) {
         const communication = allInputs[ele][act][comCount];
         const to = communication.to;
-        if (communication.direct) {
-            drawDirect(actionX, actionY, actionWidth, eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
-        } else {
-            const via = communication.via;
-            drawMediated(actionX, actionY, actionWidth, eleX[via - 1], eleX[to - 1], actionY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
+        if (to != 0) {
+            if (communication.direct) {
+                drawDirect(actionX, actionY, actionWidth, eleX[to - 1], actionY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
+            } else {
+                const via = communication.via;
+                drawMediated(actionX, actionY, actionWidth, eleX[via - 1], eleX[to - 1], actionY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
+            }
         }
     } else {
         let turn = 'none';
@@ -344,31 +353,33 @@ function processAction(allInputs, eleX, eleIndex, actIndex) {
         for (let k = 0; k < comCount; k++) {
             const communication = allInputs[ele][act][k + 1];
             const to = communication.to;
-            const comY = actionY - actionHeight / 2 - actionSize / 8 + (actionHeight / comCount) * (0.5 + k)
-            if (communication.direct) {
-                drawDirect(actionX, comY, actionWidth, eleX[to - 1], comY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
-            } else {
-                const via = communication.via;
-                const toX = eleX[to - 1];
-                const viaX = eleX[via - 1];
-
-                if (actionX < viaX && viaX >= toX) {
-                    turn = 'right';
-                } else if (actionX > viaX && viaX <= toX) {
-                    turn = 'left';
+            const comY = actionY - actionHeight / 2 - actionSize / 8 + (actionHeight / comCount) * (0.5 + k);
+            if (to != 0) {
+                if (communication.direct) {
+                    drawDirect(actionX, comY, actionWidth, eleX[to - 1], comY, comSize, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
                 } else {
-                    turn = 'none';
-                }
-                if (turn == 'left' && turn == prevTurn) {
-                    space += 8;
-                } else if (turn == 'right' && turn == prevTurn) {
-                    space += 8;
-                } else {
-                    space = 8;
-                }
-                prevTurn = turn;
+                    const via = communication.via;
+                    const toX = eleX[to - 1];
+                    const viaX = eleX[via - 1];
 
-                drawMediated(actionX, comY, actionWidth, viaX, toX, comY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
+                    if (actionX < viaX && viaX >= toX) {
+                        turn = 'right';
+                    } else if (actionX > viaX && viaX <= toX) {
+                        turn = 'left';
+                    } else {
+                        turn = 'none';
+                    }
+                    if (turn == 'left' && turn == prevTurn) {
+                        space += 8;
+                    } else if (turn == 'right' && turn == prevTurn) {
+                        space += 8;
+                    } else {
+                        space = 8;
+                    }
+                    prevTurn = turn;
+
+                    drawMediated(actionX, comY, actionWidth, viaX, toX, comY, comSize, space, communication.public, communication.configF, communication.configT, communication.comNum, communication.effect.join('; '));
+                }
             }
         }
     }
