@@ -149,8 +149,7 @@ export function drawVis(name, allInputs) {
         }
 
         let condRes = [];
-        // let updateIndeAction = [].concat(indeAction); // no condition bars when conditions are not specified
-        let updateIndeAction = [];
+        let updateIndeAction = [].concat(indeAction); 
         relateAction.forEach(action => {
             const actionKey = action.eleIndex + '_' + action.actIndex; // num_num
             const condition = allRelations[actionKey];
