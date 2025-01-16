@@ -7,7 +7,8 @@ function addAction(element) {
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
-    options += `<option value="` + index + `">#` + index + `</option>`;
+    const eleType = allElements[i - 1].querySelector("#type").value;
+    options += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
   }
 
   // class allactions 
@@ -272,7 +273,8 @@ function addGenerateAction(element) {
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
-    options += `<option value="` + index + `">#` + index + `</option>`;
+    const eleType = allElements[i - 1].querySelector("#type").value;
+    options += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
   }
 
   // class allactions 
@@ -573,21 +575,22 @@ function updateActionIndex(element) {
 }
 
 // element = allactions
-function updateActionList(element) {
+function updateActionList(allactions) {
   const allElements = document.querySelectorAll(".element");
 
-  const AllList = element.querySelectorAll(".if_ele");
+  const AllIfEle = allactions.querySelectorAll(".if_ele");
 
-  AllList.forEach(list => {
-    const oldEle = list.value;
-    list.innerHTML = ` <option value="">Element</option>
+  AllIfEle.forEach(ifEle => {
+    const oldEle = ifEle.value;
+    ifEle.innerHTML = ` <option value="">Element</option>
     <option value="0">Self-initiated</option>`;
 
     for (let i = 0; i < allElements.length; i++) {
       const index = (i + 1).toString();
-      list.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+      const eleType = allElements[i].querySelector("#type").value;
+      ifEle.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
     }
 
-    list.value = oldEle;
+    ifEle.value = oldEle;
   });
 }

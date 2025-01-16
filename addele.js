@@ -624,8 +624,8 @@ function updateIndex() {
         coms[k].querySelector("#via_means").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"`;
         coms[k].querySelector("#public_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
         coms[k].querySelector("#private_access").name = `"` + eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"`;
-        if(window.location.href.includes("generate")) {
-        coms[k].querySelector("#permutateCount").value = 0;
+        if (window.location.href.includes("generate")) {
+          coms[k].querySelector("#permutateCount").value = 0;
         }
       }
     }
@@ -653,7 +653,7 @@ function updateDropdown() {
       const eleType = allElements[i].querySelector("#type").value;
       if (actNum > 1) {
         element.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
-      } else if (allElements.length > 1) {
+      } else if (actNum == 1) {
         if (eleIndex != index) {
           element.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
         }

@@ -5,7 +5,8 @@ function addCommunication(element) {
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
-    options += `<option value="` + index + `">#` + index + `</option>`;
+    const eleType = allElements[i - 1].querySelector("#type").value;
+    options += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
   }
   // class action
   const action = element.parentNode.parentNode;
@@ -186,7 +187,8 @@ function addGenerateCommunication(element) {
   let options = ``;
   for (let i = 1; i < (allElements.length + 1); i++) {
     const index = i.toString();
-    options += `<option value="` + index + `">#` + index + `</option>`;
+    const eleType = allElements[i - 1].querySelector("#type").value;
+    options += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
   }
   // class action
   const action = element.parentNode.parentNode;
