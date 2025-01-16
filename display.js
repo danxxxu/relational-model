@@ -16,14 +16,62 @@ const searchParams = new URLSearchParams(window.location.search);
 document.addEventListener('DOMContentLoaded', function () {
     if (searchParams.get('artwork')) {
         let name = '';
+        // co-located interaction 
+        if (searchParams.get('artwork') == "brainball") {
+            name = 'Brainball (2003) by Smart Studio';
+        }
+        if (searchParams.get('artwork') == "randomly") {
+            name = 'Randomly Generated Social Interactions (2016) by Anastasis Germanidis';
+        }
+        if (searchParams.get('artwork') == "worldskin") {
+            name = 'World Skin (1997) by Maurice Benayoun';
+        }
+        if (searchParams.get('artwork') == "zoom") {
+            name = 'Zoom Pavilion (2015) by Rafael Lozano-Hemmer';
+        }
+        if (searchParams.get('artwork') == "boundary") {
+            name = 'Boundary Functions (1998) by Scott Snibbe';
+        }
+        if (searchParams.get('artwork') == "spatialsounds1") {
+            name = 'Mode 1 - Spatial Sounds (100dB at 100kmh) (2000) by Marnix de Nijs and Edwin van der Heide';
+        }
+        if (searchParams.get('artwork') == "spatialsounds2") {
+            name = 'Mode 2 - Spatial Sounds (100dB at 100kmh) (2000) by Marnix de Nijs and Edwin van der Heide';
+        }
+        if (searchParams.get('artwork') == "spatialsounds3") {
+            name = 'Mode 3 - Spatial Sounds (100dB at 100kmh) (2000) by Marnix de Nijs and Edwin van der Heide';
+        }
+        if (searchParams.get('artwork') == "spatialsounds4") {
+            name = 'Mode 4 - Spatial Sounds (100dB at 100kmh) (2000) by Marnix de Nijs and Edwin van der Heide';
+        }
+        if (searchParams.get('artwork') == "lights") {
+            name = 'Lights Contacts (2009) by Scenocosme';
+        }
         if (searchParams.get('artwork') == "bodymovies") {
             name = 'Body Movies (2001) by Rafael Lozano-Hemmer';
+        }
+        // more-than-human interaction
+        if (searchParams.get('artwork') == "mouse") {
+            name = 'Mouse Coach (2023) by Jiabao Li';
         }
         if (searchParams.get('artwork') == "intrafacing") {
             name = 'IntraFacing (2022) by Alinta Krauth';
         }
+        if (searchParams.get('artwork') == "rocksalt") {
+            name = 'Playful Rocksalt System (2015) by Hiroki Kobayashi, et al.';
+        }
+        if (searchParams.get('artwork') == "encounters") {
+            name = 'Encounters of a Domestic Nature (2013) by Amy M Youngs';
+        }
+        if (searchParams.get('artwork') == "myconnect") {
+            name = 'Myconnect (2013) by Saša Spačal, et al.';
+        }
+        // beyond interactive art
         if (searchParams.get('artwork') == "vibecheck") {
             name = 'Vibe Check (2020) by Lauren Lee McCarthy and Kyle McDonald';
+        }
+        if (searchParams.get('artwork') == "iwish") {
+            name = 'I Wish You Knew That You Are Me (2024) by Dan Xu, Jonathan Thaw, Lauren Wedderburn';
         }
         getInteraction(name);
     }
