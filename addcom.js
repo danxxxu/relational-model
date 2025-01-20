@@ -93,7 +93,7 @@ function addCommunication(element) {
 <div class="communications">
 <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
   <div class="block">
-  <select id="to" name="to_elements">
+  <select id="to" name="to_elements" onclick="updateVisualise()">
   <option value="">--To which element--</option>` + options + `
 </select>
     <span hidden id="comIn">` + comCount + `</span>
@@ -114,8 +114,9 @@ function addCommunication(element) {
       id="via_means"
       name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"
       value="via"
+      onclick="updateVisualise()"
     /><label for="via_means">Via </label
-    ><select id="via" name="via_elements">       
+    ><select id="via" name="via_elements" onclick="updateVisualise()">       
     <option value="">--Select an element--</option>` + options + `
   </select>
   </div>
@@ -124,8 +125,9 @@ function addCommunication(element) {
     list="eCount"
     id="config_from"
     placeholder="From"
+    onchange="updateVisualise()"
   /><span style="font-size: 25px">&rarr;</span
-  ><input list="eCount" id="config_to" placeholder="To" />
+  ><input list="eCount" id="config_to" placeholder="To" onchange="updateVisualise()"/>
 </div>
   <div class="block"><input list="eCount" id="com_num" /></div>
   <div class="block">
@@ -135,6 +137,7 @@ function addCommunication(element) {
       name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"
       value="public"
       checked
+      onclick="updateVisualise()"
     /><label for="public_access">Public</label>
   </div>
   <div class="block">
@@ -143,6 +146,7 @@ function addCommunication(element) {
       id="private_access"
       name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"
       value="private"
+      onclick="updateVisualise()"
     /><label for="private_access">Private</label>
   </div>
   <div class="effect_container">
@@ -153,6 +157,7 @@ function addCommunication(element) {
                 <input
                 list = "existEffect"
                 class="effect"
+                onclick="updateVisualise()"
                 ></input>
                 <datalist id="existEffect"></datalist><button
                     class="close"
@@ -180,6 +185,7 @@ function addCommunication(element) {
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
   previousCom.insertAdjacentHTML("afterend", comHtml);
   // updateComIndex(action);
+  // document.querySelector("#visualise").click();
 }
 
 function addGenerateCommunication(element) {
@@ -283,7 +289,7 @@ function addGenerateCommunication(element) {
                 <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
               </div>
   <div class="block">
-  <select id="to" name="to_elements">
+  <select id="to" name="to_elements" onclick="updateVisualise()">
   <option value="">--To which element--</option>` + options + `
 </select>
     <span hidden id="comIn">` + comCount + `</span>
@@ -304,6 +310,7 @@ function addGenerateCommunication(element) {
       id="via_means"
       name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_means"
       value="via"
+      onclick="updateVisualise()"
     /><label for="via_means">Via </label
     ><select id="via" name="via_elements">       
     <option value="">--Select an element--</option>` + options + `
@@ -314,8 +321,10 @@ function addGenerateCommunication(element) {
     list="eCount"
     id="config_from"
     placeholder="From"
+    onchange="updateVisualise()"
   /><span style="font-size: 25px">&rarr;</span
-  ><input list="eCount" id="config_to" placeholder="To" />
+  ><input list="eCount" id="config_to" placeholder="To"     onchange="updateVisualise()"
+/>
 </div>
   <div class="block"><input list="eCount" id="com_num" /></div>
   <div class="block">
@@ -325,6 +334,7 @@ function addGenerateCommunication(element) {
       name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"
       value="public"
       checked
+      onclick="updateVisualise()"
     /><label for="public_access">Public</label>
   </div>
   <div class="block">
@@ -333,6 +343,7 @@ function addGenerateCommunication(element) {
       id="private_access"
       name="`+ eleIndex + `_act` + actionIndex + `_com` + comCount + `_access"
       value="private"
+      onclick="updateVisualise()"
     /><label for="private_access">Private</label>
   </div>
   <div class="effect_container">
@@ -343,6 +354,7 @@ function addGenerateCommunication(element) {
                 <input
                 list = "existEffect"
                 class="effect"
+                onchange="updateVisualise()"
                 ></input>
                 <datalist id="existEffect"></datalist><button
                     class="close"
@@ -370,6 +382,7 @@ function addGenerateCommunication(element) {
   const previousCom = element.parentNode.parentNode.lastElementChild.previousElementSibling;
   previousCom.insertAdjacentHTML("afterend", generateComHtml);
   // updateComIndex(action);
+  // document.querySelector("#visualise").click();
 }
 
 function deleteCom(element) {
@@ -378,6 +391,7 @@ function deleteCom(element) {
   const action = element.parentNode.parentNode.parentNode;
   element.parentNode.parentNode.remove();
   updateComIndex(action);
+  document.querySelector("#visualise").click();
 }
 
 function updateComIndex(element) {

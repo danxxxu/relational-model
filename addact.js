@@ -21,7 +21,7 @@ function addAction(element) {
    <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
    <div class="act_block">
    <label for="actionV" id="actionIn">`+ actCount + `</label>
-   <input list="existAction" id="actionV" placeholder="Action" />
+   <input list="existAction" id="actionV" placeholder="Action" onchange="updateVisualise()"/>
    <datalist id="existAction"></datalist>
    </div>
    <div class="act_block">
@@ -31,12 +31,14 @@ function addAction(element) {
          name="` + eleIndex + `_act` + actCount + `_intention"
          value="intentional"
          checked
+         onclick="updateVisualise()"
        /><label for="intentional">Intented</label>
        <input
        type="radio"
        id="unintentional"
        name="` + eleIndex + `_act` + actCount + `_intention"
        value="unintentional"
+       onclick="updateVisualise()"
      /><label for="unintentional">Unintented</label>
  </div>
    <div id="condition" style="width: 100%">
@@ -167,7 +169,7 @@ function addAction(element) {
     <div class="communications">
     <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
       <div class="block">
-      <select id="to" name="to_elements" style="float: left;">
+      <select id="to" name="to_elements" style="float: left;" onclick="updateVisualise()">
       <option value="">--To which element--</option> `+ options + `
     </select>
         <span hidden id="comIn">0</span>
@@ -188,8 +190,9 @@ function addAction(element) {
           id="via_means"
           name="` + eleIndex + `_act` + actCount + `_means"          
           value="via"
+          onclick="updateVisualise()"
         /><label for="via_means">Via </label
-        ><select id="via" name="via_elements">
+        ><select id="via" name="via_elements" onclick="updateVisualise()">
         <option value="">--Select an element--</option> `+ options + `
       </select>
       </div>
@@ -198,8 +201,9 @@ function addAction(element) {
         list="eCount"
         id="config_from"
         placeholder="From"
+        onchange="updateVisualise()"
       /><span style="font-size: 25px">&rarr;</span
-      ><input list="eCount" id="config_to" placeholder="To" />
+      ><input list="eCount" id="config_to" placeholder="To" onchange="updateVisualise()"/>
     </div>
       <div class="block"><input list="eCount" id="com_num" /></div>
       <div class="block">
@@ -209,6 +213,7 @@ function addAction(element) {
         name="` + eleIndex + `_act` + actCount + `_access"
         value="public"
         checked
+        onclick="updateVisualise()"
       /><label for="public_access">Public</label>
     </div>
     <div class="block">
@@ -217,6 +222,7 @@ function addAction(element) {
         id="private_access"
         name="` + eleIndex + `_act` + actCount + `_access"
         value="private"
+        onclick="updateVisualise()"
       /><label for="private_access">Private</label>
     </div>
     <div class="effect_container">
@@ -227,6 +233,7 @@ function addAction(element) {
     <input
     list = "existEffect"
     class="effect"
+    onchange="updateVisualise()"
     ></input>
     <datalist id="existEffect"></datalist>
     <button
@@ -287,7 +294,7 @@ function addGenerateAction(element) {
    <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
    <div class="act_block">
    <label for="actionV" id="actionIn">`+ actCount + `</label>
-   <input list="existAction" id="actionV" placeholder="Action" />
+   <input list="existAction" id="actionV" placeholder="Action" onchange="updateVisualise()"/>
    <datalist id="existAction"></datalist>
    </div>
    <div class="act_block">
@@ -297,12 +304,14 @@ function addGenerateAction(element) {
          name="` + eleIndex + `_act` + actCount + `_intention"
          value="intentional"
          checked
+         onclick="updateVisualise()"
        /><label for="intentional">Intented</label>
        <input
        type="radio"
        id="unintentional"
        name="` + eleIndex + `_act` + actCount + `_intention"
        value="unintentional"
+       onclick="updateVisualise()"
      /><label for="unintentional">Unintented</label>
  </div>
    <div id="condition" style="width: 100%; background-color: #cdcffc;">
@@ -446,7 +455,7 @@ function addGenerateAction(element) {
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
       <div class="block">
-      <select id="to" name="to_elements" style="float: left;">
+      <select id="to" name="to_elements" style="float: left;" onclick="updateVisualise()">
       <option value="">--To which element--</option> `+ options + `
     </select>
         <span hidden id="comIn">0</span>
@@ -467,8 +476,9 @@ function addGenerateAction(element) {
           id="via_means"
           name="` + eleIndex + `_act` + actCount + `_means"          
           value="via"
+          onclick="updateVisualise()"
         /><label for="via_means">Via </label
-        ><select id="via" name="via_elements">
+        ><select id="via" name="via_elements" onclick="updateVisualise()">
         <option value="">--Select an element--</option> `+ options + `
       </select>
       </div>
@@ -477,8 +487,9 @@ function addGenerateAction(element) {
         list="eCount"
         id="config_from"
         placeholder="From"
+        onchange="updateVisualise()"
       /><span style="font-size: 25px">&rarr;</span
-      ><input list="eCount" id="config_to" placeholder="To" />
+      ><input list="eCount" id="config_to" placeholder="To" onchange="updateVisualise()"/>
     </div>
       <div class="block"><input list="eCount" id="com_num" /></div>
       <div class="block">
@@ -488,6 +499,7 @@ function addGenerateAction(element) {
         name="` + eleIndex + `_act` + actCount + `_access"
         value="public"
         checked
+        onclick="updateVisualise()"
       /><label for="public_access">Public</label>
     </div>
     <div class="block">
@@ -496,6 +508,7 @@ function addGenerateAction(element) {
         id="private_access"
         name="` + eleIndex + `_act` + actCount + `_access"
         value="private"
+        onclick="updateVisualise()"
       /><label for="private_access">Private</label>
     </div>
     <div class="effect_container">
@@ -506,6 +519,7 @@ function addGenerateAction(element) {
     <input
     list = "existEffect"
     class="effect"
+    onchange="updateVisualise()"
     ></input>
     <datalist id="existEffect"></datalist>
     <button
@@ -550,6 +564,7 @@ function deleteAction(element) {
   element.parentNode.remove();
   updateActionIndex(allactions);
   updateActionList(allactions);
+  document.querySelector("#visualise").click();
 }
 
 // element = allactions
@@ -593,4 +608,5 @@ function updateActionList(allactions) {
 
     ifEle.value = oldEle;
   });
+  // document.querySelector("#visualise").click();
 }

@@ -93,31 +93,31 @@ function displayEffect(e) {
     });
 }
 
-/////// automate visualisation when input fields layout change////////
-let visCount = false;
-const inputObserver = document.querySelector("#input");
-const config = {
-    attributes: true,
-    characterData: true,
-    childList: true,
-    subtree: true,
-    attributeOldValue: true,
-    characterDataOldValue: true
-};
+// /////// automate visualisation when input fields layout change////////
+// let visCount = false;
+// const inputObserver = document.querySelector("#input");
+// const config = {
+//     attributes: true,
+//     characterData: true,
+//     childList: true,
+//     subtree: true,
+//     attributeOldValue: true,
+//     characterDataOldValue: true
+// };
 
-// Callback function to execute when mutations are observed
-const callback = () => {
-    if (visCount) {
-        console.log("vis");
-        visualise();
-    }
-};
+// // Callback function to execute when mutations are observed
+// const callback = () => {
+//     if (visCount) {
+//         console.log("vis");
+//         visualise();
+//     }
+// };
 
-// Create an observer instance linked to the callback function
-const observer = new MutationObserver(callback);
+// // Create an observer instance linked to the callback function
+// const observer = new MutationObserver(callback);
 
-// Start observing the target node for configured mutations
-observer.observe(inputObserver, config);
+// // Start observing the target node for configured mutations
+// observer.observe(inputObserver, config);
 
 // visualise
 function visualise() {
@@ -125,7 +125,7 @@ function visualise() {
     collectAllInputs();
     const name = document.querySelector("#name_interaction").value;
     drawVis(name, allInputs);
-    visCount = true;
+    // visCount = true;
 }
 
 // submit all inputs to database

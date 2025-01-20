@@ -10,6 +10,7 @@ function condition(element) {
     if (index === "0") {
         parent.querySelector("#perform").style.display = "none";
         element.style.width = "120px";
+        document.querySelector("#visualise").click();
     } else if (index != "") {
         parent.querySelector("#perform").style.display = "inline";
         element.style.width = "50px";
@@ -40,7 +41,7 @@ const responseHTML = `
               </select>
               <div id="perform" style="display: inline">
                 <span> do(es) </span>
-                <select class="if_act" style="width: 95px">
+                <select class="if_act" style="width: 95px" onclick="updateVisualise()">
                   <option value="">Action</option>
                 </select>
               </div>
@@ -77,7 +78,7 @@ const triggerHTML = `
               </select>
               <div id="perform" style="display: inline">
                 <span> do(es) </span>
-                <select class="if_act" style="width: 95px">
+                <select class="if_act" style="width: 95px" onclick="updateVisualise()">
                   <option value="">Action</option>
                 </select>
               </div>
@@ -145,13 +146,13 @@ function updateIfIndex() {
         }
 
         for (let i = 0; i < allElements.length; i++) {
+            const index = (i + 1).toString();
+            const eleType = allElements[i].querySelector("#type").value;
             if (actNum > 1) {
-                const index = (i + 1).toString();
-                e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+                e.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
             } else if (allElements.length > 1) {
-                const index = (i + 1).toString();
                 if (eleIndex != index) {
-                    e.innerHTML += `<option value="` + index + `">#` + index + `</option>`;
+                    e.innerHTML += `<option value="` + index + `">#` + index + ' ' + eleType + `</option>`;
                 }
             }
         }
@@ -170,7 +171,7 @@ function deleteCondition(element) {
     }
 
     element.parentNode.remove();
-
+    document.querySelector("#visualise").click();
 }
 
 let fnCount = 0;
@@ -221,6 +222,7 @@ function addFootnote(e) {
         footnoteContainer.querySelector(fnID).value = condText;
         resizeInput(footnoteContainer.querySelector(fnID));
     }
+    document.querySelector("#visualise").click();
 }
 
 function resizeInput(input) {
@@ -259,4 +261,5 @@ function updateFnIndex(removedFN) {
             select.value = prevSelect - 1;
         }
     });
+    document.querySelector("#visualise").click();
 }

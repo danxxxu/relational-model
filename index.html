@@ -585,7 +585,8 @@
           /><datalist id="existTypes"></datalist>
         </div>
         <div class="block">
-          <input list="eCount" id="ele_num" placeholder="Count" /><datalist
+          <input list="eCount" id="ele_num" placeholder="Count" onchange="updateVisualise()"
+         /><datalist
             id="eCount"
           >
             <option value="1"></option>
@@ -612,7 +613,7 @@
             </button>
             <div class="act_block">
               <label for="actionV" id="actionIn">1</label>
-              <input list="existAction" id="actionV" placeholder="Action" />
+              <input list="existAction" id="actionV" placeholder="Action"           onchange="updateVisualise()"/>
               <datalist id="existAction"></datalist>
             </div>
             <div class="act_block">
@@ -622,12 +623,14 @@
                 name="intention"
                 value="intentional"
                 checked
+                onclick="updateVisualise()"
               /><label for="intentional">Intended</label>
               <input
                 type="radio"
                 id="unintentional"
                 name="intention"
                 value="unintentional"
+                onclick="updateVisualise()"
               /><label for="unintentional">Unintended</label>
             </div>
             <div id="condition" style="width: 100%">
@@ -646,7 +649,7 @@
                 </select>
                 <div id="perform" style="display: inline">
                   <span>do(es)</span>
-                  <select class="if_act" style="width: 95px">
+                  <select class="if_act" style="width: 95px" onclick="updateVisualise()">
                     <option value="">Action</option>
                   </select>
                 </div>
@@ -764,7 +767,7 @@
                   X
                 </button>
                 <div class="block">
-                  <select id="to" name="to_elements" style="float: left">
+                  <select id="to" name="to_elements" style="float: left" onclick="updateVisualise()">
                     <option value="">--To which element--</option>
                     <option value="1">#1</option>
                   </select>
@@ -786,8 +789,9 @@
                     id="via_means"
                     name="means"
                     value="via"
+                    onclick="updateVisualise()"
                   /><label for="via_means">Via </label>
-                  <select id="via" name="via_elements">
+                  <select id="via" name="via_elements" onclick="updateVisualise()">
                     <option value="">--Select an element--</option>
                     <option value="1">#1</option>
                   </select>
@@ -797,8 +801,10 @@
                     list="eCount"
                     id="config_from"
                     placeholder="From"
+                    onchange="updateVisualise()"
                   /><span style="font-size: 25px">&rarr;</span
-                  ><input list="eCount" id="config_to" placeholder="To" />
+                  ><input list="eCount" id="config_to" placeholder="To"                    onchange="updateVisualise()"
+                  />
                 </div>
                 <div class="block"><input list="eCount" id="com_num" /></div>
                 <div class="block">
@@ -808,6 +814,7 @@
                     name="access"
                     value="public"
                     checked
+                    onclick="updateVisualise()"
                   /><label for="public_access">Public</label>
                 </div>
                 <div class="block">
@@ -816,6 +823,7 @@
                     id="private_access"
                     name="access"
                     value="private"
+                    onclick="updateVisualise()"
                   /><label for="private_access">Private</label>
                 </div>
                 <div class="effect_container">
@@ -826,6 +834,7 @@
                     <input
                     list = "existEffect"
                     class="effect"
+                    onchange="updateVisualise()"
                     ></input>
                     <datalist id="existEffect"></datalist>
                     <button

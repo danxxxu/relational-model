@@ -149,7 +149,7 @@ export function drawVis(name, allInputs) {
         }
 
         let condRes = [];
-        let updateIndeAction = [].concat(indeAction); 
+        let updateIndeAction = [].concat(indeAction);
         relateAction.forEach(action => {
             const actionKey = action.eleIndex + '_' + action.actIndex; // num_num
             const condition = allRelations[actionKey];
@@ -267,6 +267,9 @@ function checkAction(oriEleIndex, oriActIndex, eleIndex, actIndex) {
             condition.forEach(cond => {
                 if (cond.ifEle == 0) {
                     self = true;
+                } else if (cond.ifEle == "") {
+                    const ind = condition.indexOf(cond);
+                    condition.splice(ind, 1);
                 }
             });
             if (self) {

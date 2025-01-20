@@ -42,6 +42,7 @@ function checkDirect(e) {
     if (e.checked) {
         e.parentNode.parentNode.querySelector("#via").value = "";
     }
+    updateVisualise();
 }
 
 function showInstruction(e) {
@@ -89,4 +90,8 @@ function unlock(e) {
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].disabled = false;
     }
+}
+
+function updateVisualise(){
+    document.querySelector("#visualise").click();
 }

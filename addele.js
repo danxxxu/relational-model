@@ -10,7 +10,7 @@ function addElement(element) {
     <button class="close" name="delete_element" onclick="deleteElement(this)">X</button>
     <div class="block" style="width:100%"><span id="index">#1</span></div>
     <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"          onchange="updateDropdown()" /><datalist id="existTypes"></datalist></div>
-    <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
+    <div class="block"><input list="eCount" id="ele_num" placeholder="Count" onchange="updateVisualise()"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
     <option value="2"></option>
     <option value="3"></option>
@@ -28,8 +28,8 @@ function addElement(element) {
       <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
       <div class="act_block">
       <label for="actionV" id="actionIn">1</label>
-      <input list="existAction" id="actionV" placeholder="Action" />
-              <datalist id="existAction"></datalist>
+      <input list="existAction" id="actionV" placeholder="Action" onchange="updateVisualise()"/>
+      <datalist id="existAction"></datalist>
     </div>
     <div class="act_block">
    <input
@@ -38,12 +38,14 @@ function addElement(element) {
          name="` + eleCount + `_intention"
          value="intentional"
          checked
+         onclick="updateVisualise()"
        /><label for="intentional">Intented</label>
        <input
        type="radio"
        id="unintentional"
        name="` + eleCount + `_intention"
        value="unintentional"
+       onclick="updateVisualise()"
      /><label for="unintentional">Unintented</label>
  </div>
     <div id="condition" style="width: 100%">
@@ -174,7 +176,7 @@ function addElement(element) {
         <div class="communications">
         <button class="close" id="delete_com" onclick="deleteCom(this)">X</button>
           <div class="block">
-          <select id="to" name="to_elements" style="float: left;">
+          <select id="to" name="to_elements" style="float: left;" onclick="updateVisualise()">
           <option value="">--To which element--</option>
           <option value="1">#1</option>
         </select>
@@ -196,8 +198,9 @@ function addElement(element) {
               id="via_means"
               name="` + eleCount + `_means"
               value="via"
+              onclick="updateVisualise()"
             /><label for="via_means">Via </label
-            >        <select id="via" name="via_elements">
+            >        <select id="via" name="via_elements" onclick="updateVisualise()">
             <option value="">--Select an element--</option>
             <option value="1">#1</option>
           </select>
@@ -207,8 +210,9 @@ function addElement(element) {
                     list="eCount"
                     id="config_from"
                     placeholder="From"
+                    onchange="updateVisualise()"
                   /><span style="font-size: 25px">&rarr;</span
-                  ><input list="eCount" id="config_to" placeholder="To" />
+                  ><input list="eCount" id="config_to" placeholder="To" onchange="updateVisualise()"/>
                 </div>
           <div class="block"><input list="eCount" id="com_num" /></div>
           <div class="block">
@@ -218,6 +222,7 @@ function addElement(element) {
               name="` + eleCount + `_access"
               value="public"
               checked
+              onchange="updateVisualise()"
             /><label for="public_access">Public</label>
           </div>
           <div class="block">
@@ -226,6 +231,7 @@ function addElement(element) {
               id="private_access"
               name="` + eleCount + `_access"
               value="private"
+              onchange="updateVisualise()"
             /><label for="private_access">Private</label>
           </div>
           <div class="effect_container">
@@ -236,6 +242,7 @@ function addElement(element) {
           <input
           list = "existEffect"
           class="effect"
+          onchange="updateVisualise()"
           ></input>
           <datalist id="existEffect"></datalist>
           <button
@@ -300,7 +307,7 @@ function addGenerateElement(element) {
           >Fill in the empty input fields of the element profile. Does not over-write existing data entries.
         </span></button></div>
     <div class="block"><input list="existTypes" id="type" placeholder="Type/role (if applicable)"             onchange="updateDropdown()" /><datalist id="existTypes"></datalist></div>
-    <div class="block"><input list="eCount" id="ele_num" placeholder="Count"/><datalist id="eCount"><datalist id="eCount">
+    <div class="block"><input list="eCount" id="ele_num" placeholder="Count" onchange="updateVisualise()"/><datalist id="eCount"><datalist id="eCount">
     <option value="1"></option>
     <option value="2"></option>
     <option value="3"></option>
@@ -318,8 +325,8 @@ function addGenerateElement(element) {
       <button class="close" name="delete_action" onclick="deleteAction(this)">X</button>
       <div class="act_block">
       <label for="actionV" id="actionIn">1</label>
-      <input list="existAction" id="actionV" placeholder="Action" />
-              <datalist id="existAction"></datalist>
+      <input list="existAction" id="actionV" placeholder="Action" onchange="updateVisualise()"/>
+      <datalist id="existAction"></datalist>
     </div>
     <div class="act_block">
    <input
@@ -328,12 +335,14 @@ function addGenerateElement(element) {
          name="` + eleCount + `_intention"
          value="intentional"
          checked
+         onclick="updateVisualise()"
        /><label for="intentional">Intented</label>
        <input
        type="radio"
        id="unintentional"
        name="` + eleCount + `_intention"
        value="unintentional"
+       onclick="updateVisualise()"
      /><label for="unintentional">Unintented</label>
  </div>
     <div id="condition" style="width: 100%; background-color: #cdcffc;">
@@ -477,7 +486,7 @@ function addGenerateElement(element) {
                   <input type="number" id="permutateCount" name="permutateCount" min="0" max="" value="0" onchange="loadPermutation(this)" disabled/>
                 </div>
           <div class="block">
-          <select id="to" name="to_elements" style="float: left;">
+          <select id="to" name="to_elements" style="float: left;" onclick="updateVisualise()">
           <option value="">--To which element--</option>
           <option value="1">#1</option>
         </select>
@@ -499,8 +508,9 @@ function addGenerateElement(element) {
               id="via_means"
               name="` + eleCount + `_means"
               value="via"
+              onclick="updateVisualise()"
             /><label for="via_means">Via </label
-            >        <select id="via" name="via_elements">
+            >        <select id="via" name="via_elements" onclick="updateVisualise()">
             <option value="">--Select an element--</option>
             <option value="1">#1</option>
           </select>
@@ -510,8 +520,9 @@ function addGenerateElement(element) {
                     list="eCount"
                     id="config_from"
                     placeholder="From"
+                    onchange="updateVisualise()"
                   /><span style="font-size: 25px">&rarr;</span
-                  ><input list="eCount" id="config_to" placeholder="To" />
+                  ><input list="eCount" id="config_to" placeholder="To" onchange="updateVisualise()"/>
                 </div>
           <div class="block"><input list="eCount" id="com_num" /></div>
           <div class="block">
@@ -521,6 +532,7 @@ function addGenerateElement(element) {
               name="` + eleCount + `_access"
               value="public"
               checked
+              onclick="updateVisualise()"
             /><label for="public_access">Public</label>
           </div>
           <div class="block">
@@ -529,6 +541,7 @@ function addGenerateElement(element) {
               id="private_access"
               name="` + eleCount + `_access"
               value="private"
+              onclick="updateVisualise()"
             /><label for="private_access">Private</label>
           </div>
           <div class="effect_container">
@@ -539,6 +552,7 @@ function addGenerateElement(element) {
           <input
           list = "existEffect"
           class="effect"
+          onchange="updateVisualise()"
           ></input>
           <datalist id="existEffect"></datalist>
           <button
@@ -602,6 +616,7 @@ function deleteElement(element) {
   eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 
   // updateAllPermutation();
+  document.querySelector("#visualise").click();
 }
 
 function updateIndex() {
@@ -684,4 +699,5 @@ function updateDropdown() {
       viaEle.value = oldVia;
     });
   });
+  document.querySelector("#visualise").click();
 }
