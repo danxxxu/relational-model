@@ -149,6 +149,12 @@ function displayInteraction(name, doc) {
             allElements[i - 1].remove();
         }
     }
+    allElements = document.querySelectorAll(".element");
+    for (let i = 0; i < allElements.length; i++) {
+        eleIndex = String("element" + (i + 1));
+        allElements[i].querySelector("#type").value = doc[eleIndex].type;
+        allElements[i].querySelector("#type").onchange();
+    }
     //update footnotes and index selection list
     const footnoteContainer = document.querySelector("#footnote_container");
     const allFn = doc.footnote;
@@ -172,10 +178,9 @@ function displayInteraction(name, doc) {
     }
 
     //  update elements
-    allElements = document.querySelectorAll(".element");
     for (let i = 0; i < allElements.length; i++) {
         eleIndex = String("element" + (i + 1));
-        allElements[i].querySelector("#type").value = doc[eleIndex].type;
+        // allElements[i].querySelector("#type").value = doc[eleIndex].type;
         allElements[i].querySelector("#ele_num").value = doc[eleIndex].eleNum;
         //check number of actions for each element
         const actCount = doc[eleIndex].actionCount;

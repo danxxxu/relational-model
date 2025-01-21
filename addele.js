@@ -616,7 +616,7 @@ function deleteElement(element) {
   eleList.parentNode.querySelector("#element_list").innerText = "Show all elements";
 
   // updateAllPermutation();
-  document.querySelector("#visualise").click();
+  // document.querySelector("#visualise").click();
 }
 
 function updateIndex() {
